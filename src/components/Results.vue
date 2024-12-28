@@ -13,12 +13,12 @@
       @update:selectedOption="fetchProjectData"
     />
   </div>
-  <div class="mx-auto p-4 lg:p-12 mt-28">
+  <div class="mx-auto p-4 lg:p-12 mt-32 lg:mt-28">
     <div v-if="projectData">
       <div v-if="loading" class="text-center">Chargement...</div>
 
       <div v-else class="grid gap-8 grid-cols-12">
-        <div class="col-span-12 flex items-end gap-8">
+        <div class="col-span-12 flex flex-col gap-8 lg:flex-row lg:items-end">
           <h1 class="text-5xl font-bold">{{ projectData.pages[0].title }}</h1>
           <h2 class="text-xl">
             Projet réalisé par {{ selectedProject.value }}
@@ -241,8 +241,8 @@
   import BlockCssRules from "./Blocks/BlockCssRules.vue";
 
   // Récupère l'URL de base depuis les variables d'environnement
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  //const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  const API_BASE_URL = "https://project-analysis-backend.onrender.com";
 
   const projects = ref([]);
   const selectedProject = ref(null);
