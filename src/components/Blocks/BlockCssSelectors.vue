@@ -1,5 +1,21 @@
 <template>
   <Block title="Sélecteurs" class="col-span-12 lg:col-span-4">
+    <template v-slot:header>
+      <div class="flex gap-4">
+        <div>
+          <div class="text-xs uppercase">Total</div>
+          <div class="text-xl font-bold">
+            {{ props.projectData.cssAnalysisResult.selectors.total }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase">Unique</div>
+          <div class="text-xl font-bold">
+            {{ props.projectData.cssAnalysisResult.selectors.totalUnique }}
+          </div>
+        </div>
+      </div>
+    </template>
     <table class="min-w-full table-auto border-collapse text-left text-sm">
       <thead>
         <tr class="bg-gray-100 *:px-4 *:py-2">

@@ -1,9 +1,25 @@
 <template>
-  <Block title="Unités" class="col-span-12 lg:col-span-4">
+  <Block title="Règles" class="col-span-12 lg:col-span-4">
+    <template v-slot:header>
+      <div class="flex gap-4">
+        <div>
+          <div class="text-xs uppercase">Total</div>
+          <div class="text-xl font-bold">
+            {{ props.projectData.cssAnalysisResult.rules.total }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase">Vide</div>
+          <div class="text-xl font-bold">
+            {{ props.projectData.cssAnalysisResult.rules.empty.total }}
+          </div>
+        </div>
+      </div>
+    </template>
     <table class="min-w-full table-auto border-collapse text-left text-sm">
       <thead>
         <tr class="bg-gray-100 *:px-4 *:py-2">
-          <th width="10%">Unités</th>
+          <th width="10%">Taille</th>
           <th width="10%">Nb</th>
           <th></th>
         </tr>
@@ -41,7 +57,7 @@
   // Trier les unités par valeur décroissante et exclure "s"
   const sortedUnits = computed(() => {
     return Object.entries(
-      props.projectData.cssAnalysisResult.values.units.unique
+      props.projectData.cssAnalysisResult.rules.sizes.unique
     )
       .filter(([unit]) => unit !== "s") // Exclure l'unité "s"
       .sort(([, a], [, b]) => b - a) // Trier par valeur décroissante
@@ -54,7 +70,7 @@
   // Trouver la valeur maximale pour l'attribut `max` de `<meter>`
   const maxCount = computed(() => {
     return Math.max(
-      ...Object.values(props.projectData.cssAnalysisResult.values.units.unique)
+      ...Object.values(props.projectData.cssAnalysisResult.rules.sizes.unique)
     );
   });
 </script>

@@ -39,6 +39,17 @@
         </tbody>
       </table>
     </div>
+    <Infos v-if="missingH1 || poorH2H3">
+      <p v-if="missingH1" class="mb-2">
+        Une ou plusieurs pages n'ont pas de titre <code>&lt;h1&gt;</code>.
+        Chaque page devrait avoir un titre principal unique&nbsp;!
+      </p>
+      <p v-if="poorH2H3">
+        En moyenne, il y a moins de deux titres <code>&lt;h2&gt;</code> ou
+        <code>&lt;h3&gt;</code> par page. Assurez-vous que la hiérarchie des
+        titres est logique et équilibrée.
+      </p>
+    </Infos>
   </Block>
   <Modal
     :isOpen="isModalOpen"
@@ -78,11 +89,13 @@
   </Modal>
 </template>
 <script setup>
-  import { ref } from "vue";
+  import { ref, computed } from "vue";
+  import { getFileName } from "../../js/helpers";
   import Block from "../Block.vue";
   import Modal from "../Modal.vue";
   import Button from "../Button.vue";
   import Code from "../Code.vue";
+  import Infos from "../Infos.vue";
 
   const isModalOpen = ref(false);
 
@@ -100,15 +113,24 @@
     isModalOpen.value = false;
   };
 
-  const getFileName = (urlString) => {
-    try {
-      const url = new URL(urlString);
-      return url.pathname.split("/").pop();
-    } catch (error) {
-      // Gestion des cas où l'URL n'est pas valide
-      return "Fichier invalide";
-    }
-  };
+  // Vérifier si un h1 est manquant
+  const missingH1 = computed(() => {
+    return props.projectData.pages.some((page) => page.headings?.h1 === 0);
+  });
+
+  // Calculer la moyenne des h2 et h3
+  const poorH2H3 = computed(() => {
+    const totalPages = props.projectData.pages.length;
+    let totalH2 = 0;
+    let totalH3 = 0;
+
+    props.projectData.pages.forEach((page) => {
+      totalH2 += page.headings?.h2 || 0;
+      totalH3 += page.headings?.h3 || 0;
+    });
+
+    return totalH2 / totalPages <= 2 || totalH3 / totalPages <= 2;
+  });
 
   // Fonction pour définir une classe en fonction du niveau
   const getClass = (level) => {

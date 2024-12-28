@@ -26,6 +26,12 @@
         </p>
       </div>
       <div>
+        <h5 class="text-xs uppercase">Variables</h5>
+        <p class="text-4xl font-bold lg:text-6xl">
+          {{ props.projectData.cssAnalysisResult.properties.custom.total }}
+        </p>
+      </div>
+      <div>
         <h5 class="text-xs uppercase">Id</h5>
         <p class="text-4xl font-bold lg:text-6xl">
           {{ props.projectData.cssAnalysisResult.selectors.id.total }}

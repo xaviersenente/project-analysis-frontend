@@ -82,6 +82,16 @@
         </tr>
       </tbody>
     </table>
+    <Infos v-if="stats.avgSizeTop5 > 250000 || outdatedImageFormats">
+      <p v-if="stats.avgSizeTop5 > 250000" class="mb-2">
+        Pensez à optimiser la taille des images pour améliorer les performances.
+      </p>
+      <p v-if="outdatedImageFormats">
+        Privilégiez les formats modernes comme <code>WebP</code> ou
+        <code>AVIF</code> au lieu de <code>Jpeg</code> ou <code>PNG</code> pour
+        une meilleure optimisation.
+      </p>
+    </Infos>
   </Block>
   <Modal
     :isOpen="isModalOpen"
@@ -115,6 +125,7 @@
   import Block from "../Block.vue";
   import Button from "../Button.vue";
   import Modal from "../Modal.vue";
+  import Infos from "../Infos.vue";
 
   const props = defineProps({
     projectData: {
@@ -207,6 +218,17 @@
       }
       return false;
     });
+  });
+
+  // Vérifier les formats d'image obsolètes
+  const outdatedImageFormats = computed(() => {
+    return props.projectData.pages.some((page) =>
+      page.lighthouseReport.requests.some(
+        (req) =>
+          req.resourceType === "Image" &&
+          ["image/jpeg", "image/png"].includes(req.mimeType)
+      )
+    );
   });
 
   // Calculer les statistiques globales

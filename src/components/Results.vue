@@ -3,7 +3,7 @@
     class="fixed top-0 left-0 w-full p-4 bg-white flex flex-wrap justify-between gap-4 z-10 md:p-8"
   >
     <div class="flex gap-8 items-center">
-      <h1 class="font-semibold md:text-3xl">Analyse HTML/CSS</h1>
+      <p class="font-semibold md:text-2xl">Analyse HTML/CSS</p>
       <a href="#html"><HtmlIcon class="w-10 h-10" /></a>
       <a href="#css"><CssIcon class="w-10 h-10" /></a>
     </div>
@@ -18,6 +18,12 @@
       <div v-if="loading" class="text-center">Chargement...</div>
 
       <div v-else class="grid gap-8 grid-cols-12">
+        <div class="col-span-12 flex items-end gap-8">
+          <h1 class="text-5xl font-bold">{{ projectData.pages[0].title }}</h1>
+          <h2 class="text-xl">
+            Projet réalisé par {{ selectedProject.value }}
+          </h2>
+        </div>
         <Block
           id="html"
           class="col-span-12 lg:col-span-6 xl:col-span-4 scroll-mt-28"
@@ -171,7 +177,7 @@
             </div>
           </div>
         </Block>
-
+        <!-- 
         <Block title="Variables" class="col-span-12 lg:col-span-4">
           Nombre de variables :
           {{ projectData.cssAnalysisResult.properties.custom.total }}
@@ -184,29 +190,13 @@
               <Code :tag="font" />
             </div>
           </div>
-          <!-- <table>
-            <thead>
-              <tr>
-                <th>Font</th>
-                <th>Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(count, font) in projectData.cssAnalysisResult.properties
-                  .custom.unique"
-                :key="font"
-              >
-                <td><Code :tag="font" /></td>
-                <td>{{ count }}</td>
-              </tr>
-            </tbody>
-          </table> -->
-        </Block>
+        </Block> -->
 
-        <BlockCssUnit :projectData="projectData" />
+        <BlockCssRules :projectData="projectData" />
 
         <BlockCssSelectors :projectData="projectData" />
+
+        <BlockCssUnit :projectData="projectData" />
 
         <!-- <Block title="Éléments graphiques" class="col-span-12 lg:col-span-6">
           <ul>
@@ -236,7 +226,6 @@
   import { getFileName } from "../js/helpers";
   // import chroma from "chroma-js";
   import Block from "./Block.vue";
-  import Code from "./Code.vue";
   import HtmlIcon from "../icons/Html.vue";
   import CssIcon from "../icons/Css.vue";
   import CustomSelect from "./CustomSelect.vue";
@@ -249,6 +238,11 @@
   import BlockCssStats from "./Blocks/BlockCssStats.vue";
   import BlockCssUnit from "./Blocks/BlockCssUnit.vue";
   import BlockCssSelectors from "./Blocks/BlockCssSelectors.vue";
+  import BlockCssRules from "./Blocks/BlockCssRules.vue";
+
+  // Récupère l'URL de base depuis les variables d'environnement
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
   const projects = ref([]);
   const selectedProject = ref(null);
@@ -264,7 +258,7 @@
   // Récupère les projets depuis l'API
   const fetchProjects = async () => {
     try {
-      const response = await fetch("http://localhost:3000/scan/projects");
+      const response = await fetch(`${API_BASE_URL}/scan/projects`);
       projects.value = await response.json();
 
       // Sélectionne le premier projet par défaut
@@ -284,7 +278,7 @@
     if (!selectedProject.value) return;
     // loading.value = true;
     const response = await fetch(
-      `http://localhost:3000/scan/project/${selectedProject.value.value}`
+      `${API_BASE_URL}/scan/project/${selectedProject.value.value}`
     );
     projectData.value = await response.json();
     // loading.value = false;
