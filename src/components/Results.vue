@@ -64,133 +64,10 @@
 
         <BlockCssColor :projectData="projectData" />
 
-        <Block title="Typographie" class="col-span-12 2xl:col-span-8">
-          <div class="grid gap-8 items-start lg:grid-cols-3">
-            <div>
-              <div class="flex gap-4 justify-between mb-4">
-                <h4 class="text-lg">Font-family</h4>
-                <div class="flex gap-4">
-                  <div>
-                    <div class="text-xs uppercase">Total</div>
-                    <div class="text-xl font-bold">
-                      {{
-                        projectData.cssAnalysisResult.values?.fontFamilies
-                          ?.total
-                      }}
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-xs uppercase">Unique</div>
-                    <div class="text-xl font-bold">
-                      {{
-                        projectData.cssAnalysisResult.values?.fontFamilies
-                          ?.totalUnique
-                      }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <table
-                class="min-w-full table-auto border-collapse text-left text-sm"
-              >
-                <thead>
-                  <tr class="bg-gray-100 *:px-4 *:py-2">
-                    <th>Valeur</th>
-                    <th>Nb</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(count, font) in projectData.cssAnalysisResult
-                      ?.values?.fontFamilies?.unique"
-                    :key="font"
-                    class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
-                  >
-                    <td class="font-mono">{{ font }}</td>
-                    <td class="font-mono">{{ count }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div>
-              <div class="flex gap-4 justify-between mb-4">
-                <h4 class="text-lg">Font-size</h4>
-                <div class="flex gap-4">
-                  <div>
-                    <div class="text-xs uppercase">Total</div>
-                    <div class="text-xl font-bold">
-                      {{
-                        projectData.cssAnalysisResult.values?.fontSizes?.total
-                      }}
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-xs uppercase">Unique</div>
-                    <div class="text-xl font-bold">
-                      {{
-                        projectData.cssAnalysisResult.values?.fontSizes
-                          ?.totalUnique
-                      }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <table
-                class="min-w-full table-auto border-collapse text-left text-sm"
-              >
-                <thead>
-                  <tr class="bg-gray-100 *:px-4 *:py-2">
-                    <th>Valeur</th>
-                    <th>Nb</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(count, font) in projectData.cssAnalysisResult
-                      ?.values?.fontSizes?.unique"
-                    :key="font"
-                    class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
-                  >
-                    <td class="font-mono">{{ font }}</td>
-                    <td class="font-mono">{{ count }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <h3 class="text-lg mb-4">Google Fonts</h3>
-              <ul v-if="fonts.length > 0">
-                <li v-for="font in fonts" :key="font" class="mt-4">
-                  <p
-                    class="text-slate-500 border-b border-b-slate-300 pb-1 mb-1"
-                  >
-                    {{ font }}
-                  </p>
-                  <p class="text-4xl" :style="{ fontFamily: font }">
-                    Hamburgevons
-                  </p>
-                </li>
-              </ul>
-              <p v-else>Aucune Google fonte</p>
-            </div>
-          </div>
-        </Block>
-        <!-- 
-        <Block title="Variables" class="col-span-12 lg:col-span-4">
-          Nombre de variables :
-          {{ projectData.cssAnalysisResult.properties.custom.total }}
-          <div class="flex flex-wrap gap-2">
-            <div
-              v-for="(count, font) in projectData.cssAnalysisResult.properties
-                .custom.unique"
-              :key="font"
-            >
-              <Code :tag="font" />
-            </div>
-          </div>
-        </Block> -->
+        <BlockTypography
+          :cssAnalysisResult="projectData.cssAnalysisResult.values"
+          :fonts="fonts"
+        />
 
         <BlockCssRules :projectData="projectData" />
 
@@ -198,24 +75,7 @@
 
         <BlockCssUnit :projectData="projectData" />
 
-        <!-- <Block title="Éléments graphiques" class="col-span-12 lg:col-span-6">
-          <ul>
-            <li>Nombre de @media</li>
-            <li>
-              Nb de sélecteurs vs unique :
-              {{ projectData.cssAnalysisResult.selectors.total }} /
-              {{ projectData.cssAnalysisResult.selectors.totalUnique }}
-            </li>
-            <li>
-              Nombre de sélecteur avec spécificité 0,0,1 (sélecteur de type) =>
-              si possible liste des sélecteurs
-            </li>
-            <li>
-              Nombre de Font-size :
-              {{ projectData.cssAnalysisResult.values.fontSizes.totalUnique }}
-            </li>
-          </ul>
-        </Block> -->
+        <BlockCssProperties :projectData="projectData" />
       </div>
     </div>
   </div>
@@ -223,8 +83,6 @@
 
 <script setup>
   import { ref, onMounted, computed } from "vue";
-  import { getFileName } from "../js/helpers";
-  // import chroma from "chroma-js";
   import Block from "./Block.vue";
   import HtmlIcon from "../icons/Html.vue";
   import CssIcon from "../icons/Css.vue";
@@ -239,10 +97,14 @@
   import BlockCssUnit from "./Blocks/BlockCssUnit.vue";
   import BlockCssSelectors from "./Blocks/BlockCssSelectors.vue";
   import BlockCssRules from "./Blocks/BlockCssRules.vue";
+  import BlockCssProperties from "./Blocks/BlockCssProperties.vue";
+  import BlockTypography from "./Blocks/BlockTypography.vue";
 
   // Récupère l'URL de base depuis les variables d'environnement
-  //const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-  const API_BASE_URL = "https://project-analysis-backend.onrender.com";
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  //nconst API_BASE_URL = "http://localhost:3000";
+  // const API_BASE_URL = "https://project-analysis-backend.onrender.com";
 
   const projects = ref([]);
   const selectedProject = ref(null);

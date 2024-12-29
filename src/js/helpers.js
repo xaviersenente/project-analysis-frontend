@@ -16,3 +16,15 @@ export const formatSize = (size) => {
   }
   return `${(size / (1024 * 1024)).toFixed(2)}${String.fromCharCode(160)}Mo`;
 };
+
+/**
+ * Calcule le pourcentage d'écart entre le nombre total et unique,
+ *
+ * @param {number} total - Nombre total de sélecteurs.
+ * @param {number} unique - Nombre de sélecteurs uniques.
+ */
+export const gap = (total, unique) => {
+  if (total === 0) return "0.0"; // Évite une division par zéro
+  const percentage = ((total - unique) / total) * 100;
+  return percentage.toFixed(1); // Arrondi à une décimale
+};

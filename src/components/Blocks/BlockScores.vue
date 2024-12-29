@@ -2,7 +2,7 @@
   <Block title="Scores" class="col-span-12 lg:col-span-6 xl:col-span-8">
     <div class="grid grid-cols-5 gap-8">
       <h3
-        class="col-span-2 row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-1"
+        class="col-span-2 text-center row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-1"
       >
         W3C
       </h3>
@@ -11,7 +11,7 @@
         <ProgressCircle :value="stats.errorScore / 100" />
       </div>
       <h3
-        class="col-span-3 row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-4"
+        class="col-span-3 text-center row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-4"
       >
         LightHouse
       </h3>

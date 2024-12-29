@@ -5,18 +5,13 @@
         <table class="min-w-full table-auto border-collapse text-left text-sm">
           <thead>
             <tr class="bg-gray-100 *:px-4 *:py-2">
-              <th width="20%">Fichier</th>
-              <th width="20%">Title</th>
-              <th width="6%">Liens mort</th>
-              <th width="6%">Liens ext.</th>
-              <th width="6%">Favicon</th>
-              <th width="6%">Mailto</th>
-              <th width="6%">Viewport</th>
-              <th width="6%">Erreurs W3C</th>
-              <th width="4%">Perf.</th>
-              <th width="4%">Acces.</th>
-              <th width="4%">BP</th>
-              <th width="4%">SEO</th>
+              <th
+                v-for="header in headers"
+                :key="header.key"
+                :width="header.width"
+              >
+                {{ header.label }}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -29,13 +24,9 @@
               <td>{{ file.title }}</td>
               <td class="font-mono">{{ file.deadLinks }}</td>
               <td class="font-mono">{{ file.externalLinks }}</td>
-              <td>
-                <component :is="file.favicon ? Check : Fail" />
-              </td>
+              <td><component :is="file.favicon ? Check : Fail" /></td>
               <td class="font-mono">{{ file.mailtoLinks }}</td>
-              <td>
-                <component :is="file.viewport ? Check : Fail" />
-              </td>
+              <td><component :is="file.viewport ? Check : Fail" /></td>
               <td>
                 <div>
                   <span
@@ -63,23 +54,14 @@
                   </button>
                 </div>
               </td>
-              <td class="font-mono">
-                <Tag :value="file.lighthouseReport.performance" />
-              </td>
-              <td class="font-mono">
-                <Tag :value="file.lighthouseReport.accessibility" />
-              </td>
-              <td class="font-mono">
-                <Tag :value="file.lighthouseReport.bestPractices" />
-              </td>
-              <td class="font-mono">
-                <Tag :value="file.lighthouseReport.seo" />
+              <td v-for="metric in metrics" :key="metric.key" class="font-mono">
+                <Tag :value="file.lighthouseReport[metric.key]" />
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <Infos v-if="adviceMessages.length" class="mt-0">
+      <Infos v-if="adviceMessages.length" class="!mt-0">
         <ul class="list-decimal pl-5">
           <li v-for="(message, index) in adviceMessages" :key="index">
             {{ message }}
@@ -143,128 +125,92 @@
   const isModalOpen = ref(false);
   const modalErrors = ref([]);
 
-  // Ouvrir la pop-up avec les erreurs
   const openModal = (errors) => {
     modalErrors.value = errors;
     isModalOpen.value = true;
   };
 
-  // Fermer la pop-up
   const closeModal = () => {
     isModalOpen.value = false;
     modalErrors.value = [];
   };
 
-  // Calcul des conseils
-  const deadLinksCount = computed(
-    () => props.files.filter((file) => file.deadLinks > 0).length
-  );
+  // En-têtes du tableau
+  const headers = [
+    { key: "file", label: "Fichier", width: "20%" },
+    { key: "title", label: "Title", width: "20%" },
+    { key: "deadLinks", label: "Liens mort", width: "6%" },
+    { key: "externalLinks", label: "Liens ext.", width: "6%" },
+    { key: "favicon", label: "Favicon", width: "6%" },
+    { key: "mailtoLinks", label: "Mailto", width: "6%" },
+    { key: "viewport", label: "Viewport", width: "6%" },
+    { key: "validationErrors", label: "Erreurs W3C", width: "6%" },
+    { key: "performance", label: "Perf.", width: "4%" },
+    { key: "accessibility", label: "Acces.", width: "4%" },
+    { key: "bestPractices", label: "BP", width: "4%" },
+    { key: "seo", label: "SEO", width: "4%" },
+  ];
 
-  const avgExternalLinks = computed(() => {
-    const total = props.files.reduce(
-      (acc, file) => acc + file.externalLinks,
-      0
-    );
-    return props.files.length > 0 ? total / props.files.length : 0;
-  });
+  // Métriques Lighthouse
+  const metrics = [
+    { key: "performance", label: "Perf." },
+    { key: "accessibility", label: "Acces." },
+    { key: "bestPractices", label: "BP" },
+    { key: "seo", label: "SEO" },
+  ];
 
-  const faviconMissing = computed(
-    () => props.files.filter((file) => !file.favicon).length
-  );
-
-  const mailtoMissing = computed(
-    () => props.files.filter((file) => !file.mailtoLinks).length
-  );
-
-  const viewportMissing = computed(
-    () => props.files.filter((file) => !file.viewport).length
-  );
-
-  const validationErrorsExist = computed(() =>
-    props.files.some((file) => file.validationErrors.length > 0)
-  );
-
-  const avgAccessibility = computed(() => {
-    const total = props.files.reduce(
-      (acc, file) => acc + file.lighthouseReport.accessibility,
-      0
-    );
-    return props.files.length > 0 ? total / props.files.length : 0;
-  });
-
-  const avgBestPractices = computed(() => {
-    const total = props.files.reduce(
-      (acc, file) => acc + file.lighthouseReport.bestPractices,
-      0
-    );
-    return props.files.length > 0 ? total / props.files.length : 0;
-  });
-
-  const avgSEO = computed(() => {
-    const total = props.files.reduce(
-      (acc, file) => acc + file.lighthouseReport.seo,
-      0
-    );
-    return props.files.length > 0 ? total / props.files.length : 0;
-  });
-
-  // Détection des doublons dans les titres
-  const duplicateTitles = computed(() => {
-    const titles = props.files.map((file) => file.title);
-    const titleCounts = titles.reduce((acc, title) => {
-      acc[title] = (acc[title] || 0) + 1;
-      return acc;
-    }, {});
-    return Object.keys(titleCounts).filter((title) => titleCounts[title] > 1);
-  });
-
-  // Messages de conseil
+  // Fonctions calculées optimisées
   const adviceMessages = computed(() => {
     const messages = [];
 
-    if (duplicateTitles.value.length > 0) {
+    const duplicateTitles = props.files
+      .map((file) => file.title)
+      .filter((title, index, arr) => arr.indexOf(title) !== index);
+
+    if (duplicateTitles.length) {
       messages.push(
-        `Il y a des doublons dans les balises <title> : ${duplicateTitles.value.join(
-          ", "
-        )}`
+        `Doublons dans les balises <title> : ${duplicateTitles.join(", ")}`
       );
     }
 
-    if (deadLinksCount.value > 0) {
-      messages.push("Corrigez les liens mort.");
-    }
+    const conditions = [
+      {
+        condition: props.files.some((file) => file.deadLinks > 0),
+        message: "Corrigez les liens morts.",
+      },
+      {
+        condition: props.files.some((file) => !file.favicon),
+        message: "Ajoutez un favicon.",
+      },
+      {
+        condition: props.files.some((file) => !file.viewport),
+        message: "Ajoutez une balise viewport.",
+      },
+      {
+        condition: props.files.some((file) => file.validationErrors.length > 0),
+        message: "Corrigez les erreurs W3C.",
+      },
+      {
+        condition: props.files.some(
+          (file) => file.lighthouseReport.accessibility < 100
+        ),
+        message: "Améliorez l'accessibilité.",
+      },
+      {
+        condition: props.files.some(
+          (file) => file.lighthouseReport.bestPractices < 100
+        ),
+        message: "Améliorez les bonnes pratiques.",
+      },
+      {
+        condition: props.files.some((file) => file.lighthouseReport.seo < 100),
+        message: "Améliorez le SEO.",
+      },
+    ];
 
-    if (avgExternalLinks.value < 2) {
-      messages.push("Ajoutez davantage de liens externes.");
-    }
-
-    if (faviconMissing.value > 0) {
-      messages.push("Le favicon est manquant sur une ou plusieurs pages.");
-    }
-
-    if (mailtoMissing.value > 0) {
-      messages.push("Le mailto est manquant sur une ou plusieurs pages.");
-    }
-
-    if (viewportMissing.value > 0) {
-      messages.push("Le viewport est manquant sur une ou plusieurs pages.");
-    }
-
-    if (validationErrorsExist.value) {
-      messages.push("Corrigez les erreurs de validation.");
-    }
-
-    if (avgAccessibility.value < 100) {
-      messages.push("Améliorez l'accessibilité.");
-    }
-
-    if (avgBestPractices.value < 100) {
-      messages.push("Améliorez les bonnes pratiques.");
-    }
-
-    if (avgSEO.value < 100) {
-      messages.push("Améliorez le SEO.");
-    }
+    conditions.forEach(({ condition, message }) => {
+      if (condition) messages.push(message);
+    });
 
     return messages;
   });

@@ -1,56 +1,38 @@
 <template>
   <Block title="Images" class="col-span-12 2xl:col-span-4">
     <div class="grid grid-cols-2 gap-4 mb-12 lg:grid-cols-4 2xl:grid-cols-2">
-      <div>
-        <p class="text-sm border-b border-b-gray-300 pb-2 mb-2">
-          Nb d'images <span class="text-gray-400">(Total / unique)</span>
-        </p>
-        <p>
-          <span class="text-3xl font-bold">{{ stats.totalImages }}</span>
-          <span> / {{ stats.uniqueImages }}</span>
-        </p>
-      </div>
-      <div>
-        <p class="text-sm border-b border-b-gray-300 pb-2 mb-2">
-          Moy. 5 img + lourdes
-        </p>
-        <div class="flex flex-wrap gap-4 items-center justify-between">
-          <p>
-            <span
-              class="text-3xl font-bold"
-              :class="{
-                'text-green-600': stats.avgSizeTop5 > 0,
-                'text-orange-500': stats.avgSizeTop5 > 250000,
-                'text-red-500': stats.avgSizeTop5 > 500000,
-              }"
-              >{{ formatSize(stats.avgSizeTop5) }}</span
-            >
-          </p>
-          <Button @click="openModal()" size="sm" text="Détail" />
-        </div>
-      </div>
-      <div>
-        <p class="text-sm border-b border-b-gray-300 pb-2 mb-2">
-          Poids <span class="text-gray-400">(Total / unique)</span>
-        </p>
-        <p>
-          <span class="text-3xl font-bold">{{
-            formatSize(stats.totalSizeAll)
-          }}</span>
-          <span> / {{ formatSize(stats.totalSizeUnique) }}</span>
-        </p>
-      </div>
-      <div>
-        <p class="text-sm border-b border-b-gray-300 pb-2 mb-2">
-          Poids moyen <span class="text-gray-400">(Total / unique)</span>
-        </p>
-        <p>
-          <span class="text-3xl font-bold">{{
-            formatSize(stats.avgSizeAll)
-          }}</span>
-          <span> / {{ formatSize(stats.avgSizeUnique) }}</span>
-        </p>
-      </div>
+      <Section
+        title="Images"
+        subtitle="(Total / unique)"
+        size="sm"
+        :value="stats.totalImages"
+        :additionalValue="stats.uniqueImages"
+      />
+
+      <Section
+        title="Moy. 5 img + lourdes"
+        size="sm"
+        :value="formatSize(stats.avgSizeTop5)"
+        :class="getSizeClass(stats.avgSizeTop5)"
+      >
+        <Button @click="openModal()" size="sm" text="Détail" />
+      </Section>
+
+      <Section
+        title="Poids"
+        subtitle="(Total / unique)"
+        size="sm"
+        :value="formatSize(stats.totalSizeAll)"
+        :additionalValue="formatSize(stats.totalSizeUnique)"
+      />
+
+      <Section
+        title="Poids moyen"
+        subtitle="(Total / unique)"
+        size="sm"
+        :value="formatSize(stats.avgSizeAll)"
+        :additionalValue="formatSize(stats.avgSizeUnique)"
+      />
     </div>
 
     <table class="min-w-full table-auto border-collapse text-left text-sm">
@@ -126,6 +108,7 @@
   import Button from "../Button.vue";
   import Modal from "../Modal.vue";
   import Infos from "../Infos.vue";
+  import Section from "../Section.vue";
 
   const props = defineProps({
     projectData: {
@@ -144,6 +127,14 @@
   // Fermer la pop-up
   const closeModal = () => {
     isModalOpen.value = false;
+  };
+
+  // Fonction pour déterminer la classe en fonction de la valeur d'écart
+  const getSizeClass = (size) => {
+    if (size > 0 && size < 250000) return "text-green-600";
+    if (size >= 250000 && size <= 500000) return "text-orange-500";
+    if (size > 500000) return "text-red-500";
+    return "text-red-500";
   };
 
   // Types d'image à afficher
@@ -244,6 +235,7 @@
 
     const avgSizeAll =
       allImages.value.length > 0 ? totalSizeAll / allImages.value.length : 0;
+
     const avgSizeUnique =
       uniqueImages.value.length > 0
         ? totalSizeUnique / uniqueImages.value.length
