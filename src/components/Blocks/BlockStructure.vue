@@ -8,9 +8,11 @@
     </template>
     <p class="text-sm mb-2 text-gray-400">Nombre de titres par pages</p>
     <div class="overflow-x-auto">
-      <table class="min-w-full table-auto border-collapse text-left text-sm">
+      <table
+        class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+      >
         <thead>
-          <tr class="bg-gray-100 *:px-4 *:py-2">
+          <tr class="bg-gray-100 *:px-3 *:py-2">
             <th>Pages HTML</th>
             <th width="10%">h1</th>
             <th width="10%">h2</th>
@@ -24,7 +26,7 @@
           <tr
             v-for="file in props.projectData.pages"
             :key="file.file"
-            class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
+            class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
           >
             <td>{{ getFileName(file.file) }}</td>
             <td v-for="level in 6" :key="`heading-h${level}`" class="font-mono">
@@ -39,7 +41,7 @@
         </tbody>
       </table>
     </div>
-    <Infos v-if="missingH1 || poorH2H3">
+    <Infos v-if="missingH1 || poorH2H3" class="flex flex-col gap-2">
       <p v-if="missingH1" class="mb-2">
         Une ou plusieurs pages n'ont pas de titre <code>&lt;h1&gt;</code>.
         Chaque page devrait avoir un titre principal unique&nbsp;!

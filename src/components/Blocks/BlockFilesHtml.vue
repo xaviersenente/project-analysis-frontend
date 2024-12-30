@@ -2,9 +2,11 @@
   <Block title="Détails des fichiers HTML" class="col-span-12">
     <div class="grid gap-8 2xl:grid-cols-4">
       <div class="overflow-x-scroll lg:overflow-auto 2xl:col-span-3">
-        <table class="min-w-full table-auto border-collapse text-left text-sm">
+        <table
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+        >
           <thead>
-            <tr class="bg-gray-100 *:px-4 *:py-2">
+            <tr class="bg-gray-100 *:px-3 *:py-2">
               <th
                 v-for="header in headers"
                 :key="header.key"
@@ -18,7 +20,7 @@
             <tr
               v-for="file in files"
               :key="file.file"
-              class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
             >
               <td>{{ getFileName(file.file) }}</td>
               <td>{{ file.title }}</td>
@@ -63,7 +65,11 @@
       </div>
       <Infos v-if="adviceMessages.length" class="!mt-0">
         <ul class="list-decimal pl-5">
-          <li v-for="(message, index) in adviceMessages" :key="index">
+          <li
+            v-for="(message, index) in adviceMessages"
+            :key="index"
+            class="mb-1"
+          >
             {{ message }}
           </li>
         </ul>

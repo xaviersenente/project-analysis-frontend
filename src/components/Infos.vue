@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-8 text-yellow-700"
+    class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mt-6 text-yellow-700 lg:p-4 lg:mt-8"
   >
     <p class="text-yellow-700 font-bold mb-2 flex gap-2 items-center">
       <svg
@@ -33,6 +33,6 @@
       </svg>
       Petit conseil
     </p>
-    <slot class="text-sm" />
+    <div class="text-sm"><slot /></div>
   </div>
 </template>

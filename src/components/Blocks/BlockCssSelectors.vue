@@ -40,7 +40,10 @@
         headerLabel="Complexité"
       />
     </div>
-    <Infos v-if="gapSelector > 10 || isSpecificityAboveThreshold">
+    <Infos
+      v-if="gapSelector > 10 || isSpecificityAboveThreshold"
+      class="flex flex-col gap-2"
+    >
       <p v-if="gapSelector > 10">
         L'écart entre le nombre de sélecteur total et unique indique que vous
         n'avez pas utilisé correctement la méthodologie BEM.

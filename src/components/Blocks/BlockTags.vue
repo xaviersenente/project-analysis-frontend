@@ -17,7 +17,10 @@
           <Code :tag="tag" />
         </li>
       </ul>
-      <Infos v-if="projectData.globalAnalysis?.tagsMissing?.length > 0">
+      <Infos
+        v-if="projectData.globalAnalysis?.tagsMissing?.length > 0"
+        class="flex flex-col gap-2"
+      >
         <p>
           D'après l'analyse du sujet qui vous a été donné, vous auriez dû
           utiliser les balises ci-dessus pour structurer correctement le
@@ -42,7 +45,7 @@
         >
           Balises obsolètes
         </p>
-        <table class="min-w-full table-auto text-left">
+        <table class="min-w-full table-auto text-left text-xs lg:text-sm">
           <tbody>
             <tr
               v-for="(count, tag) in projectData.globalAnalysis
@@ -64,7 +67,7 @@
         <p class="text-xl font-bold pb-2 border-b border-b-slate-200 mb-2">
           Autres balises
         </p>
-        <table class="min-w-full table-auto text-left">
+        <table class="min-w-full table-auto text-left text-xs lg:text-sm">
           <tbody>
             <tr
               v-for="(count, tag) in projectData.globalAnalysis.otherTagsUsage"

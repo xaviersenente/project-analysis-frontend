@@ -1,5 +1,5 @@
 <template>
-  <div :class="['p-6 rounded-lg lg:p-8', variantClasses]">
+  <div :class="['p-5 rounded-lg lg:p-8', variantClasses]">
     <div class="flex gap-4 justify-between items-center flex-wrap mb-4">
       <h3 v-if="title" class="text-lg bg- font-semibold text-slate-500">
         {{ title }}

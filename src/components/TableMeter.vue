@@ -1,7 +1,9 @@
 <template>
-  <table class="min-w-full table-auto border-collapse text-left text-sm">
+  <table
+    class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+  >
     <thead>
-      <tr class="bg-gray-100 text-right *:px-4 *:py-2">
+      <tr class="bg-gray-100 text-right *:px-3 *:py-2">
         <th :width="columnWidth">{{ headerLabel }}</th>
         <th width="5%">{{ headerCount }}</th>
         <th></th>
@@ -11,10 +13,10 @@
       <tr
         v-for="(count, unit, index) in limitedUnits"
         :key="unit"
-        class="hover:bg-gray-50 transition-colors *:px-4 *:py-1.5 *:border-b"
+        class="hover:bg-gray-50 transition-colors font-mono text-right *:px-3 *:py-1.5 *:border-b"
       >
-        <td class="font-mono text-right">{{ unit }}</td>
-        <td class="font-mono text-right">{{ count }}</td>
+        <td>{{ unit }}</td>
+        <td>{{ count }}</td>
         <td>
           <meter
             :value="count"

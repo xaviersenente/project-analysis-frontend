@@ -17,7 +17,7 @@
       <div
         v-for="(count, color) in stats.colors"
         :key="color"
-        class="w-16 h-16 rounded shadow-md"
+        class="w-12 h-12 rounded shadow-md lg:w-16 lg:h-16"
         :style="{
           backgroundColor: isValidColor(color) ? color : 'transparent',
           border: !isValidColor(color) ? '1px solid #ccc' : '',

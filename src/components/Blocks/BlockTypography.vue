@@ -20,9 +20,11 @@
             </div>
           </div>
         </div>
-        <table class="min-w-full table-auto border-collapse text-left text-sm">
+        <table
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+        >
           <thead>
-            <tr class="bg-gray-100 *:px-4 *:py-2">
+            <tr class="bg-gray-100 *:px-3 *:py-2">
               <th>Valeur</th>
               <th>Nb</th>
             </tr>
@@ -31,7 +33,7 @@
             <tr
               v-for="(count, font) in cssAnalysisResult?.fontFamilies?.unique"
               :key="font"
-              class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
             >
               <td class="font-mono">{{ font }}</td>
               <td class="font-mono">{{ count }}</td>
@@ -59,9 +61,11 @@
             </div>
           </div>
         </div>
-        <table class="min-w-full table-auto border-collapse text-left text-sm">
+        <table
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+        >
           <thead>
-            <tr class="bg-gray-100 *:px-4 *:py-2">
+            <tr class="bg-gray-100 *:px-3 *:py-2">
               <th>Valeur</th>
               <th>Nb</th>
             </tr>
@@ -70,7 +74,7 @@
             <tr
               v-for="(count, font) in cssAnalysisResult?.fontSizes?.unique"
               :key="font"
-              class="hover:bg-gray-50 transition-colors *:px-4 *:py-2 *:border-b"
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
             >
               <td class="font-mono">{{ font }}</td>
               <td class="font-mono">{{ count }}</td>
