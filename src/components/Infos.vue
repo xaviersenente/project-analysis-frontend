@@ -33,6 +33,6 @@
       </svg>
       Petit conseil
     </p>
-    <div class="text-sm"><slot /></div>
+    <div class="text-sm flex flex-col gap-2"><slot /></div>
   </div>
 </template>

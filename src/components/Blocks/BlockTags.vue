@@ -17,10 +17,7 @@
           <Code :tag="tag" />
         </li>
       </ul>
-      <Infos
-        v-if="projectData.globalAnalysis?.tagsMissing?.length > 0"
-        class="flex flex-col gap-2"
-      >
+      <Infos v-if="projectData.globalAnalysis?.tagsMissing?.length > 0">
         <p>
           D'après l'analyse du sujet qui vous a été donné, vous auriez dû
           utiliser les balises ci-dessus pour structurer correctement le

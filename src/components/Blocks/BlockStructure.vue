@@ -41,7 +41,7 @@
         </tbody>
       </table>
     </div>
-    <Infos v-if="missingH1 || poorH2H3" class="flex flex-col gap-2">
+    <Infos v-if="missingH1 || poorH2H3">
       <p v-if="missingH1" class="mb-2">
         Une ou plusieurs pages n'ont pas de titre <code>&lt;h1&gt;</code>.
         Chaque page devrait avoir un titre principal unique&nbsp;!

@@ -20,11 +20,20 @@
       :data="props.projectData.cssAnalysisResult.values.units.unique"
       headerLabel="Unité"
     />
+    <Infos
+      v-if="props.projectData.cssAnalysisResult.values.units.unique.rem < 3"
+    >
+      <p>
+        Il semble que ayez peu voir pas utilisé l'unité <code>rem</code>,
+        notamment pour définir les tailles de texte.
+      </p>
+    </Infos>
   </Block>
 </template>
 
 <script setup>
   import Block from "../Block.vue";
+  import Infos from "../Infos.vue";
   import TableMeter from "../TableMeter.vue";
 
   // Props attendues depuis le parent

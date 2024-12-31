@@ -97,13 +97,36 @@
         <p v-else>Aucune Google fonte</p>
       </div>
     </div>
+
+    <Infos
+      v-if="
+        hasNonCssVariableFontFamily ||
+        hasNonCssVariableFontSize ||
+        props.fonts.length > 3
+      "
+    >
+      <p v-if="hasNonCssVariableFontFamily">
+        Définisez les polices de caractère (<code>font-family</code>) en
+        utilisant plutôt des variables.
+      </p>
+      <p v-if="hasNonCssVariableFontSize">
+        Définisez les tailles de police de caractère (<code>font-size</code>) en
+        utilisant plutôt des variables.
+      </p>
+      <p v-if="props.fonts.length > 3">
+        Attention à ne pas charger / utiliser trop de polices de caractères
+        différentes.
+      </p>
+    </Infos>
   </Block>
 </template>
 
 <script setup>
+  import { computed } from "vue";
+  import Infos from "../Infos.vue";
   import Block from "../Block.vue";
 
-  defineProps({
+  const props = defineProps({
     cssAnalysisResult: {
       type: Object,
       required: true,
@@ -112,5 +135,22 @@
       type: Array,
       default: () => [],
     },
+  });
+
+  // Fonction utilitaire pour vérifier si une valeur est une variable CSS
+  function isCssVariable(value) {
+    return /^var\(.+\)$/.test(value);
+  }
+
+  // Vérifier si au moins une valeur n'est pas une variable CSS
+  const hasNonCssVariableFontFamily = computed(() => {
+    return Object.keys(
+      props.cssAnalysisResult?.fontFamilies?.unique || {}
+    ).some((font) => !isCssVariable(font));
+  });
+  const hasNonCssVariableFontSize = computed(() => {
+    return Object.keys(props.cssAnalysisResult?.fontSizes?.unique || {}).some(
+      (font) => !isCssVariable(font)
+    );
   });
 </script>

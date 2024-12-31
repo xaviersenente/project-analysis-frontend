@@ -21,7 +21,7 @@
           <meter
             :value="count"
             :max="maxCount"
-            class="w-full appearance-none bg-white"
+            class="w-full h-3 appearance-none bg-white"
           ></meter>
         </td>
       </tr>
