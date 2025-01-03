@@ -41,7 +41,11 @@
       />
     </div>
     <Infos
-      v-if="gapSelector > 10 || isSpecificityAboveThreshold"
+      v-if="
+        gapSelector > 10 ||
+        isSpecificityAboveThreshold ||
+        hasIdOrHigherSpecificity
+      "
       class="flex flex-col gap-2"
     >
       <p v-if="gapSelector > 10">
@@ -52,6 +56,11 @@
         Le faible nombre de spécificité <code>0,0,1</code> indique que vous
         n'avez pas déclaré suffisamment de styles généraux (<code>body</code>,
         <code>h1</code>, <code>h2</code>, <code>p</code>, <code>a</code> …)
+      </p>
+      <p v-if="hasIdOrHigherSpecificity">
+        Le niveau de spécificité commençant par le chiffre 1 (ou supérieur)
+        indique que vous avez utilisé des ID dans vos css, ce qui est
+        déconseillé.
       </p>
     </Infos>
   </Block>
@@ -82,5 +91,17 @@
     const specificity =
       props.projectData.cssAnalysisResult.selectors.specificity.unique;
     return specificity["0,0,1"] < 5;
+  });
+
+  // Vérifier la présence de sélecteurs avec une spécificité d'ID ou plus (1,…,… ou supérieur)
+  const hasIdOrHigherSpecificity = computed(() => {
+    const specificity =
+      props.projectData.cssAnalysisResult.selectors.specificity.unique;
+
+    // Parcourir les clés et vérifier si au moins une commence par "1," ou plus
+    return Object.keys(specificity).some((key) => {
+      const [idPart] = key.split(",").map(Number); // Extraire le premier nombre
+      return idPart >= 1; // Vérifier si le premier nombre est >= 1
+    });
   });
 </script>

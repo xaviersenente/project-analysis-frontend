@@ -3,7 +3,7 @@
     class="fixed top-0 left-0 w-full p-4 bg-white flex flex-wrap justify-between gap-4 z-10 md:p-8"
   >
     <div class="flex gap-8 items-center">
-      <p class="font-semibold md:text-2xl">Analyse HTML/CSS</p>
+      <p class="font-semibold text-2xl">WebScope</p>
       <a href="#html"><HtmlIcon class="w-10 h-10" /></a>
       <a href="#css"><CssIcon class="w-10 h-10" /></a>
     </div>
@@ -13,7 +13,7 @@
       @update:selectedOption="fetchProjectData"
     />
   </div>
-  <div class="mx-auto p-4 lg:p-12 mt-32 lg:mt-28">
+  <div class="mx-auto p-4 lg:p-12 mt-32 lg:mt-28 max-w-[1920px]">
     <div v-if="projectData">
       <div v-if="loading" class="text-center">Chargement...</div>
 
@@ -33,12 +33,16 @@
           class="col-span-12 lg:col-span-6 xl:col-span-4 scroll-mt-28"
           variant="html"
         >
-          <div class="bg-white rounded-lg p-3 flex gap-8 items-center mb-8">
-            <HtmlIcon class="w-14 h-14 lg:w-20 lg:h-20" />
-            <h2 class="text-3xl font-bold text-orange-600 lg:text-5xl">
+          <div class="bg-white rounded-lg p-4 flex gap-4 items-center mb-8">
+            <HtmlIcon class="w-14 h-14 lg:w-16 lg:h-16" />
+            <h2 class="text-3xl font-bold text-orange-600 lg:text-4xl">
               Code HTML
             </h2>
           </div>
+          <p>
+            L'analyse du code HTML porte sur l'ensemble des pages en Français
+            uniquement.
+          </p>
         </Block>
 
         <BlockScores :projectData="projectData" />
@@ -56,12 +60,16 @@
           class="col-span-12 lg:col-span-6 xl:col-span-4 scroll-mt-24"
           variant="css"
         >
-          <div class="bg-white rounded-lg p-3 flex gap-8 items-center mb-8">
-            <CssIcon class="w-14 h-14 lg:w-20 lg:h-20" />
-            <h2 class="text-3xl font-bold text-blue-600 lg:text-5xl">
+          <div class="bg-white rounded-lg p-4 flex gap-4 items-center mb-8">
+            <CssIcon class="w-14 h-14 lg:w-16 lg:h-16" />
+            <h2 class="text-3xl font-bold text-blue-600 lg:text-4xl">
               Code CSS
             </h2>
           </div>
+          <p>
+            L'analyse du code CSS porte sur l'ensemble des fichiers CSS hormis
+            le fichier <code>normalize.css</code>, s'il a été utilisé.
+          </p>
         </Block>
 
         <BlockCssStats :projectData="projectData" />
@@ -106,8 +114,8 @@
 
   // Récupère l'URL de base depuis les variables d'environnement
   // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-  // const API_BASE_URL = "http://localhost:3000";
-  const API_BASE_URL = "https://project-analysis-backend.onrender.com";
+  const API_BASE_URL = "http://localhost:3000";
+  // const API_BASE_URL = "https://project-analysis-backend.onrender.com";
 
   const projects = ref([]);
   const selectedProject = ref(null);

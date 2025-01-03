@@ -94,7 +94,7 @@
         </div>
         <div>
           <strong>Extrait du code : </strong>
-          <pre class="bg-gray-100 p-2 rounded text-sm">{{
+          <pre class="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap">{{
             error.extract.trim()
           }}</pre>
         </div>

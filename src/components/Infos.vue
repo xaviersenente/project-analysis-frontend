@@ -31,7 +31,7 @@
         />
         <path d="M256,397.25a20,20,0,1,1,20-20A20,20,0,0,1,256,397.25Z" />
       </svg>
-      Petit conseil
+      Recommandation(s)
     </p>
     <div class="text-sm flex flex-col gap-2"><slot /></div>
   </div>
