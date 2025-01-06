@@ -34,7 +34,6 @@
         :additionalValue="formatSize(stats.avgSizeUnique)"
       />
     </div>
-
     <table
       class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
     >
@@ -51,7 +50,7 @@
           :key="index"
           class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
         >
-          <td>{{ stat.type }}</td>
+          <td>{{ stat.label }}</td>
           <td class="font-mono">
             {{ stat.count || "—" }} / {{ stat.uniqueCount || "—" }}
           </td>
@@ -137,17 +136,22 @@
 
   // Formats d'image
   const imageTypes = [
-    { mime: "image/avif", label: "avif" },
-    { mime: "image/webp", label: "webp" },
-    { mime: "image/svg+xml", label: "svg" },
-    { mime: "image/jpeg", label: "jpeg" },
-    { mime: "image/png", label: "png" },
+    {
+      mime: "application/octet-stream",
+      label: "octet-stream",
+      labelfront: "avif",
+    },
+    { mime: "image/webp", label: "webp", labelfront: "webp" },
+    { mime: "image/svg+xml", label: "svg", labelfront: "svg" },
+    { mime: "image/jpeg", label: "jpeg", labelfront: "jpeg" },
+    { mime: "image/png", label: "png", labelfront: "png" },
   ];
 
   // Calcul des statistiques d'image
   const imageStatsTable = computed(() => {
     const stats = imageTypes.map((type) => ({
       type: type.label,
+      label: type.labelfront,
       count: 0,
       uniqueCount: 0,
       size: 0,
@@ -171,13 +175,16 @@
       });
     });
 
-    return stats.map(({ type, count, uniqueCount, size, uniqueSize }) => ({
-      type,
-      count,
-      uniqueCount,
-      size,
-      uniqueSize,
-    }));
+    return stats.map(
+      ({ type, label, count, uniqueCount, size, uniqueSize }) => ({
+        type,
+        label,
+        count,
+        uniqueCount,
+        size,
+        uniqueSize,
+      })
+    );
   });
 
   // Images

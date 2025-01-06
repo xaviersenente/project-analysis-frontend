@@ -47,7 +47,7 @@
         Chaque page devrait avoir un titre principal unique&nbsp;!
       </p>
       <p v-if="poorH2H3">
-        En moyenne, il y a moins de deux titres <code>&lt;h2&gt;</code> ou
+        En moyenne, il y a moins d'un titre <code>&lt;h2&gt;</code> ou
         <code>&lt;h3&gt;</code> par page. Assurez-vous que la hiérarchie des
         titres est logique et équilibrée.
       </p>
@@ -131,7 +131,7 @@
       totalH3 += page.headings?.h3 || 0;
     });
 
-    return totalH2 / totalPages <= 2 || totalH3 / totalPages <= 2;
+    return totalH2 / totalPages <= 1 || totalH3 / totalPages <= 1;
   });
 
   // Fonction pour définir une classe en fonction du niveau
