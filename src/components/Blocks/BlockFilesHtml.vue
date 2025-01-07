@@ -61,6 +61,26 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr class="bg-gray-50 font-semibold *:px-3 *:py-2">
+              <td colspan="2">Moyenne / Statut</td>
+              <td class="font-mono">{{ average.deadLinks }}</td>
+              <td class="font-mono">{{ average.externalLinks }}</td>
+              <td class="font-mono">
+                <span v-if="average.favicon">1</span>
+                <span v-else>0</span>
+              </td>
+              <td class="font-mono">{{ average.mailtoLinks }}</td>
+              <td class="font-mono">
+                <span v-if="average.viewport">1</span>
+                <span v-else>0</span>
+              </td>
+              <td class="font-mono">{{ average.validationErrors }}</td>
+              <td v-for="metric in metrics" :key="metric.key" class="font-mono">
+                {{ average[metric.key] }}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
       <Infos v-if="adviceMessages.length" class="!mt-0">
@@ -219,5 +239,69 @@
     });
 
     return messages;
+  });
+
+  const average = computed(() => {
+    const totalFiles = props.files.length;
+
+    if (totalFiles === 0) {
+      return {
+        deadLinks: "0",
+        externalLinks: "0",
+        favicon: false,
+        mailtoLinks: "0",
+        viewport: false,
+        validationErrors: "0",
+        performance: "0",
+        accessibility: "0",
+        bestPractices: "0",
+        seo: "0",
+      };
+    }
+
+    const sum = props.files.reduce(
+      (acc, file) => {
+        acc.deadLinks += file.deadLinks || 0;
+        acc.externalLinks += file.externalLinks || 0;
+        acc.mailtoLinks += file.mailtoLinks || 0;
+        acc.validationErrors += file.validationErrors.length || 0;
+        acc.performance += file.lighthouseReport?.performance || 0;
+        acc.accessibility += file.lighthouseReport?.accessibility || 0;
+        acc.bestPractices += file.lighthouseReport?.bestPractices || 0;
+        acc.seo += file.lighthouseReport?.seo || 0;
+
+        acc.favicon = acc.favicon && file.favicon;
+        acc.viewport = acc.viewport && file.viewport;
+
+        return acc;
+      },
+      {
+        deadLinks: 0,
+        externalLinks: 0,
+        mailtoLinks: 0,
+        validationErrors: 0,
+        performance: 0,
+        accessibility: 0,
+        bestPractices: 0,
+        seo: 0,
+        favicon: true,
+        viewport: true,
+      }
+    );
+
+    const formatNumber = (value) => value.toFixed(2).replace(".", ",");
+
+    return {
+      deadLinks: formatNumber(sum.deadLinks / totalFiles),
+      externalLinks: formatNumber(sum.externalLinks / totalFiles),
+      mailtoLinks: formatNumber(sum.mailtoLinks / totalFiles),
+      validationErrors: formatNumber(sum.validationErrors / totalFiles),
+      performance: ((sum.performance * 100) / totalFiles).toFixed(0),
+      accessibility: ((sum.accessibility * 100) / totalFiles).toFixed(0),
+      bestPractices: ((sum.bestPractices * 100) / totalFiles).toFixed(0),
+      seo: ((sum.seo * 100) / totalFiles).toFixed(0),
+      favicon: sum.favicon,
+      viewport: sum.viewport,
+    };
   });
 </script>

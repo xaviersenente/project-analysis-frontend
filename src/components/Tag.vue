@@ -1,5 +1,5 @@
 <template>
-  <span :class="colorClass" class="px-2 py-1 rounded">
+  <span :class="colorClass">
     {{ value * 100 }}
   </span>
 </template>
