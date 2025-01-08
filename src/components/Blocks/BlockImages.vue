@@ -236,7 +236,10 @@
 
     props.projectData.pages.forEach((page) => {
       page.lighthouseReport.requests.forEach((req) => {
-        const stat = stats.find((s) => s.type === req.mimeType.split("/")[1]);
+        const stat = stats.find((s) => {
+          if (req.mimeType === "image/svg+xml") return s.type === "svg";
+          return s.type === req.mimeType.split("/")[1];
+        });
         if (stat) {
           stat.count++;
           stat.size += req.resourceSize;
