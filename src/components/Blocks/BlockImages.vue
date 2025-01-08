@@ -152,7 +152,7 @@
               class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
             >
               <td :class="{ 'text-red-500': item.src === 'No src' }">
-                {{ item.src }}
+                {{ getFileNameFromPath(item.src) }}
               </td>
               <td :class="{ 'text-red-500': item.alt === 'No alt' }">
                 {{ item.alt }}
@@ -203,6 +203,10 @@
     if (size < 5) return "text-green-600";
     if (size <= 15) return "text-orange-500";
     return "text-red-500";
+  };
+
+  const getFileNameFromPath = (path) => {
+    return path.split("/").pop();
   };
 
   // Formats d'image
