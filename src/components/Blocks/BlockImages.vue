@@ -73,7 +73,13 @@
       </tbody>
     </table>
 
-    <Infos v-if="stats.avgSizeTop5 > 250000 || outdatedImageFormats">
+    <Infos
+      v-if="
+        stats.avgSizeTop5 > 250000 ||
+        outdatedImageFormats ||
+        imagesWithoutAltAndNotAriaHidden > 5
+      "
+    >
       <p v-if="stats.avgSizeTop5 > 250000">
         Pensez à optimiser la taille des images pour améliorer les performances.
       </p>
@@ -81,6 +87,12 @@
         Privilégiez les formats modernes comme <code>WebP</code> ou
         <code>AVIF</code> au lieu de <code>Jpeg</code> ou <code>PNG</code> pour
         une meilleure optimisation.
+      </p>
+      <p v-if="imagesWithoutAltAndNotAriaHidden > 5">
+        Il y a un certain nombre d'images qui n'ont pas de description dans
+        l'attribut <code>alt</code> et pour lesquelles il n'y a pas non plus
+        d'attribut <code>aria-hidden</code> (si jamais il s'agissait d'images
+        décoratives).
       </p>
     </Infos>
   </Block>
