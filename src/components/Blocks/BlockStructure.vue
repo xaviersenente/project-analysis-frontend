@@ -4,7 +4,7 @@
     class="col-span-12 xl:col-span-6 2xl:col-span-4"
   >
     <template v-slot:header>
-      <Button @open="openModal()" />
+      <Button @open="openModal()" size="sm" />
     </template>
     <p class="text-sm mb-2 text-gray-400">Nombre de titres par pages</p>
     <div class="overflow-x-auto">

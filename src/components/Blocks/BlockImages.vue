@@ -33,6 +33,14 @@
         :value="formatSize(stats.avgSizeAll)"
         :additionalValue="formatSize(stats.avgSizeUnique)"
       />
+      <Section
+        title="Images sans Alt"
+        size="sm"
+        :value="imagesWithoutAltAndNotAriaHidden"
+        :class="getAltImg(imagesWithoutAltAndNotAriaHidden)"
+      >
+        <Button @click="openModalAlt" size="sm" text="Détail" />
+      </Section>
     </div>
     <table
       class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
@@ -103,6 +111,47 @@
       </tbody>
     </table>
   </Modal>
+  <Modal
+    :isOpen="isModalAltOpen"
+    title="Attributs Alt"
+    @close="closeModalAlt"
+    size="large"
+  >
+    <ul class="grid grid-cols-1 gap-8 lg:grid-cols-2 2xl:grid-cols-3">
+      <li v-for="(page, indexPage) in props.projectData.pages" :key="indexPage">
+        <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
+          <p class="text-lg font-bold">{{ page.title }}</p>
+          <p>{{ getFileName(page.file) }}</p>
+        </div>
+        <table
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
+        >
+          <thead>
+            <tr class="bg-gray-100 *:px-3 *:py-2">
+              <th>Chemin</th>
+              <th>Alt</th>
+              <th>Aria</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item, index) in page.images"
+              :key="index"
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
+            >
+              <td :class="{ 'text-red-500': item.src === 'No src' }">
+                {{ item.src }}
+              </td>
+              <td :class="{ 'text-red-500': item.alt === 'No alt' }">
+                {{ item.alt }}
+              </td>
+              <td>{{ item.ariaHidden }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </Modal>
 </template>
 
 <script setup>
@@ -122,15 +171,25 @@
   });
 
   const isModalOpen = ref(false);
+  const isModalAltOpen = ref(false);
 
   // Modal Controls
   const openModal = () => (isModalOpen.value = true);
   const closeModal = () => (isModalOpen.value = false);
 
+  const openModalAlt = () => (isModalAltOpen.value = true);
+  const closeModalAlt = () => (isModalAltOpen.value = false);
+
   // Classe CSS basée sur la taille
   const getSizeClass = (size) => {
     if (size < 250000) return "text-green-600";
     if (size <= 500000) return "text-orange-500";
+    return "text-red-500";
+  };
+
+  const getAltImg = (size) => {
+    if (size < 5) return "text-green-600";
+    if (size <= 15) return "text-orange-500";
     return "text-red-500";
   };
 
@@ -237,5 +296,16 @@
         0,
       top5LargestImages,
     };
+  });
+
+  const imagesWithoutAltAndNotAriaHidden = computed(() => {
+    return props.projectData.pages.reduce((count, page) => {
+      return (
+        count +
+        page.images.filter(
+          (item) => item.alt === "No alt" && item.ariaHidden !== "true"
+        ).length
+      );
+    }, 0);
   });
 </script>
