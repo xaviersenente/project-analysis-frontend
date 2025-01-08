@@ -48,9 +48,9 @@
       "
       class="flex flex-col gap-2"
     >
-      <p v-if="gapSelector > 10">
+      <p v-if="gapSelector > 15">
         L'écart entre le nombre de sélecteur total et unique indique que vous
-        n'avez pas utilisé correctement la méthodologie BEM.
+        pouvez encore améliorer votre usage de la méthodologie BEM.
       </p>
       <p v-if="isSpecificityAboveThreshold">
         Le faible nombre de spécificité <code>0,0,1</code> indique que vous
