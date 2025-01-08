@@ -140,7 +140,7 @@
         >
           <thead>
             <tr class="bg-gray-100 *:px-3 *:py-2">
-              <th>Chemin</th>
+              <th>Image</th>
               <th>Alt</th>
               <th>Aria</th>
             </tr>
