@@ -1,5 +1,8 @@
 <template>
-  <Block title="Typographie" class="col-span-12 2xl:col-span-8">
+  <Block
+    title="Typographie"
+    desc="Analyse typographique : familles, tailles, line-height, variantes et échelle de texte."
+    class="col-span-12 2xl:col-span-8">
     <div class="grid gap-8 items-start lg:grid-cols-3">
       <!-- Font-Family -->
       <div>
@@ -21,8 +24,7 @@
           </div>
         </div>
         <table
-          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
-        >
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
           <thead>
             <tr class="bg-gray-100 *:px-3 *:py-2">
               <th>Valeur</th>
@@ -33,8 +35,7 @@
             <tr
               v-for="(count, font) in cssAnalysisResult?.fontFamilies?.unique"
               :key="font"
-              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
-            >
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
               <td class="font-mono">{{ font }}</td>
               <td class="font-mono">{{ count }}</td>
             </tr>
@@ -62,8 +63,7 @@
           </div>
         </div>
         <table
-          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm"
-        >
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
           <thead>
             <tr class="bg-gray-100 *:px-3 *:py-2">
               <th>Valeur</th>
@@ -74,8 +74,7 @@
             <tr
               v-for="(count, font) in cssAnalysisResult?.fontSizes?.unique"
               :key="font"
-              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b"
-            >
+              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
               <td class="font-mono">{{ font }}</td>
               <td class="font-mono">{{ count }}</td>
             </tr>
@@ -103,8 +102,7 @@
         hasNonCssVariableFontFamily ||
         hasNonCssVariableFontSize ||
         props.fonts.length > 3
-      "
-    >
+      ">
       <p v-if="hasNonCssVariableFontFamily">
         Définisez les polices de caractère (<code>font-family</code>) en
         utilisant plutôt des variables.
@@ -122,35 +120,35 @@
 </template>
 
 <script setup>
-  import { computed } from "vue";
-  import Infos from "../Infos.vue";
-  import Block from "../Block.vue";
+import { computed } from "vue";
+import Infos from "../Infos.vue";
+import Block from "../Block.vue";
 
-  const props = defineProps({
-    cssAnalysisResult: {
-      type: Object,
-      required: true,
-    },
-    fonts: {
-      type: Array,
-      default: () => [],
-    },
-  });
+const props = defineProps({
+  cssAnalysisResult: {
+    type: Object,
+    required: true,
+  },
+  fonts: {
+    type: Array,
+    default: () => [],
+  },
+});
 
-  // Fonction utilitaire pour vérifier si une valeur est une variable CSS
-  function isCssVariable(value) {
-    return /^var\(.+\)$/.test(value);
-  }
+// Fonction utilitaire pour vérifier si une valeur est une variable CSS
+function isCssVariable(value) {
+  return /^var\(.+\)$/.test(value);
+}
 
-  // Vérifier si au moins une valeur n'est pas une variable CSS
-  const hasNonCssVariableFontFamily = computed(() => {
-    return Object.keys(
-      props.cssAnalysisResult?.fontFamilies?.unique || {}
-    ).some((font) => !isCssVariable(font));
-  });
-  const hasNonCssVariableFontSize = computed(() => {
-    return Object.keys(props.cssAnalysisResult?.fontSizes?.unique || {}).some(
-      (font) => !isCssVariable(font)
-    );
-  });
+// Vérifier si au moins une valeur n'est pas une variable CSS
+const hasNonCssVariableFontFamily = computed(() => {
+  return Object.keys(props.cssAnalysisResult?.fontFamilies?.unique || {}).some(
+    (font) => !isCssVariable(font)
+  );
+});
+const hasNonCssVariableFontSize = computed(() => {
+  return Object.keys(props.cssAnalysisResult?.fontSizes?.unique || {}).some(
+    (font) => !isCssVariable(font)
+  );
+});
 </script>
