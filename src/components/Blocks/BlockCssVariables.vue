@@ -110,7 +110,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { gap, calculateCssVariablesScore } from "../../js/helpers";
+import { gap } from "../../js/helpers";
 import Block from "../Block.vue";
 import Section from "../Section.vue";
 import DistributionDetails from "../DistributionDetails.vue";
@@ -184,11 +184,6 @@ const getVariablesClass = () => {
   if (count === 0) return "text-red-500";
   if (count < 10) return "text-orange-500";
 };
-
-// Score calculé des variables CSS
-const variablesScore = computed(() =>
-  calculateCssVariablesScore(customProps.value)
-);
 
 // Exposer le score pour utilisation externe
 defineExpose({
