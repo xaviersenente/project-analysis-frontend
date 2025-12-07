@@ -301,7 +301,15 @@ import BlockCssOrganization from "./Blocks/BlockCssOrganization.vue";
 import BlockClasses from "./Blocks/BlockClasses.vue";
 
 // Récupère l'URL de base depuis les variables d'environnement
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// En production sur Render, on utilise toujours l'URL de production
+const API_BASE_URL = import.meta.env.PROD
+  ? "https://project-analysis-backend.onrender.com"
+  : import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
+console.log("API_BASE_URL:", API_BASE_URL);
+console.log("Environment MODE:", import.meta.env.MODE);
+console.log("Environment PROD:", import.meta.env.PROD);
+console.log("Environment DEV:", import.meta.env.DEV);
 
 const projects = ref([]);
 const selectedProject = ref(null);
