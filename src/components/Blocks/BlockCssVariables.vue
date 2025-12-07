@@ -96,7 +96,7 @@
           </ul>
         </template>
 
-        <template v-if="scoreImprovements.lenght > 0" #recommendations>
+        <template v-if="scoreImprovements.length > 0" #recommendations>
           <ul class="list-disc list-inside">
             <li v-for="(improvement, idx) in scoreImprovements" :key="idx">
               {{ improvement }}
