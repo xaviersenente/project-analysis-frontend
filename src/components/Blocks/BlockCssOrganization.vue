@@ -117,7 +117,7 @@ import Block from "../Block.vue";
 import Section from "../Section.vue";
 import DistributionDetails from "../DistributionDetails.vue";
 import Infos from "../Infos.vue";
-import { formatSize, calculateCssOrganizationScore } from "../../js/helpers.js";
+import { formatSize } from "../../js/helpers.js";
 
 const props = defineProps({
   imports: {
@@ -224,11 +224,6 @@ const formatScoreName = (key) => {
   };
   return names[key] || key;
 };
-
-// Score calculé de l'organisation CSS
-const organizationScore = computed(() =>
-  calculateCssOrganizationScore(props.projectData.cssAnalysisResult.imports)
-);
 
 // Exposer le score pour utilisation externe
 defineExpose({

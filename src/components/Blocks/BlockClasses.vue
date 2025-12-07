@@ -133,7 +133,6 @@ import Modal from "../Modal.vue";
 import Infos from "../Infos.vue";
 import BlockClassesBem from "./BlockClassesBem.vue";
 import BlockClassesMismatch from "./BlockClassesMismatch.vue";
-import { calculateBemClassesScore } from "../../js/helpers.js";
 
 const props = defineProps({
   classAnalysis: Object,
@@ -157,10 +156,6 @@ const openMismatchModal = () => {
 const closeMismatchModal = () => {
   isMismatchModalOpen.value = false;
 };
-
-const bemClassesScore = computed(() => {
-  return calculateBemClassesScore(props.classAnalysis);
-});
 
 // Score BEM
 const scoreBreakdown = computed(

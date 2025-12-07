@@ -212,7 +212,6 @@ import { computed } from "vue";
 import Block from "../Block.vue";
 import Section from "../Section.vue";
 import PropertyBar from "../PropertyBar.vue";
-import StatCard from "../StatCard.vue";
 import DistributionDetails from "../DistributionDetails.vue";
 import Infos from "../Infos.vue";
 
