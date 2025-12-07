@@ -301,7 +301,7 @@ import BlockCssOrganization from "./Blocks/BlockCssOrganization.vue";
 import BlockClasses from "./Blocks/BlockClasses.vue";
 
 // Récupère l'URL de base depuis les variables d'environnement
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const projects = ref([]);
 const selectedProject = ref(null);
