@@ -15,7 +15,6 @@
         size="sm"
         :value="formatSize(stats.avgSizeTop5)"
         :class="getSizeClass(stats.avgSizeTop5)">
-        <Button @click="openModal" size="sm" text="Détail" />
       </Section>
 
       <Section
@@ -36,7 +35,6 @@
         size="sm"
         :value="imagesWithoutAltAndNotAriaHidden"
         :class="getAltImg(imagesWithoutAltAndNotAriaHidden)">
-        <Button @click="openModalAlt" size="sm" text="Détail" />
       </Section>
     </div>
     <table
@@ -67,7 +65,13 @@
         </tr>
       </tbody>
     </table>
-
+    <div class="mt-8 flex flex-wrap gap-4">
+      <Button @click="openModalAlt" size="sm" text="Détail des images" />
+      <Button
+        @click="openModal"
+        size="sm"
+        text="Détail (moy. 5 img + lourdes)" />
+    </div>
     <Infos
       v-if="
         stats.avgSizeTop5 > 250000 ||
