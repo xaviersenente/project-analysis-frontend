@@ -1,9 +1,8 @@
 <template>
   <Block
     title="Images"
-    desc="Statistiques sur les images : formats, poids total/moyen, présence des attributs alt et répartition par format."
-    class="col-span-12 2xl:col-span-4">
-    <div class="grid grid-cols-2 gap-4 mb-12 lg:grid-cols-4 2xl:grid-cols-2">
+    desc="Statistiques sur les images : formats, poids total/moyen, présence des attributs alt et répartition par format.">
+    <div class="grid grid-cols-2 gap-8 mb-12 lg:grid-cols-4 2xl:grid-cols-2">
       <Section
         title="Images"
         subtitle="(Total / unique)"
@@ -90,69 +89,70 @@
         lesquelles la description <code>alt</code> est obligatoire.
       </p>
     </Infos>
+    <Modal
+      :isOpen="isModalOpen"
+      title="Poids des 5 images les plus lourdes"
+      @close="closeModal">
+      <table
+        class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
+        <thead>
+          <tr class="bg-gray-100 *:px-3 *:py-2">
+            <th>Images</th>
+            <th>Poids</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(img, index) in stats.top5LargestImages"
+            :key="index"
+            class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+            <td>{{ getFileName(img.url) }}</td>
+            <td>{{ formatSize(img.resourceSize) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </Modal>
+    <Modal
+      :isOpen="isModalAltOpen"
+      title="Attributs Alt"
+      @close="closeModalAlt"
+      size="large">
+      <ul class="grid grid-cols-1 gap-8 lg:grid-cols-2 2xl:grid-cols-3">
+        <li
+          v-for="(page, indexPage) in props.projectData.pages"
+          :key="indexPage">
+          <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
+            <p class="text-lg font-bold">{{ page.title }}</p>
+            <p>{{ getFileName(page.file) }}</p>
+          </div>
+          <table
+            class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
+            <thead>
+              <tr class="bg-gray-100 *:px-3 *:py-2">
+                <th>Image</th>
+                <th>Alt</th>
+                <th>Aria</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in page.images"
+                :key="index"
+                class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+                <td :class="{ 'text-red-500': item.src === 'No src' }">
+                  {{ getFileNameFromPath(item.src) }}
+                </td>
+                <td :class="{ 'text-red-500': item.alt === 'No alt' }">
+                  {{ item.alt }}
+                </td>
+                <td>{{ item.ariaHidden }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </Modal>
   </Block>
-
-  <Modal
-    :isOpen="isModalOpen"
-    title="Poids des 5 images les plus lourdes"
-    @close="closeModal">
-    <table
-      class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
-      <thead>
-        <tr class="bg-gray-100 *:px-3 *:py-2">
-          <th>Images</th>
-          <th>Poids</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(img, index) in stats.top5LargestImages"
-          :key="index"
-          class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
-          <td>{{ getFileName(img.url) }}</td>
-          <td>{{ formatSize(img.resourceSize) }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </Modal>
-  <Modal
-    :isOpen="isModalAltOpen"
-    title="Attributs Alt"
-    @close="closeModalAlt"
-    size="large">
-    <ul class="grid grid-cols-1 gap-8 lg:grid-cols-2 2xl:grid-cols-3">
-      <li v-for="(page, indexPage) in props.projectData.pages" :key="indexPage">
-        <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
-          <p class="text-lg font-bold">{{ page.title }}</p>
-          <p>{{ getFileName(page.file) }}</p>
-        </div>
-        <table
-          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
-          <thead>
-            <tr class="bg-gray-100 *:px-3 *:py-2">
-              <th>Image</th>
-              <th>Alt</th>
-              <th>Aria</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in page.images"
-              :key="index"
-              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
-              <td :class="{ 'text-red-500': item.src === 'No src' }">
-                {{ getFileNameFromPath(item.src) }}
-              </td>
-              <td :class="{ 'text-red-500': item.alt === 'No alt' }">
-                {{ item.alt }}
-              </td>
-              <td>{{ item.ariaHidden }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-    </ul>
-  </Modal>
 </template>
 
 <script setup>

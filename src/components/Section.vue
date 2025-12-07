@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="border-b pb-2 mb-2" :class="borderClass">
-      <h5 class="text-xs uppercase font-semibold" :class="textClass">
+      <h5 class="text-xs uppercase font-semibold" :class="titleClass">
         {{ title }}
         <span v-if="subtitle" class="text-gray-400">{{ subtitle }}</span>
       </h5>
@@ -9,8 +9,8 @@
         {{ definition }}
       </p>
     </div>
-    <div class="flex flex-wrap justify-between items-end gap-4">
-      <p :class="sizeClasses">
+    <div class="flex flex-wrap justify-between items-end gap-8">
+      <p :class="textClass" v-if="value">
         <span class="font-bold" :class="textSizeClass"
           >{{ value }}{{ suffix }}</span
         >
@@ -18,8 +18,12 @@
           / {{ additionalValue }}</span
         >
       </p>
-      <div><slot></slot></div>
+      <div v-if="rightValue">
+        <div class="text-xs uppercase text-gray-400">{{ rightText }}</div>
+        <div :class="rightClass">{{ rightValue }}</div>
+      </div>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -32,12 +36,22 @@ const props = defineProps({
   definition: String,
   value: [String, Number],
   additionalValue: [String, Number],
+  rightValue: [String, Number],
+  rightClass: String,
   size: {
     type: String,
     default: "default",
     validator: (value) => ["sm", "default"].includes(value),
   },
   suffix: {
+    type: String,
+    default: "",
+  },
+  titleClass: {
+    type: String,
+    default: "text-black",
+  },
+  rightText: {
     type: String,
     default: "",
   },

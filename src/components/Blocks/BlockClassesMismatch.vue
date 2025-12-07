@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <!-- Résumé -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="p-4 bg-green-50 rounded-lg">
         <div class="text-xs text-gray-600 uppercase">Couverture HTML</div>
         <div class="text-2xl font-bold text-green-700">
@@ -27,7 +27,7 @@
       <div
         class="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-t-lg">
         <h4 class="font-semibold text-orange-900">
-          ⚠️ Classes CSS non utilisées dans le HTML
+          Classes CSS non utilisées dans le HTML
         </h4>
         <span class="text-sm font-bold text-orange-700">
           {{ classAnalysis.mismatch.unusedCssClasses.length }}
@@ -71,7 +71,7 @@
       <div
         class="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-t-lg">
         <h4 class="font-semibold text-amber-900">
-          ℹ️ Classes HTML sans définition CSS
+          Classes HTML sans définition CSS
         </h4>
         <span class="text-sm font-bold text-amber-700">
           {{ classAnalysis.mismatch.undefinedHtmlClasses.length }}

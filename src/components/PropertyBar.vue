@@ -4,7 +4,9 @@
       <span class="font-mono">{{ label }}</span>
       <span class="font-semibold"
         >{{ count }}
-        <span class="text-slate-500">({{ displayPercent }}%)</span></span
+        <span v-if="percent" class="text-slate-500"
+          >({{ displayPercent }}%)</span
+        ></span
       >
     </div>
     <div class="w-full bg-gray-200 rounded h-1">

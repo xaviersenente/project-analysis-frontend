@@ -1,8 +1,7 @@
 <template>
   <Block
     title="Balises utilisées"
-    desc="Analyse des balises HTML attendues, manquantes et obsolètes pour évaluer la couverture sémantique."
-    class="col-span-12 xl:col-span-6 2xl:col-span-4">
+    desc="Analyse des balises HTML attendues, manquantes et obsolètes pour évaluer la couverture sémantique.">
     <div v-if="projectData.globalAnalysis?.tagsMissing?.length > 0">
       <p
         class="text-xl text-red-600 font-bold pb-2 border-b border-b-slate-200 mb-2">

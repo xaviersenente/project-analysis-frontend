@@ -1,7 +1,7 @@
 <template>
   <details ref="detailsRef" class="text-sm group" :open="open">
     <summary
-      class="cursor-pointer flex items-center gap-2 py-1 select-none outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded text-slate-500">
+      class="cursor-pointer inline-flex items-center gap-2 py-2 px-3 select-none outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded text-slate-500 border border-slate-300 hover:bg-slate-200 transition-all ease duration-200">
       <span
         class="toggle-icon relative w-4 h-4 inline-flex items-center justify-center transition-all ease-in-out duration-200 before:absolute before:w-4 before:h-0.5 before:bg-slate-500 after:absolute after:w-0.5 after:h-4 after:bg-slate-500"
         :class="isOpen ? 'toggle-icon--open' : ''"></span>

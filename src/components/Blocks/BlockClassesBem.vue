@@ -1,34 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Statistiques BEM -->
-    <div
-      class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-blue-50 rounded-lg">
-      <div>
-        <div class="text-xs text-gray-600 uppercase">Blocs</div>
-        <div class="text-2xl font-bold text-blue-600">
-          {{ classAnalysis.bem.counts.blocks }}
-        </div>
-      </div>
-      <div>
-        <div class="text-xs text-gray-600 uppercase">Éléments</div>
-        <div class="text-2xl font-bold text-blue-600">
-          {{ classAnalysis.bem.counts.elements }}
-        </div>
-      </div>
-      <div>
-        <div class="text-xs text-gray-600 uppercase">Modificateurs</div>
-        <div class="text-2xl font-bold text-blue-600">
-          {{ classAnalysis.bem.counts.modifiers }}
-        </div>
-      </div>
-      <div>
-        <div class="text-xs text-gray-600 uppercase">Mod. d'éléments</div>
-        <div class="text-2xl font-bold text-blue-600">
-          {{ classAnalysis.bem.counts.elementModifiers }}
-        </div>
-      </div>
-    </div>
-
     <!-- Violations BEM -->
     <div
       v-if="
@@ -48,27 +19,6 @@
       </ul>
     </div>
 
-    <!-- Distribution des préfixes -->
-    <div v-if="Object.keys(classAnalysis.distribution.prefixes).length > 0">
-      <h4 class="font-semibold mb-3 text-lg">
-        Distribution des préfixes de classes
-      </h4>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        <div
-          v-for="(count, prefix) in sortedPrefixes"
-          :key="prefix"
-          class="bg-gray-100 p-3 rounded-lg">
-          <div class="text-sm font-medium text-gray-700">{{ prefix }}</div>
-          <div class="text-xl font-bold text-gray-900">{{ count }}</div>
-        </div>
-      </div>
-      <div class="mt-3 text-sm text-gray-600">
-        <strong>Entropie :</strong>
-        {{ classAnalysis.distribution.entropy.toFixed(2) }} (diversité des
-        préfixes)
-      </div>
-    </div>
-
     <!-- Structure des blocs BEM -->
     <div>
       <h4 class="font-semibold mb-3 text-lg">
@@ -76,11 +26,11 @@
           Object.keys(classAnalysis.bem.blocks).length
         }})
       </h4>
-      <div class="space-y-2">
+      <div class="grid gap-2 lg:grid-cols-2 xl:grid-cols-3">
         <details
           v-for="(block, blockName) in sortedBlocks"
           :key="blockName"
-          class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          class="bg-white border border-gray-200 rounded-lg overflow-hidden self-start">
           <summary
             class="cursor-pointer p-3 hover:bg-gray-50 font-medium flex justify-between items-center">
             <span class="text-blue-700">{{ blockName }}</span>
@@ -196,14 +146,6 @@ const sortedBlocks = computed(() => {
         b[1].elementModifiers.length;
       return countB - countA;
     })
-  );
-});
-
-// Trier les préfixes par nombre (décroissant)
-const sortedPrefixes = computed(() => {
-  const prefixes = props.classAnalysis.distribution.prefixes;
-  return Object.fromEntries(
-    Object.entries(prefixes).sort((a, b) => b[1] - a[1])
   );
 });
 
