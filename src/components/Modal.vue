@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto"
     @click.self="closeModal">
     <div class="max-h-screen">
       <div class="bg-white p-6 rounded-lg m-8 text-sm" :class="size">
@@ -11,7 +11,7 @@
         </div>
         <button
           @click="closeModal"
-          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+          class="cursor-pointer bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
           Fermer
         </button>
       </div>

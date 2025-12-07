@@ -39,7 +39,7 @@
                   <button
                     v-if="file.validationErrors.length > 0"
                     @click="openModal(file.validationErrors)"
-                    class="px-2 py-0.5 border rounded focus:outline-none"
+                    class="px-2 py-0.5 border rounded cursor-pointer focus:outline-none"
                     :class="{
                       'border-yellow-500 text-yellow-600 hover:text-white hover:bg-yellow-600 hover:border-yellow-600':
                         file.validationErrors.length > 0,
