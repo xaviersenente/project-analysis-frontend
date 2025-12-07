@@ -213,20 +213,4 @@ const scoreBreakdown = computed(() => importsData.value.score?.breakdown || {});
 const scoreImprovements = computed(
   () => importsData.value.score?.improvements || []
 );
-
-const formatScoreName = (key) => {
-  const names = {
-    validity: "Validité",
-    organization: "Organisation",
-    performance: "Performance",
-    naming: "Nommage",
-    bestPractices: "Bonnes pratiques",
-  };
-  return names[key] || key;
-};
-
-// Exposer le score pour utilisation externe
-defineExpose({
-  organizationScore,
-});
 </script>
