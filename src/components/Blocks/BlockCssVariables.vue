@@ -185,11 +185,6 @@ const getVariablesClass = () => {
   if (count < 10) return "text-orange-500";
 };
 
-// Exposer le score pour utilisation externe
-defineExpose({
-  variablesScore,
-});
-
 // Récupération des catégories détaillées
 const detailedCategorization = computed(
   () => customProps.value.detailedCategorization || {}

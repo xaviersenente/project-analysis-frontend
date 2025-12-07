@@ -164,19 +164,4 @@ const scoreBreakdown = computed(
 const scoreImprovements = computed(
   () => props.classAnalysis.score?.bem?.improvements || []
 );
-
-const formatScoreName = (key) => {
-  const names = {
-    coverage: "Couverture",
-    selectorForms: "Formes de sélecteurs",
-    structure: "Structure",
-    elementsRatio: "Ratio éléments",
-    modifiers: "Modificateurs",
-  };
-  return names[key] || key;
-};
-
-defineExpose({
-  bemClassesScore,
-});
 </script>
