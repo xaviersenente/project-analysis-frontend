@@ -43,7 +43,7 @@
     <!-- Overlay mobile (backdrop) -->
     <div
       v-if="mobileNavOpen"
-      class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+      class="lg:hidden fixed inset-0 bg-black/50 z-30"
       @click="toggleMobileNav"></div>
 
     <!-- Menu de navigation unifié (Desktop + Mobile) -->
@@ -301,7 +301,7 @@ import BlockCssOrganization from "./Blocks/BlockCssOrganization.vue";
 import BlockClasses from "./Blocks/BlockClasses.vue";
 
 // Récupère l'URL de base depuis les variables d'environnement
-const API_BASE_URL = "https://project-analysis-backend.onrender.com";
+const API_BASE_URL = "http://localhost:3000";
 
 const projects = ref([]);
 const selectedProject = ref(null);
