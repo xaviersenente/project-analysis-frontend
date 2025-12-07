@@ -2,9 +2,6 @@
   <Block
     title="Structure de document"
     desc="Répartition des niveaux de titres par page et détection des manques dans la hiérarchie (h1–h6).">
-    <template v-slot:header>
-      <Button @open="openModal()" size="sm" />
-    </template>
     <div class="overflow-x-auto">
       <table
         class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
@@ -48,6 +45,12 @@
         titres est logique et équilibrée.
       </p>
     </Infos>
+    <div class="mt-8">
+      <Button
+        @open="openModal()"
+        size="sm"
+        text="Détail de la structure des pages" />
+    </div>
     <Modal
       :isOpen="isModalOpen"
       title="Structure des pages HTML"
