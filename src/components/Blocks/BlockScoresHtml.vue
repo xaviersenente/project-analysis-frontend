@@ -1,14 +1,13 @@
 <template>
   <Block
     title="Scores"
-    desc="Synthèse des scores de qualité : validation W3C et moyennes Lighthouse (performance, accessibilité, bonnes pratiques, SEO)."
-    class="col-span-12 lg:col-span-6 xl:col-span-8">
+    desc="Synthèse des scores de qualité : validation W3C et moyennes Lighthouse (performance, accessibilité, bonnes pratiques, SEO).">
     <div class="grid grid-cols-5 gap-8">
       <h3
         class="col-span-2 text-center row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-1">
         W3C
       </h3>
-      <div class="col-span-2 flex flex-col gap-4 items-center lg:col-span-1">
+      <div class="col-span-2 flex flex-col gap-8 items-center lg:col-span-1">
         <h4 class="text-sm">Validité</h4>
         <ProgressCircle :value="stats.errorScore / 100" />
       </div>
@@ -17,7 +16,7 @@
         LightHouse
       </h3>
       <div
-        class="col-span-3 grid grid-cols-2 gap-8 *:flex *:flex-col *:gap-4 *:items-center lg:grid-cols-4 lg:col-span-4">
+        class="col-span-3 grid grid-cols-2 gap-8 *:flex *:flex-col *:gap-8 *:items-center lg:grid-cols-4 lg:col-span-4">
         <div>
           <h4 class="text-sm">Performance</h4>
           <ProgressCircle

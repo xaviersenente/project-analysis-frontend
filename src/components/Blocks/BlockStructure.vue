@@ -1,8 +1,7 @@
 <template>
   <Block
     title="Structure de document"
-    desc="Répartition des niveaux de titres par page et détection des manques dans la hiérarchie (h1–h6)."
-    class="col-span-12 xl:col-span-6 2xl:col-span-4">
+    desc="Répartition des niveaux de titres par page et détection des manques dans la hiérarchie (h1–h6).">
     <template v-slot:header>
       <Button @open="openModal()" size="sm" />
     </template>
@@ -49,39 +48,41 @@
         titres est logique et équilibrée.
       </p>
     </Infos>
+    <Modal
+      :isOpen="isModalOpen"
+      title="Structure des pages HTML"
+      size="large"
+      @close="closeModal">
+      <ul
+        class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <li
+          v-for="(page, indexPage) in props.projectData.pages"
+          :key="indexPage">
+          <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
+            <p class="text-lg font-bold">{{ page.title }}</p>
+            <p>{{ getFileName(page.file) }}</p>
+          </div>
+          <ul>
+            <li
+              v-for="(item, index) in page.outlineStructure"
+              :key="index"
+              class="text-sm mb-2"
+              :class="getClass(item.level)">
+              <div
+                v-if="['h1', 'h2', 'h3', 'h4', 'h6'].includes(item.tag)"
+                class="flex gap-2">
+                <span><Code :tag="item.tag" /></span>
+                <span>{{ item.text }}</span>
+              </div>
+              <div v-else>
+                <span><Code :tag="item.tag" /></span>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </Modal>
   </Block>
-  <Modal
-    :isOpen="isModalOpen"
-    title="Structure des pages HTML"
-    size="large"
-    @close="closeModal">
-    <ul
-      class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      <li v-for="(page, indexPage) in props.projectData.pages" :key="indexPage">
-        <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
-          <p class="text-lg font-bold">{{ page.title }}</p>
-          <p>{{ getFileName(page.file) }}</p>
-        </div>
-        <ul>
-          <li
-            v-for="(item, index) in page.outlineStructure"
-            :key="index"
-            class="text-sm mb-2"
-            :class="getClass(item.level)">
-            <div
-              v-if="['h1', 'h2', 'h3', 'h4', 'h6'].includes(item.tag)"
-              class="flex gap-2">
-              <span><Code :tag="item.tag" /></span>
-              <span>{{ item.text }}</span>
-            </div>
-            <div v-else>
-              <span><Code :tag="item.tag" /></span>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </Modal>
 </template>
 <script setup>
 import { ref, computed } from "vue";

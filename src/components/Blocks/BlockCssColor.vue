@@ -1,10 +1,9 @@
 <template>
   <Block
-    title="Couleurs par Teinte"
-    desc="Groupement des couleurs utilisées (par teinte) et détection des similarités ou transparences."
-    class="col-span-12 2xl:col-span-4">
+    title="Couleurs"
+    desc="Groupement des couleurs utilisées (par teinte) et détection des similarités ou transparences.">
     <template v-slot:header>
-      <div class="flex gap-4">
+      <div class="flex gap-8">
         <div>
           <div class="text-xs uppercase">Total</div>
           <div class="text-xl font-bold">{{ stats.totalColors }}</div>
@@ -17,7 +16,7 @@
     </template>
 
     <!-- Groupes de couleurs par teinte -->
-    <div class="mt-4">
+    <div class="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-4">
       <div
         v-for="(group, index) in groupedColors.groups"
         :key="index"
@@ -30,7 +29,7 @@
           <div
             v-for="(colorObj, idx) in group.colors"
             :key="`${index}-${idx}`"
-            class="relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12"
+            class="relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 2xl:w-14 2xl:h-14"
             :style="{ backgroundColor: colorObj.color }">
             <div
               v-if="colorObj.isSimilar"
@@ -88,8 +87,7 @@ const props = defineProps({
 
 // Extraire les statistiques des couleurs
 const stats = computed(() => {
-  const cssAnalysis =
-    props.projectData?.cssAnalysisResult?.values?.colors || {};
+  const cssAnalysis = props.projectData || {};
   return {
     totalColors: cssAnalysis.total || 0,
     uniqueColors: cssAnalysis.totalUnique || 0,

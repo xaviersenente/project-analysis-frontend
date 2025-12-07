@@ -1,118 +1,49 @@
 <template>
   <Block
     title="Sélecteurs"
-    desc="Répartition des sélecteurs par niveau de spécificité."
-    class="col-span-12 lg:col-span-8">
+    desc="Répartition des sélecteurs par niveau de spécificité.">
     <template v-slot:header>
-      <div class="flex gap-4">
+      <div class="flex gap-8">
         <div>
           <div class="text-xs uppercase">Total</div>
-          <div class="text-xl font-bold">
-            {{ props.projectData.cssAnalysisResult.selectors.total }}
-          </div>
+          <div class="text-xl font-bold">{{ selectors.total }}</div>
         </div>
         <div>
           <div class="text-xs uppercase">Unique</div>
-          <div class="text-xl font-bold">
-            {{ props.projectData.cssAnalysisResult.selectors.totalUnique }}
-          </div>
+          <div class="text-xl font-bold">{{ selectors.totalUnique }}</div>
         </div>
       </div>
     </template>
     <div class="space-y-6">
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
         <Section
-          title="Basse (0-10)"
+          v-for="range in SPECIFICITY_RANGES"
           suffix="%"
-          textClass="text-green-600"
-          :value="lowSpecificity" />
-        <Section
-          title="Moyenne (11-30)"
-          suffix="%"
-          textClass="text-blue-500"
-          :value="mediumSpecificity" />
-        <Section
-          title="Haute (31-60)"
-          suffix="%"
-          textClass="text-orange-500"
-          :value="highSpecificity" />
-        <Section
-          title="Critique (>60)"
-          suffix="%"
-          textClass="text-red-500"
-          :value="criticalSpecificity" />
+          :key="range.key"
+          :title="range.label"
+          :titleClass="getTitleClass(range.key)"
+          :value="specificityStats[range.key]" />
       </div>
 
       <DistributionDetails
         class="text-sm"
         summary="Voir la distribution complète">
-        <div class="grid grid-cols-4 gap-4">
-          <!-- Basse -->
-          <div>
+        <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div v-for="range in SPECIFICITY_RANGES" :key="range.key">
             <h5
-              class="text-xs font-semibold text-green-600 mb-2 uppercase tracking-wide">
-              Basse (0-10)
+              class="text-xs font-semibold mb-2 uppercase tracking-wide"
+              :class="`text-${getColorClass(range.key)}`">
+              {{ range.label }}
             </h5>
             <div class="space-y-1.5">
               <PropertyBar
-                v-for="(item, index) in lowSpecificityList"
+                v-for="(item, index) in getCategoryList(range.key)"
                 :key="index"
                 :label="item.selector"
                 :count="item.count"
                 :maxCount="maxSelectorCount"
                 :percent="item.percent"
-                :barColor="'bg-green-500'" />
-            </div>
-          </div>
-          <!-- Moyenne -->
-          <div>
-            <h5
-              class="text-xs font-semibold text-blue-600 mb-2 uppercase tracking-wide">
-              Moyenne (11-30)
-            </h5>
-            <div class="space-y-1.5">
-              <PropertyBar
-                v-for="(item, index) in mediumSpecificityList"
-                :key="index"
-                :label="item.selector"
-                :count="item.count"
-                :maxCount="maxSelectorCount"
-                :percent="item.percent"
-                :barColor="'bg-blue-500'" />
-            </div>
-          </div>
-          <!-- Haute -->
-          <div>
-            <h5
-              class="text-xs font-semibold text-orange-600 mb-2 uppercase tracking-wide">
-              Haute (31-60)
-            </h5>
-            <div class="space-y-1.5">
-              <PropertyBar
-                v-for="(item, index) in highSpecificityList"
-                :key="index"
-                :label="item.selector"
-                :count="item.count"
-                :maxCount="maxSelectorCount"
-                :percent="item.percent"
-                :barColor="'bg-orange-500'" />
-            </div>
-          </div>
-          <!-- Critique -->
-          <div>
-            <h5
-              class="text-xs font-semibold text-red-600 mb-2 uppercase tracking-wide">
-              Critique (>60)
-            </h5>
-            <div class="space-y-1.5">
-              <PropertyBar
-                v-for="(item, index) in criticalSpecificityList"
-                :key="index"
-                :label="item.selector"
-                :count="item.count"
-                :maxCount="maxSelectorCount"
-                :percent="item.percent"
-                :barColor="'bg-red-500'" />
+                :barColor="range.color" />
             </div>
           </div>
         </div>
@@ -141,122 +72,67 @@ import DistributionDetails from "../DistributionDetails.vue";
 import PropertyBar from "../PropertyBar.vue";
 import Section from "../Section.vue";
 import Infos from "../Infos.vue";
-import { gap } from "../../js/helpers";
 import { computed } from "vue";
 
 // Props attendues depuis le parent
 const props = defineProps({
-  projectData: Object,
+  selectors: Object,
 });
 
-// Écart pour les sélecteurs (réactif avec computed)
-const gapSelector = computed(() =>
-  gap(
-    props.projectData.cssAnalysisResult.selectors.total,
-    props.projectData.cssAnalysisResult.selectors.totalUnique
-  )
-);
+// Données de base
+const selectors = computed(() => props.selectors || {});
 
-// Vérifier si "0,0,1" est supérieur à 5
-const isSpecificityAboveThreshold = computed(() => {
-  const specificity =
-    props.projectData.cssAnalysisResult.selectors.specificity.unique;
-  return specificity["0,0,1"] < 5;
-});
-
-// Vérifier la présence de sélecteurs avec une spécificité d'ID ou plus (1,…,… ou supérieur)
-const hasIdOrHigherSpecificity = computed(() => {
-  const specificity =
-    props.projectData.cssAnalysisResult.selectors.specificity.unique;
-
-  // Parcourir les clés et vérifier si au moins une commence par "1," ou plus
-  return Object.keys(specificity).some((key) => {
-    const [idPart] = key.split(",").map(Number); // Extraire le premier nombre
-    return idPart >= 1; // Vérifier si le premier nombre est >= 1
-  });
-});
-
-const specificityData = computed(
-  () => props.projectData?.cssAnalysisResult?.selectors?.specificity || {}
-);
+const specificityData = computed(() => selectors.value?.specificity || {});
 
 const total = computed(() => specificityData.value.total || 0);
 
-// Calculer la somme de spécificité depuis le format "id,class,element"
+// Catégories de spécificité
+const SPECIFICITY_RANGES = [
+  { key: "low", min: 0, max: 10, label: "Basse (0-10)", color: "bg-green-500" },
+  {
+    key: "medium",
+    min: 11,
+    max: 30,
+    label: "Moyenne (11-30)",
+    color: "bg-blue-500",
+  },
+  {
+    key: "high",
+    min: 31,
+    max: 60,
+    label: "Haute (31-60)",
+    color: "bg-orange-500",
+  },
+  {
+    key: "critical",
+    min: 61,
+    max: Infinity,
+    label: "Critique (>60)",
+    color: "bg-red-500",
+  },
+];
+
+// Fonctions utilitaires
 const calculateSpecificitySum = (key) => {
-  const parts = key.split(",").map(Number);
-  return parts[0] * 100 + parts[1] * 10 + parts[2]; // ID * 100 + classes * 10 + éléments
+  const [id, classes, elements] = key.split(",").map(Number);
+  return (id ?? 0) * 100 + (classes ?? 0) * 10 + (elements ?? 0);
 };
 
-const lowSpecificity = computed(() => {
+const countInRange = (min, max) => {
   try {
     let count = 0;
     Object.entries(specificityData.value.unique || {}).forEach(([key, val]) => {
       const sum = calculateSpecificitySum(key);
-      if (sum <= 10) count += val;
+      if (sum >= min && sum <= max) count += val;
     });
     return total.value > 0 ? Math.round((count / total.value) * 100) : 0;
   } catch (e) {
-    console.error("Erreur calcul lowSpecificity:", e);
+    console.error("Erreur countInRange:", e);
     return 0;
   }
-});
+};
 
-const mediumSpecificity = computed(() => {
-  try {
-    let count = 0;
-    Object.entries(specificityData.value.unique || {}).forEach(([key, val]) => {
-      const sum = calculateSpecificitySum(key);
-      if (sum >= 11 && sum <= 30) count += val;
-    });
-    return total.value > 0 ? Math.round((count / total.value) * 100) : 0;
-  } catch (e) {
-    console.error("Erreur calcul mediumSpecificity:", e);
-    return 0;
-  }
-});
-
-const highSpecificity = computed(() => {
-  try {
-    let count = 0;
-    Object.entries(specificityData.value.unique || {}).forEach(([key, val]) => {
-      const sum = calculateSpecificitySum(key);
-      if (sum >= 31 && sum <= 60) count += val;
-    });
-    return total.value > 0 ? Math.round((count / total.value) * 100) : 0;
-  } catch (e) {
-    console.error("Erreur calcul highSpecificity:", e);
-    return 0;
-  }
-});
-
-const criticalSpecificity = computed(() => {
-  return (
-    100 - lowSpecificity.value - mediumSpecificity.value - highSpecificity.value
-  );
-});
-
-const criticalCount = computed(() => {
-  try {
-    let count = 0;
-    Object.entries(specificityData.value.unique || {}).forEach(([key, val]) => {
-      const sum = calculateSpecificitySum(key);
-      if (sum > 60) count += val;
-    });
-    return count;
-  } catch (e) {
-    console.error("Erreur calcul criticalCount:", e);
-    return 0;
-  }
-});
-
-const topSelectors = computed(() => {
-  // La structure n'a pas de items, on doit utiliser complexity ou autre chose
-  // Pour l'instant on retourne un tableau vide si pas de données
-  return [];
-});
-
-// Tri et catégorisation des sélecteurs par spécificité
+// Trier et catégoriser les sélecteurs par spécificité
 const sortedSelectors = computed(() => {
   try {
     const unique = specificityData.value.unique || {};
@@ -274,21 +150,38 @@ const sortedSelectors = computed(() => {
   }
 });
 
-// Séparer par catégorie
+// Calcul des pourcentages par catégorie
+const specificityStats = computed(() => {
+  const stats = {};
+  SPECIFICITY_RANGES.forEach((range) => {
+    stats[range.key] = countInRange(range.min, range.max);
+  });
+  return stats;
+});
+
+const lowSpecificity = computed(() => specificityStats.value.low);
+const mediumSpecificity = computed(() => specificityStats.value.medium);
+const highSpecificity = computed(() => specificityStats.value.high);
+const criticalSpecificity = computed(() => specificityStats.value.critical);
+
+// Filtrer les sélecteurs par catégorie
+const getListByCategory = (min, max) =>
+  sortedSelectors.value.filter((s) => s.sum >= min && s.sum <= max);
+
 const lowSpecificityList = computed(() =>
-  sortedSelectors.value.filter((s) => s.sum <= 10)
+  getListByCategory(SPECIFICITY_RANGES[0].min, SPECIFICITY_RANGES[0].max)
 );
 
 const mediumSpecificityList = computed(() =>
-  sortedSelectors.value.filter((s) => s.sum >= 11 && s.sum <= 30)
+  getListByCategory(SPECIFICITY_RANGES[1].min, SPECIFICITY_RANGES[1].max)
 );
 
 const highSpecificityList = computed(() =>
-  sortedSelectors.value.filter((s) => s.sum >= 31 && s.sum <= 60)
+  getListByCategory(SPECIFICITY_RANGES[2].min, SPECIFICITY_RANGES[2].max)
 );
 
 const criticalSpecificityList = computed(() =>
-  sortedSelectors.value.filter((s) => s.sum > 60)
+  getListByCategory(SPECIFICITY_RANGES[3].min, SPECIFICITY_RANGES[3].max)
 );
 
 // Valeur maximale pour normaliser les barres
@@ -296,4 +189,48 @@ const maxSelectorCount = computed(() => {
   if (sortedSelectors.value.length === 0) return 1;
   return Math.max(...sortedSelectors.value.map((s) => s.count));
 });
+
+// Validations et avertissements
+const isSpecificityAboveThreshold = computed(() => {
+  const specificity = specificityData.value.unique || {};
+  return (specificity["0,0,1"] ?? 0) < 5;
+});
+
+const hasIdOrHigherSpecificity = computed(() => {
+  return Object.keys(specificityData.value.unique || {}).some((key) => {
+    const [idPart] = key.split(",").map(Number);
+    return (idPart ?? 0) >= 1;
+  });
+});
+
+// Fonctions helper pour le template
+const getTitleClass = (key) => {
+  const colorMap = {
+    low: "text-green-600",
+    medium: "text-blue-500",
+    high: "text-orange-500",
+    critical: "text-red-500",
+  };
+  return colorMap[key] || "";
+};
+
+const getColorClass = (key) => {
+  const colorMap = {
+    low: "green-600",
+    medium: "blue-600",
+    high: "orange-600",
+    critical: "red-600",
+  };
+  return colorMap[key] || "";
+};
+
+const getCategoryList = (key) => {
+  const lists = {
+    low: lowSpecificityList.value,
+    medium: mediumSpecificityList.value,
+    high: highSpecificityList.value,
+    critical: criticalSpecificityList.value,
+  };
+  return lists[key] || [];
+};
 </script>

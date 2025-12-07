@@ -1,8 +1,7 @@
 <template>
   <Block
     title="Détails des fichiers HTML"
-    desc="Inventaire des fichiers HTML analysés avec liens, favicon, viewport, erreurs W3C et métriques Lighthouse."
-    class="col-span-12">
+    desc="Inventaire des fichiers HTML analysés avec liens, favicon, viewport, erreurs W3C et métriques Lighthouse.">
     <div class="grid gap-8 2xl:grid-cols-4">
       <div class="overflow-x-scroll lg:overflow-auto 2xl:col-span-3">
         <table
@@ -93,42 +92,42 @@
         </ul>
       </Infos>
     </div>
+    <Modal
+      :isOpen="isModalOpen"
+      title="Détails des erreurs de validation"
+      @close="closeModal">
+      <ul v-if="modalErrors.length" class="pl-5 mb-4">
+        <li v-for="(error, index) in modalErrors" :key="index" class="mb-4">
+          <div class="font-bold text-red-600">Erreur {{ index + 1 }} :</div>
+          <div><strong>Type : </strong> {{ error.type }}</div>
+          <div class="text-xs">
+            Ligne {{ error.lastLine }} | Colonne {{ error.lastColumn }}
+          </div>
+          <div>
+            <strong>Message : </strong>
+            <span>{{ error.message }}</span>
+          </div>
+          <div>
+            <strong>Extrait du code : </strong>
+            <pre class="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap">{{
+              error.extract.trim()
+            }}</pre>
+          </div>
+          <div>
+            <strong>Partie concernée : </strong>
+            <span class="text-blue-500">
+              {{
+                error.extract.slice(
+                  error.hiliteStart,
+                  error.hiliteStart + error.hiliteLength
+                )
+              }}
+            </span>
+          </div>
+        </li>
+      </ul>
+    </Modal>
   </Block>
-  <Modal
-    :isOpen="isModalOpen"
-    title="Détails des erreurs de validation"
-    @close="closeModal">
-    <ul v-if="modalErrors.length" class="pl-5 mb-4">
-      <li v-for="(error, index) in modalErrors" :key="index" class="mb-4">
-        <div class="font-bold text-red-600">Erreur {{ index + 1 }} :</div>
-        <div><strong>Type : </strong> {{ error.type }}</div>
-        <div class="text-xs">
-          Ligne {{ error.lastLine }} | Colonne {{ error.lastColumn }}
-        </div>
-        <div>
-          <strong>Message : </strong>
-          <span>{{ error.message }}</span>
-        </div>
-        <div>
-          <strong>Extrait du code : </strong>
-          <pre class="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap">{{
-            error.extract.trim()
-          }}</pre>
-        </div>
-        <div>
-          <strong>Partie concernée : </strong>
-          <span class="text-blue-500">
-            {{
-              error.extract.slice(
-                error.hiliteStart,
-                error.hiliteStart + error.hiliteLength
-              )
-            }}
-          </span>
-        </div>
-      </li>
-    </ul>
-  </Modal>
 </template>
 
 <script setup>
