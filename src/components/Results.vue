@@ -174,6 +174,7 @@
           <BlockScores
             id="scores"
             :projectData="projectData"
+            :classStats="classStats"
             class="col-span-12 lg:col-span-6 xl:col-span-8 scroll-mt-28" />
 
           <BlockFilesHtml
@@ -218,6 +219,7 @@
             :customProperties="projectData.cssAnalysisResult.customProperties"
             :imports="projectData.cssAnalysisResult.imports"
             :classAnalysis="projectData.classAnalysis"
+            :classStats="classStats"
             class="col-span-12 lg:col-span-6 xl:col-span-8 scroll-mt-28" />
 
           <BlockCssStats
@@ -306,14 +308,15 @@ const API_BASE_URL = import.meta.env.PROD
   ? "https://project-analysis-backend.onrender.com"
   : import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
-console.log("API_BASE_URL:", API_BASE_URL);
-console.log("Environment MODE:", import.meta.env.MODE);
-console.log("Environment PROD:", import.meta.env.PROD);
-console.log("Environment DEV:", import.meta.env.DEV);
+// console.log("API_BASE_URL:", API_BASE_URL);
+// console.log("Environment MODE:", import.meta.env.MODE);
+// console.log("Environment PROD:", import.meta.env.PROD);
+// console.log("Environment DEV:", import.meta.env.DEV);
 
 const projects = ref([]);
 const selectedProject = ref(null);
 const projectData = ref(null);
+const classStats = ref(null);
 const fonts = ref([]);
 const loading = ref(false);
 const activeSection = ref(null);
@@ -429,6 +432,16 @@ const scrollToTop = () => {
   });
 };
 
+// Récupère les statistiques de classe depuis l'API
+const fetchClassStats = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/stats/class`);
+    classStats.value = await response.json();
+  } catch (error) {
+    console.error("Erreur lors du chargement des statistiques :", error);
+  }
+};
+
 // Récupère les projets depuis l'API
 const fetchProjects = async () => {
   try {
@@ -458,6 +471,7 @@ const fetchProjectData = async () => {
 
 onMounted(() => {
   fetchProjects();
+  fetchClassStats();
   window.addEventListener("scroll", handleScroll);
 });
 

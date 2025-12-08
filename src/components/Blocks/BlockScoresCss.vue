@@ -9,7 +9,8 @@
           :value="
             props.projectData.cssAnalysisResult.customProperties.score.total /
             100
-          " />
+          "
+          :averageValue="props.classStats?.stats?.cssVariables?.mean / 100" />
       </div>
       <!-- <div class="flex flex-col gap-8 items-center">
         <h4 class="text-sm">Organisation</h4>
@@ -20,19 +21,20 @@
         <ProgressCircle
           :value="
             props.projectData.cssAnalysisResult.typography.score.total / 100
-          " />
+          "
+          :averageValue="props.classStats?.stats?.cssTypography?.mean / 100" />
       </div>
       <div class="flex flex-col gap-8 items-center">
         <h4 class="text-sm">Imports CSS</h4>
         <ProgressCircle
-          :value="
-            props.projectData.cssAnalysisResult.imports.score.total / 100
-          " />
+          :value="props.projectData.cssAnalysisResult.imports.score.total / 100"
+          :averageValue="props.classStats?.stats?.cssImports?.mean / 100" />
       </div>
       <div class="flex flex-col gap-8 items-center">
         <h4 class="text-sm">BEM</h4>
         <ProgressCircle
-          :value="props.projectData.classAnalysis.score.bem.total / 100" />
+          :value="props.projectData.classAnalysis.score.bem.total / 100"
+          :averageValue="props.classStats?.stats?.classAnalysis?.mean / 100" />
       </div>
     </div>
   </Block>
@@ -45,5 +47,6 @@ import { computed } from "vue";
 
 const props = defineProps({
   projectData: Object,
+  classStats: Object,
 });
 </script>
