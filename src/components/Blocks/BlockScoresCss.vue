@@ -36,6 +36,11 @@
           :value="props.projectData.classAnalysis.score.bem.total / 100"
           :averageValue="props.classStats?.stats?.classAnalysis?.mean / 100" />
       </div>
+      <p
+        class="col-span-2 md:col-span-4 text-xs text-gray-500 flex items-center gap-2">
+        <span class="inline-block w-3 h-3 rounded-full bg-gray-400"></span>
+        Le cercle et le score gris indiquent la moyenne de la classe.
+      </p>
     </div>
   </Block>
 </template>

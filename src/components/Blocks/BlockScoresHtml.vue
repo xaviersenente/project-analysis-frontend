@@ -53,6 +53,10 @@
             " />
         </div>
       </div>
+      <p class="col-span-5 text-xs text-gray-500 flex items-center gap-2">
+        <span class="inline-block w-3 h-3 rounded-full bg-gray-400"></span>
+        Le cercle et le score gris indiquent la moyenne de la classe.
+      </p>
     </div>
   </Block>
 </template>
