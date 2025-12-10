@@ -30,11 +30,11 @@
         <details
           v-for="(block, blockName) in sortedBlocks"
           :key="blockName"
-          class="bg-white border border-gray-200 rounded-lg overflow-hidden self-start">
+          class="bg-white border border-slate-200 rounded-lg overflow-hidden self-start">
           <summary
-            class="cursor-pointer p-3 hover:bg-gray-50 font-medium flex justify-between items-center">
+            class="cursor-pointer p-3 hover:bg-slate-50 font-medium flex justify-between items-center">
             <span class="text-blue-700">{{ blockName }}</span>
-            <span class="text-xs text-gray-500">
+            <span class="text-xs text-slate-500">
               {{
                 block.elements.length +
                 block.modifiers.length +
@@ -43,10 +43,10 @@
               classes
             </span>
           </summary>
-          <div class="p-4 bg-gray-50 space-y-3">
+          <div class="p-4 bg-slate-50 space-y-3">
             <!-- Éléments -->
             <div v-if="block.elements.length > 0">
-              <div class="text-xs font-semibold text-gray-600 uppercase mb-2">
+              <div class="text-xs font-semibold text-slate-600 uppercase mb-2">
                 Éléments ({{ block.elements.length }})
               </div>
               <div class="flex flex-wrap gap-2">
@@ -61,7 +61,7 @@
 
             <!-- Modificateurs -->
             <div v-if="block.modifiers.length > 0">
-              <div class="text-xs font-semibold text-gray-600 uppercase mb-2">
+              <div class="text-xs font-semibold text-slate-600 uppercase mb-2">
                 Modificateurs ({{ block.modifiers.length }})
               </div>
               <div class="flex flex-wrap gap-2">
@@ -76,7 +76,7 @@
 
             <!-- Modificateurs d'éléments -->
             <div v-if="block.elementModifiers.length > 0">
-              <div class="text-xs font-semibold text-gray-600 uppercase mb-2">
+              <div class="text-xs font-semibold text-slate-600 uppercase mb-2">
                 Modificateurs d'éléments ({{ block.elementModifiers.length }})
               </div>
               <div class="flex flex-wrap gap-2">
@@ -96,7 +96,7 @@
                 block.modifiers.length === 0 &&
                 block.elementModifiers.length === 0
               "
-              class="text-sm text-gray-500 italic">
+              class="text-sm text-slate-500 italic">
               Bloc sans éléments ni modificateurs
             </div>
           </div>

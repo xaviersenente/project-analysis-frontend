@@ -88,12 +88,12 @@
         <template
           v-for="(navSection, index) in navSections"
           :key="navSection.title">
-          <div class="border-t border-gray-300" v-if="index > 0"></div>
+          <div class="border-t border-slate-300" v-if="index > 0"></div>
 
           <div>
             <h3
               :class="[
-                'text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-2',
+                'text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-2',
                 mobileNavOpen ? 'mb-2' : 'mb-3',
               ]">
               <HtmlIcon
@@ -126,7 +126,7 @@
       <button
         v-if="showScrollTop"
         @click="scrollToTop"
-        class="fixed bottom-8 right-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 z-10"
+        class="fixed bottom-8 right-8 bg-slate-800 text-white p-3 rounded-full shadow-lg hover:bg-slate-700 transition-all duration-300 z-10"
         aria-label="Retour en haut">
         <svg
           class="w-6 h-6"
@@ -185,17 +185,18 @@
           <BlockTags
             id="tags"
             :projectData="projectData"
-            class="col-span-12 xl:col-span-6 2xl:col-span-4 scroll-mt-28" />
+            class="col-span-12 xl:col-span-6 scroll-mt-28" />
 
           <BlockStructure
             id="structure"
             :projectData="projectData"
-            class="col-span-12 xl:col-span-6 2xl:col-span-4 scroll-mt-28" />
+            class="col-span-12 xl:col-span-6 scroll-mt-28" />
 
           <BlockImages
             id="images"
             :projectData="projectData"
-            class="col-span-12 2xl:col-span-4 scroll-mt-28" />
+            :globalImagesAnalysis="projectData.globalImagesAnalysis"
+            class="col-span-12 scroll-mt-28" />
 
           <Block
             id="css"
@@ -234,7 +235,8 @@
 
           <BlockCssColor
             id="css-colors"
-            :projectData="projectData.cssAnalysisResult.values.colors"
+            :colorsData="projectData.cssAnalysisResult.colors"
+            :gradientsData="projectData.cssAnalysisResult.values.gradients"
             class="col-span-12 scroll-mt-28" />
 
           <BlockTypography

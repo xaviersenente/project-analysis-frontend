@@ -42,7 +42,7 @@
             v-show="filteredCategories[category.key]"
             :key="category.key">
             <h5
-              class="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+              class="text-xs font-semibold text-slate-700 mb-2 uppercase tracking-wide">
               {{ category.label }} ({{
                 filteredCategories[category.key]?.length
               }})
@@ -62,7 +62,7 @@
           <!-- Non déclarées -->
           <div v-if="undeclaredVariables.length > 0">
             <h5
-              class="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+              class="text-xs font-semibold text-slate-700 mb-2 uppercase tracking-wide">
               Non déclarées
             </h5>
             <div class="space-y-2">
@@ -167,7 +167,7 @@ const getGapClass = (gapValue, type = "selector") => {
     return "text-red-500";
   }
 
-  return "text-gray-600";
+  return "text-slate-600";
 };
 
 // Fonction pour déterminer la classe des variables non déclarées
@@ -223,7 +223,7 @@ const maxUsageCount = computed(() => {
 
 // Couleur de la barre uniforme
 const getBarColor = (count) => {
-  return "bg-gray-700";
+  return "bg-slate-700";
 };
 
 // Recommandations depuis le score

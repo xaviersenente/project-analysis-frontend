@@ -7,7 +7,7 @@
         <table
           class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
           <thead>
-            <tr class="bg-gray-100 *:px-3 *:py-2">
+            <tr class="bg-slate-100 *:px-3 *:py-2">
               <th
                 v-for="header in headers"
                 :key="header.key"
@@ -20,7 +20,7 @@
             <tr
               v-for="file in files"
               :key="file.file"
-              class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+              class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b *:border-b-slate-300">
               <td>{{ getFileName(file.file) }}</td>
               <td>{{ file.title }}</td>
               <td class="font-mono">{{ file.deadLinks }}</td>
@@ -54,13 +54,19 @@
                   </button>
                 </div>
               </td>
+              <!-- <td class="font-mono">
+                <Tag
+                  :value="
+                    Math.round(file.imagesAnalysis?.score?.total || 0) / 100
+                  " />
+              </td> -->
               <td v-for="metric in metrics" :key="metric.key" class="font-mono">
                 <Tag :value="file.lighthouseReport[metric.key]" />
               </td>
             </tr>
           </tbody>
           <tfoot>
-            <tr class="bg-gray-50 font-semibold *:px-3 *:py-2">
+            <tr class="bg-slate-50 font-semibold *:px-3 *:py-2">
               <td colspan="2">Moyenne / Statut</td>
               <td class="font-mono">{{ average.deadLinks }}</td>
               <td class="font-mono">{{ average.externalLinks }}</td>
@@ -74,6 +80,7 @@
                 <span v-else>0</span>
               </td>
               <td class="font-mono">{{ average.validationErrors }}</td>
+              <!-- <td class="font-mono">{{ average.imagesScore }}</td> -->
               <td v-for="metric in metrics" :key="metric.key" class="font-mono">
                 {{ average[metric.key] }}
               </td>
@@ -81,7 +88,7 @@
           </tfoot>
         </table>
       </div>
-      <Infos v-if="adviceMessages.length" class="!mt-0">
+      <Infos v-if="adviceMessages.length" class="mt-0">
         <ul class="list-decimal pl-5">
           <li
             v-for="(message, index) in adviceMessages"
@@ -109,7 +116,7 @@
           </div>
           <div>
             <strong>Extrait du code : </strong>
-            <pre class="bg-gray-100 p-2 rounded text-sm whitespace-pre-wrap">{{
+            <pre class="bg-slate-100 p-2 rounded text-sm whitespace-pre-wrap">{{
               error.extract.trim()
             }}</pre>
           </div>
@@ -167,6 +174,7 @@ const headers = [
   { key: "mailtoLinks", label: "Mailto", width: "6%" },
   { key: "viewport", label: "Viewport", width: "6%" },
   { key: "validationErrors", label: "Erreurs W3C", width: "6%" },
+  // { key: "imagesScore", label: "Score img", width: "6%" },
   { key: "performance", label: "Perf.", width: "4%" },
   { key: "accessibility", label: "Acces.", width: "4%" },
   { key: "bestPractices", label: "BP", width: "4%" },
@@ -248,6 +256,7 @@ const average = computed(() => {
       mailtoLinks: "0",
       viewport: false,
       validationErrors: "0",
+      imagesScore: "0",
       performance: "0",
       accessibility: "0",
       bestPractices: "0",
@@ -261,6 +270,7 @@ const average = computed(() => {
       acc.externalLinks += file.externalLinks || 0;
       acc.mailtoLinks += file.mailtoLinks || 0;
       acc.validationErrors += file.validationErrors.length || 0;
+      acc.imagesScore += file.imagesAnalysis?.score?.total || 0;
       acc.performance += file.lighthouseReport?.performance || 0;
       acc.accessibility += file.lighthouseReport?.accessibility || 0;
       acc.bestPractices += file.lighthouseReport?.bestPractices || 0;
@@ -280,6 +290,7 @@ const average = computed(() => {
       accessibility: 0,
       bestPractices: 0,
       seo: 0,
+      imagesScore: 0,
       favicon: true,
       viewport: true,
     }
@@ -292,6 +303,7 @@ const average = computed(() => {
     externalLinks: formatNumber(sum.externalLinks / totalFiles),
     mailtoLinks: formatNumber(sum.mailtoLinks / totalFiles),
     validationErrors: formatNumber(sum.validationErrors / totalFiles),
+    imagesScore: ((sum.imagesScore || 0) / totalFiles).toFixed(0),
     performance: ((sum.performance * 100) / totalFiles).toFixed(0),
     accessibility: ((sum.accessibility * 100) / totalFiles).toFixed(0),
     bestPractices: ((sum.bestPractices * 100) / totalFiles).toFixed(0),

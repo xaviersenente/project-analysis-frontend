@@ -8,9 +8,9 @@
           <div
             v-for="(font, idx) in webfontDetails"
             :key="idx"
-            class="text-sm text-gray-600">
+            class="text-sm text-slate-600">
             <a
-              class="font-semibold text-gray-800 flex items-center gap-2"
+              class="font-semibold text-slate-800 flex items-center gap-2"
               :href="font.url"
               >{{ font.provider }}
               <svg
@@ -34,7 +34,7 @@
       <Section title="Prévisualisation des polices" class="md:col-span-3">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <div v-for="family in fontFamiliesData" :key="family.name" class="">
-            <h4 class="text-gray-400 mb-3 text-sm">
+            <h4 class="text-slate-400 mb-3 text-sm">
               {{ family.name }}
             </h4>
             <p class="text-4xl" :style="{ fontFamily: family.name }">

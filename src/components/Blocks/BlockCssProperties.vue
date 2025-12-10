@@ -140,9 +140,9 @@ const CATEGORIES = [
   {
     key: "other",
     label: "Autre",
-    titleClass: "text-gray-600",
-    headerClass: "text-gray-600",
-    barColor: "bg-gray-500",
+    titleClass: "text-slate-600",
+    headerClass: "text-slate-600",
+    barColor: "bg-slate-500",
     props: [],
   },
 ];

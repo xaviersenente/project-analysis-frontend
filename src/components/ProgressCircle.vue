@@ -7,7 +7,7 @@
       r="49"
       fill="none"
       stroke-width="20"
-      class="stroke-gray-200" />
+      class="stroke-slate-200" />
     <!-- Cercle de progression principal -->
     <circle
       cx="60"
@@ -29,7 +29,7 @@
       fill="none"
       stroke-width="4"
       stroke-linecap="round"
-      class="transition-all duration-1000 ease-in-out stroke-gray-400"
+      class="transition-all duration-1000 ease-in-out stroke-slate-400"
       :style="averageCircleStyle" />
     <!-- Texte affichant le pourcentage de l'étudiant -->
     <text
@@ -48,7 +48,7 @@
       y="78"
       text-anchor="middle"
       font-size="14"
-      class="fill-gray-400">
+      class="fill-slate-400">
       {{ averagePercentage }}
     </text>
   </svg>

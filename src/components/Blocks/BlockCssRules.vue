@@ -138,15 +138,6 @@ const getCategoryRules = (categoryKey) => {
   );
 };
 
-// Alias pour la compatibilité
-const lightRules = computed(() => getCategoryRules("light"));
-const normalRulesList = computed(() => getCategoryRules("normal"));
-const heavyRulesList = computed(() => getCategoryRules("heavy"));
-
-const thinRules = computed(() => ruleStats.value.light);
-const normalRules = computed(() => ruleStats.value.normal);
-const heavyRules = computed(() => ruleStats.value.heavy);
-
 // Valeur maximale pour normaliser les barres
 const maxRuleCount = computed(() => {
   if (sortedRules.value.length === 0) return 1;

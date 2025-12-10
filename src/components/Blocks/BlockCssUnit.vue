@@ -157,12 +157,6 @@ const getCategoryUnits = (categoryKey) => {
     .slice(0, 10);
 };
 
-// Alias pour la compatibilité
-const relativeUnitsList = computed(() => getCategoryUnits("relative"));
-const absoluteUnitsList = computed(() => getCategoryUnits("absolute"));
-const relativePercent = computed(() => unitStats.value.relative);
-const absolutePercent = computed(() => unitStats.value.absolute);
-
 // Valeur maximale pour normaliser les barres
 const maxUnitCount = computed(() => {
   if (sortedUnits.value.length === 0) return 1;

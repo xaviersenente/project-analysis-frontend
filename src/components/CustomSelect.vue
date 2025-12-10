@@ -2,14 +2,14 @@
   <div class="relative w-full md:w-64">
     <button
       @click="toggleDropdown"
-      class="w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+      class="w-full bg-white border border-slate-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
       <span class="block truncate">
         {{ selectedOption ? selectedOption.label : "Sélectionner une option" }}
       </span>
       <span
         class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <svg
-          class="h-5 w-5 text-gray-400"
+          class="h-5 w-5 text-slate-400"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

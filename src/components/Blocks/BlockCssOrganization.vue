@@ -39,7 +39,7 @@
       <div class="overflow-x-auto">
         <table class="min-w-full table-auto text-xs">
           <thead>
-            <tr class="border-b border-gray-200">
+            <tr class="border-b border-slate-200">
               <th class="text-left py-2 px-3 font-semibold">Fichier</th>
               <th class="text-left py-2 px-3 font-semibold">Catégorie</th>
               <th class="text-right py-2 px-3 font-semibold">Classes</th>
@@ -51,9 +51,9 @@
             <tr
               v-for="(file, index) in sortedFiles"
               :key="index"
-              class="border-b border-gray-100 hover:bg-gray-50">
+              class="border-b border-slate-100 hover:bg-slate-50">
               <td class="py-2 px-3 max-w-32 truncate">
-                <code class="text-xs bg-gray-100 px-1 rounded max-w-32">{{
+                <code class="text-xs bg-slate-100 px-1 rounded max-w-32">{{
                   file.path
                 }}</code>
               </td>
@@ -183,29 +183,25 @@ const getCategoryLabel = (category) => {
 const getCategoryColor = (category) => {
   const colors = {
     fonts: "text-purple-600",
-    vendor: "text-gray-600",
+    vendor: "text-slate-600",
     utils: "text-blue-600",
     base: "text-green-600",
     layout: "text-orange-600",
     custom: "text-pink-600",
   };
-  return colors[category] || "text-gray-600";
+  return colors[category] || "text-slate-600";
 };
 
 const getCategoryBadgeClass = (category) => {
   const classes = {
     fonts: "bg-purple-100 text-purple-700",
-    vendor: "bg-gray-100 text-gray-700",
+    vendor: "bg-slate-100 text-slate-700",
     utils: "bg-blue-100 text-blue-700",
     base: "bg-green-100 text-green-700",
     layout: "bg-orange-100 text-orange-700",
     custom: "bg-pink-100 text-pink-700",
   };
-  return classes[category] || "bg-gray-100 text-gray-700";
-};
-
-const getPercent = (value, total) => {
-  return total > 0 ? Math.round((value / total) * 100) : 0;
+  return classes[category] || "bg-slate-100 text-slate-700";
 };
 
 // Score

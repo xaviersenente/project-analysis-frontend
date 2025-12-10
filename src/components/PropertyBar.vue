@@ -9,7 +9,7 @@
         ></span
       >
     </div>
-    <div class="w-full bg-gray-200 rounded h-1">
+    <div class="w-full bg-slate-200 rounded h-1">
       <div
         :class="barColor"
         class="h-1 rounded"
@@ -28,7 +28,7 @@ const props = defineProps({
   percent: Number, // conservé pour rétrocompatibilité d'affichage
   barColor: {
     type: String,
-    default: "bg-gray-500",
+    default: "bg-slate-500",
   },
 });
 

@@ -3,20 +3,20 @@
     <!-- Résumé -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="p-4 bg-green-50 rounded-lg">
-        <div class="text-xs text-gray-600 uppercase">Couverture HTML</div>
+        <div class="text-xs text-slate-600 uppercase">Couverture HTML</div>
         <div class="text-2xl font-bold text-green-700">
           {{ Math.round(classAnalysis.mismatch.coverageHtml * 100) }}%
         </div>
-        <div class="text-xs text-gray-600 mt-1">
+        <div class="text-xs text-slate-600 mt-1">
           Proportion de classes HTML ayant une définition CSS
         </div>
       </div>
       <div class="p-4 bg-blue-50 rounded-lg">
-        <div class="text-xs text-gray-600 uppercase">Couverture CSS</div>
+        <div class="text-xs text-slate-600 uppercase">Couverture CSS</div>
         <div class="text-2xl font-bold text-blue-700">
           {{ Math.round(classAnalysis.mismatch.coverageCss * 100) }}%
         </div>
-        <div class="text-xs text-gray-600 mt-1">
+        <div class="text-xs text-slate-600 mt-1">
           Proportion de classes CSS utilisées dans le HTML
         </div>
       </div>
@@ -35,7 +35,7 @@
       </div>
       <div
         class="p-4 bg-white border border-t-0 border-orange-200 rounded-b-lg">
-        <p class="text-sm text-gray-600 mb-3">
+        <p class="text-sm text-slate-600 mb-3">
           Ces classes sont définies dans le CSS mais n'apparaissent dans aucune
           page HTML analysée. Elles peuvent être supprimées pour optimiser le
           code.
@@ -78,7 +78,7 @@
         </span>
       </div>
       <div class="p-4 bg-white border border-t-0 border-amber-200 rounded-b-lg">
-        <p class="text-sm text-gray-600 mb-3">
+        <p class="text-sm text-slate-600 mb-3">
           Ces classes apparaissent dans le HTML mais ne sont pas définies dans
           le CSS. Elles peuvent provenir de frameworks JavaScript, de classes
           dynamiques ou être des erreurs.
@@ -113,23 +113,23 @@
     <!-- Analyse de la fréquence des classes -->
     <div v-if="topFrequentClasses.length > 0">
       <h4 class="font-semibold mb-3 text-lg">Classes les plus fréquentes</h4>
-      <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <table class="w-full text-sm">
-          <thead class="bg-gray-50">
+          <thead class="bg-slate-50">
             <tr>
-              <th class="text-left p-3 font-semibold text-gray-700">Classe</th>
-              <th class="text-right p-3 font-semibold text-gray-700">
+              <th class="text-left p-3 font-semibold text-slate-700">Classe</th>
+              <th class="text-right p-3 font-semibold text-slate-700">
                 Fréquence
               </th>
-              <th class="text-right p-3 font-semibold text-gray-700">
+              <th class="text-right p-3 font-semibold text-slate-700">
                 Utilisation
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
+          <tbody class="divide-y divide-slate-200">
             <tr v-for="(item, index) in topFrequentClasses" :key="item.name">
               <td class="p-3">
-                <code class="text-sm bg-gray-100 px-2 py-1 rounded">{{
+                <code class="text-sm bg-slate-100 px-2 py-1 rounded">{{
                   item.name
                 }}</code>
               </td>
@@ -142,7 +142,7 @@
                       width: (item.count / maxFrequency) * 100 + '%',
                       minWidth: '4px',
                     }"></div>
-                  <span class="text-xs text-gray-500 w-12"
+                  <span class="text-xs text-slate-500 w-12"
                     >{{ ((item.count / maxFrequency) * 100).toFixed(0) }}%</span
                   >
                 </div>

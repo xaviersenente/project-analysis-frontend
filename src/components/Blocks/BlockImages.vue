@@ -2,69 +2,66 @@
   <Block
     title="Images"
     desc="Statistiques sur les images : formats, poids total/moyen, présence des attributs alt et répartition par format.">
-    <div class="grid grid-cols-2 gap-8 mb-12 lg:grid-cols-4 2xl:grid-cols-2">
+    <div class="grid grid-cols-2 gap-8 mb-12 lg:grid-cols-4">
       <Section
-        title="Images"
-        subtitle="(Total / unique)"
-        size="sm"
-        :value="stats.totalImages"
-        :additionalValue="stats.uniqueImages" />
+        title="Nombre total d'images"
+        class="col-span-2"
+        :value="globalStats.totalImages" />
 
       <Section
-        title="Moy. 5 img + lourdes"
+        title="Lazy loading"
+        subtitle="(% / images)"
         size="sm"
-        :value="formatSize(stats.avgSizeTop5)"
-        :class="getSizeClass(stats.avgSizeTop5)">
+        :value="lazyLoadingRatio + '%'"
+        :additionalValue="globalStats.imagesWithLazyLoading" />
+
+      <Section title="Formats" class="row-span-2">
+        <table
+          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
+          <thead>
+            <tr class="bg-slate-100 *:px-3 *:py-2">
+              <th>Format</th>
+              <th class="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(count, fmt) in filteredFormats"
+              :key="fmt"
+              class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b *:border-b-slate-300">
+              <td class="uppercase">{{ fmt }}</td>
+              <td class="text-right font-mono">{{ count }}</td>
+            </tr>
+          </tbody>
+        </table>
       </Section>
 
       <Section
-        title="Poids"
-        subtitle="(Total / unique)"
+        title="Alt présents"
+        subtitle="(manquants)"
         size="sm"
-        :value="formatSize(stats.totalSizeAll)"
-        :additionalValue="formatSize(stats.totalSizeUnique)" />
+        :value="globalStats.imagesWithAlt"
+        :additionalValue="globalStats.imagesWithoutAlt"
+        :class="getAltImg(globalStats.imagesWithoutAlt)">
+      </Section>
+
+      <Section
+        title="Décoratives"
+        subtitle="(ratio)"
+        size="sm"
+        :value="globalStats.decorativeImages"
+        :additionalValue="decorativePercent + '%'" />
 
       <Section
         title="Poids moyen"
-        subtitle="(Total / unique)"
+        subtitle="(Top 5 moy.)"
         size="sm"
-        :value="formatSize(stats.avgSizeAll)"
-        :additionalValue="formatSize(stats.avgSizeUnique)" />
-      <Section
-        title="Images sans Alt"
-        size="sm"
-        :value="imagesWithoutAltAndNotAriaHidden"
-        :class="getAltImg(imagesWithoutAltAndNotAriaHidden)">
+        :value="formatSize(globalStats.averageWeight)"
+        :additionalValue="formatSize(globalStats.top5AverageWeight)"
+        :class="getSizeClass(globalStats.top5AverageWeight)">
       </Section>
     </div>
-    <table
-      class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
-      <thead>
-        <tr class="bg-gray-100 *:px-3 *:py-2">
-          <th>Format</th>
-          <th>Total/unique</th>
-          <th>Poids Total/unique</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(stat, index) in imageStatsTable"
-          :key="index"
-          class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
-          <td>{{ stat.label }}</td>
-          <td class="font-mono">
-            {{ stat.count || "—" }} / {{ stat.uniqueCount || "—" }}
-          </td>
-          <td class="font-mono">
-            {{
-              stat.count
-                ? `${formatSize(stat.size)} / ${formatSize(stat.uniqueSize)}`
-                : "—"
-            }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
     <div class="mt-8 flex flex-wrap gap-4">
       <Button @click="openModalAlt" size="sm" text="Détail des images" />
       <Button
@@ -73,25 +70,22 @@
         text="Détail (moy. 5 img + lourdes)" />
     </div>
     <Infos
-      v-if="
-        stats.avgSizeTop5 > 250000 ||
-        outdatedImageFormats ||
-        imagesWithoutAltAndNotAriaHidden > 5
-      ">
-      <p v-if="stats.avgSizeTop5 > 250000">
-        Pensez à optimiser la taille des images pour améliorer les performances.
-      </p>
-      <p v-if="outdatedImageFormats">
-        Privilégiez les formats modernes comme <code>WebP</code> ou
-        <code>AVIF</code> au lieu de <code>Jpeg</code> ou <code>PNG</code> pour
-        une meilleure optimisation.
-      </p>
-      <p v-if="imagesWithoutAltAndNotAriaHidden > 10">
-        Il y a un certain nombre d'images qui n'ont pas de description dans
-        l'attribut <code>alt</code>. Vérifiez qu'il s'agit bien bien d'images
-        décoratives (icônes, images de fond…) et non d'images de contenu sur
-        lesquelles la description <code>alt</code> est obligatoire.
-      </p>
+      v-if="globalScore.breakdown || (globalScore.improvements || []).length"
+      :twoColumns="true">
+      <template #summary>
+        <ul class="list-disc list-inside">
+          <li v-for="(item, key) in globalScore.breakdown" :key="key">
+            {{ item.details }}
+          </li>
+        </ul>
+      </template>
+      <template v-if="globalScore.improvements?.length" #recommendations>
+        <ul class="list-disc list-inside">
+          <li v-for="(imp, idx) in globalScore.improvements" :key="idx">
+            {{ imp }}
+          </li>
+        </ul>
+      </template>
     </Infos>
     <Modal
       :isOpen="isModalOpen"
@@ -100,7 +94,7 @@
       <table
         class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
         <thead>
-          <tr class="bg-gray-100 *:px-3 *:py-2">
+          <tr class="bg-slate-100 *:px-3 *:py-2">
             <th>Images</th>
             <th>Poids</th>
           </tr>
@@ -109,7 +103,7 @@
           <tr
             v-for="(img, index) in stats.top5LargestImages"
             :key="index"
-            class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+            class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b">
             <td>{{ getFileName(img.url) }}</td>
             <td>{{ formatSize(img.resourceSize) }}</td>
           </tr>
@@ -125,14 +119,14 @@
         <li
           v-for="(page, indexPage) in props.projectData.pages"
           :key="indexPage">
-          <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
+          <div class="bg-slate-100 py-2 px-4 text-slate-600 rounded-lg mb-4">
             <p class="text-lg font-bold">{{ page.title }}</p>
             <p>{{ getFileName(page.file) }}</p>
           </div>
           <table
             class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
             <thead>
-              <tr class="bg-gray-100 *:px-3 *:py-2">
+              <tr class="bg-slate-100 *:px-3 *:py-2">
                 <th>Image</th>
                 <th>Alt</th>
                 <th>Aria</th>
@@ -142,7 +136,7 @@
               <tr
                 v-for="(item, index) in page.images"
                 :key="index"
-                class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+                class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b">
                 <td :class="{ 'text-red-500': item.src === 'No src' }">
                   {{ getFileNameFromPath(item.src) }}
                 </td>
@@ -173,6 +167,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  globalImagesAnalysis: {
+    type: Object,
+    required: false,
+    default: () => ({}),
+  },
 });
 
 const isModalOpen = ref(false);
@@ -184,6 +183,27 @@ const closeModal = () => (isModalOpen.value = false);
 
 const openModalAlt = () => (isModalAltOpen.value = true);
 const closeModalAlt = () => (isModalAltOpen.value = false);
+
+// Données issues du backend globalImagesAnalysis
+const globalImages = computed(() => props.globalImagesAnalysis || {});
+const globalStats = computed(() => globalImages.value.globalStats || {});
+const globalScore = computed(() => globalImages.value.globalScore || {});
+const decorativePercent = computed(() =>
+  globalStats.value.decorativeRatio
+    ? Math.round(globalStats.value.decorativeRatio * 100)
+    : 0
+);
+const lazyLoadingRatio = computed(() => {
+  const total = globalStats.value.totalImages || 0;
+  if (!total) return 0;
+  return Math.round((globalStats.value.imagesWithLazyLoading / total) * 100);
+});
+const filteredFormats = computed(() => {
+  const formats = globalImages.value.formats || {};
+  return Object.fromEntries(
+    Object.entries(formats).filter(([, count]) => count > 0)
+  );
+});
 
 // Classe CSS basée sur la taille
 const getSizeClass = (size) => {
@@ -202,61 +222,7 @@ const getFileNameFromPath = (path) => {
   return path.split("/").pop();
 };
 
-// Formats d'image
-const imageTypes = [
-  {
-    mime: "application/octet-stream",
-    label: "octet-stream",
-    labelfront: "avif",
-  },
-  { mime: "image/webp", label: "webp", labelfront: "webp" },
-  { mime: "image/svg+xml", label: "svg", labelfront: "svg" },
-  { mime: "image/jpeg", label: "jpeg", labelfront: "jpeg" },
-  { mime: "image/png", label: "png", labelfront: "png" },
-];
-
-// Calcul des statistiques d'image
-const imageStatsTable = computed(() => {
-  const stats = imageTypes.map((type) => ({
-    type: type.label,
-    label: type.labelfront,
-    count: 0,
-    uniqueCount: 0,
-    size: 0,
-    uniqueSize: 0,
-    uniqueTracker: new Set(),
-  }));
-
-  props.projectData.pages.forEach((page) => {
-    page.lighthouseReport.requests.forEach((req) => {
-      const stat = stats.find((s) => {
-        if (req.mimeType === "image/svg+xml") return s.type === "svg";
-        return s.type === req.mimeType.split("/")[1];
-      });
-      if (stat) {
-        stat.count++;
-        stat.size += req.resourceSize;
-
-        if (!stat.uniqueTracker.has(req.url)) {
-          stat.uniqueTracker.add(req.url);
-          stat.uniqueCount++;
-          stat.uniqueSize += req.resourceSize;
-        }
-      }
-    });
-  });
-
-  return stats.map(({ type, label, count, uniqueCount, size, uniqueSize }) => ({
-    type,
-    label,
-    count,
-    uniqueCount,
-    size,
-    uniqueSize,
-  }));
-});
-
-// Images
+// Images (pour les modales seulement)
 const allImages = computed(() =>
   props.projectData.pages.flatMap((page) =>
     page.lighthouseReport.requests.filter((req) => req.resourceType === "Image")
@@ -270,50 +236,13 @@ const uniqueImages = computed(() => {
   );
 });
 
-// Formats obsolètes
-const outdatedImageFormats = computed(() =>
-  allImages.value.some((img) =>
-    ["image/jpeg", "image/png"].includes(img.mimeType)
-  )
-);
-
-// Statistiques globales
 const stats = computed(() => {
-  const totalSizeAll = allImages.value.reduce(
-    (sum, img) => sum + img.resourceSize,
-    0
-  );
-  const totalSizeUnique = uniqueImages.value.reduce(
-    (sum, img) => sum + img.resourceSize,
-    0
-  );
-
   const top5LargestImages = uniqueImages.value
     .sort((a, b) => b.resourceSize - a.resourceSize)
     .slice(0, 5);
 
   return {
-    totalImages: allImages.value.length,
-    uniqueImages: uniqueImages.value.length,
-    totalSizeAll,
-    totalSizeUnique,
-    avgSizeAll: totalSizeAll / allImages.value.length || 0,
-    avgSizeUnique: totalSizeUnique / uniqueImages.value.length || 0,
-    avgSizeTop5:
-      top5LargestImages.reduce((sum, img) => sum + img.resourceSize, 0) / 5 ||
-      0,
     top5LargestImages,
   };
-});
-
-const imagesWithoutAltAndNotAriaHidden = computed(() => {
-  return props.projectData.pages.reduce((count, page) => {
-    return (
-      count +
-      page.images.filter(
-        (item) => item.alt === "No alt" && item.ariaHidden !== "true"
-      ).length
-    );
-  }, 0);
 });
 </script>
