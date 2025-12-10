@@ -3,9 +3,9 @@
     <div class="border-b pb-2 mb-2" :class="borderClass">
       <h5 class="text-xs uppercase font-semibold" :class="titleClass">
         {{ title }}
-        <span v-if="subtitle" class="text-gray-400">{{ subtitle }}</span>
+        <span v-if="subtitle" class="text-slate-400">{{ subtitle }}</span>
       </h5>
-      <p v-if="definition" class="text-xs text-gray-500 mt-2 italic">
+      <p v-if="definition" class="text-xs text-slate-500 mt-2 italic">
         {{ definition }}
       </p>
     </div>
@@ -19,7 +19,7 @@
         >
       </p>
       <div v-if="rightValue">
-        <div class="text-xs uppercase text-gray-400">{{ rightText }}</div>
+        <div class="text-xs uppercase text-slate-400">{{ rightText }}</div>
         <div :class="rightClass">{{ rightValue }}</div>
       </div>
     </div>
@@ -61,7 +61,7 @@ const props = defineProps({
   },
   borderClass: {
     type: String,
-    default: "border-b-gray-300",
+    default: "border-b-slate-300",
   },
 });
 

@@ -31,7 +31,7 @@ const handleOpenModal = () => {
 // Classes dynamiques selon la taille
 const buttonClasses = computed(() => {
   const baseClasses =
-    "text-gray-600 bg-gray-100 hover:text-white hover:bg-gray-700";
+    "text-slate-600 bg-slate-100 hover:text-white hover:bg-slate-700";
 
   const sizeClasses = {
     sm: "px-2 py-1 text-sm",

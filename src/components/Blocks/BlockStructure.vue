@@ -6,7 +6,7 @@
       <table
         class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
         <thead>
-          <tr class="bg-gray-100 *:px-3 *:py-2">
+          <tr class="bg-slate-100 *:px-3 *:py-2">
             <th>Pages HTML</th>
             <th width="10%">h1</th>
             <th width="10%">h2</th>
@@ -20,12 +20,12 @@
           <tr
             v-for="file in props.projectData.pages"
             :key="file.file"
-            class="hover:bg-gray-50 transition-colors *:px-3 *:py-2 *:border-b">
+            class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b *:border-b-slate-300">
             <td>{{ getFileName(file.file) }}</td>
             <td v-for="level in 6" :key="`heading-h${level}`" class="font-mono">
               <span
                 v-if="file.headings?.[`h${level}`] === 0"
-                class="text-gray-400"
+                class="text-slate-400"
                 >—</span
               >
               <span v-else>{{ file.headings?.[`h${level}`] }}</span>
@@ -61,7 +61,7 @@
         <li
           v-for="(page, indexPage) in props.projectData.pages"
           :key="indexPage">
-          <div class="bg-gray-100 py-2 px-4 text-gray-600 rounded-lg mb-4">
+          <div class="bg-slate-100 py-2 px-4 text-slate-600 rounded-lg mb-4">
             <p class="text-lg font-bold">{{ page.title }}</p>
             <p>{{ getFileName(page.file) }}</p>
           </div>

@@ -2,7 +2,7 @@
   <div :class="['rounded-lg shadow-md overflow-hidden', variantClasses]">
     <div
       v-if="title"
-      class="p-5 bg-slate-900 text-slate-50 flex gap-8 justify-between items-center flex-wrap lg:px-8 lg:py-5">
+      class="p-5 flex bg-slate-100 gap-8 justify-between items-center flex-wrap border-b border-b-slate-300 lg:px-8 lg:py-5">
       <div class="flex-1">
         <h3 v-if="title" class="text-lg font-semibold">
           {{ title }}

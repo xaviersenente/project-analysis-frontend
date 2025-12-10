@@ -25,7 +25,7 @@
         {{ Math.round(percentage) }}%
       </div>
     </div>
-    <div class="mt-2 text-xs text-center font-medium text-gray-700">
+    <div class="mt-2 text-xs text-center font-medium text-slate-700">
       {{ label }}
     </div>
     <div class="text-xs font-semibold" :style="{ color: color || getColor() }">

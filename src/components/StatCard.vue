@@ -3,7 +3,7 @@
     <div class="text-2xl font-bold" :class="titleClass">
       {{ value }}{{ suffix }}
     </div>
-    <div class="text-xs text-gray-600">{{ label }}</div>
+    <div class="text-xs text-slate-600">{{ label }}</div>
   </div>
 </template>
 
@@ -13,11 +13,11 @@ defineProps({
   label: String,
   bgClass: {
     type: String,
-    default: "bg-gray-50",
+    default: "bg-slate-50",
   },
   titleClass: {
     type: String,
-    default: "text-gray-600",
+    default: "text-slate-600",
   },
   suffix: {
     type: String,

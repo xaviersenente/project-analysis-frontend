@@ -59,19 +59,4 @@ const getGapClass = (gapValue) => {
   if (gapValue <= 40) return "text-orange-500";
   return "text-red-500";
 };
-
-// Fonction pour déterminer la classe en fonction de la valeur des variables
-// const getClassForValue = (value) => {
-//   if (value < 2) return "text-red-500";
-//   if (value <= 8) return "text-orange-500";
-//   if (value <= 15) return "text-yellow-500";
-//   return "text-green-600";
-// };
-
-// // Fonction pour déterminer la classe des Id
-// const getIdClass = (value) => {
-//   if (value === 0) return "text-green-600";
-//   if (value <= 4) return "text-orange-500";
-//   return "text-red-500";
-// };
 </script>

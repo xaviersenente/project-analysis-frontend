@@ -6,7 +6,7 @@
         'block text-sm transition-all duration-200',
         isActive
           ? `${activeColor} font-semibold translate-x-2`
-          : `text-gray-700 ${hoverColor} hover:translate-x-1`,
+          : `text-slate-700 ${hoverColor} hover:translate-x-1`,
         mobile ? 'py-2' : '',
       ]"
       @click="handleClick">

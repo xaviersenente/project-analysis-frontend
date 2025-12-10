@@ -4,7 +4,7 @@
     desc="Analyse des balises HTML attendues, manquantes et obsolètes pour évaluer la couverture sémantique.">
     <div v-if="projectData.globalAnalysis?.tagsMissing?.length > 0">
       <p
-        class="text-xl text-red-600 font-bold pb-2 border-b border-b-slate-200 mb-2">
+        class="text-xl text-red-600 font-bold pb-2 border-b border-b-slate-300 mb-2">
         {{ projectData.globalAnalysis?.tagsMissing?.length }} balises manquantes
       </p>
       <ul class="flex flex-wrap gap-2">
@@ -27,7 +27,7 @@
         "
         class="mt-8 flex-1">
         <p
-          class="text-xl text-red-600 font-bold pb-2 border-b border-b-slate-200 mb-2">
+          class="text-xl text-red-600 font-bold pb-2 border-b border-b-slate-300 mb-2">
           Balises obsolètes
         </p>
         <table class="min-w-full table-auto text-left text-xs lg:text-sm">
@@ -36,7 +36,7 @@
               v-for="(count, tag) in projectData.globalAnalysis
                 .obsoleteTagsUsage"
               :key="tag"
-              class="hover:bg-gray-50 transition-colors *:py-1">
+              class="hover:bg-slate-50 transition-colors *:py-1">
               <td width="20%"><Code :tag="tag" /></td>
               <td class="font-mono">{{ count }}</td>
             </tr>
@@ -47,7 +47,7 @@
       <div
         v-if="projectData.globalAnalysis?.otherTagsUsage"
         class="mt-8 flex-1">
-        <p class="text-xl font-bold pb-2 border-b border-b-slate-200 mb-2">
+        <p class="text-xl font-bold pb-2 border-b border-b-slate-300 mb-2">
           Autres balises
         </p>
         <table class="min-w-full table-auto text-left text-xs lg:text-sm">
@@ -55,7 +55,7 @@
             <tr
               v-for="(count, tag) in projectData.globalAnalysis.otherTagsUsage"
               :key="tag"
-              class="hover:bg-gray-50 transition-colors *:py-1">
+              class="hover:bg-slate-50 transition-colors *:py-1">
               <td width="20%"><Code :tag="tag" /></td>
               <td class="font-mono">{{ count }}</td>
             </tr>

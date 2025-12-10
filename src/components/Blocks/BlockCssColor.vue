@@ -15,210 +15,228 @@
       </div>
     </template>
 
-    <!-- Groupes de couleurs par teinte -->
-    <div class="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-4">
-      <div
-        v-for="(group, index) in groupedColors.groups"
+    <!-- Groupes de couleurs (données backend) -->
+    <div class="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
+      <Section
+        v-for="(group, index) in stats.colorGroups"
         :key="index"
-        class="mb-6">
-        <div class="mb-2">
-          <span class="font-semibold">Groupe {{ index + 1 }}</span> (Teinte :
-          {{ group.hsl.h }}°)
-        </div>
-        <div class="flex flex-wrap gap-3">
+        :title="group.hueName"
+        :subtitle="
+          group.hueRange !== undefined && group.hueRange >= 0
+            ? `(Teinte ~${group.hueRange}°)`
+            : ''
+        ">
+        <div class="flex flex-wrap gap-3 mt-2">
           <div
-            v-for="(colorObj, idx) in group.colors"
-            :key="`${index}-${idx}`"
-            class="relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 2xl:w-14 2xl:h-14"
-            :style="{ backgroundColor: colorObj.color }">
+            v-for="colorObj in group.colors"
+            :key="colorObj.color"
+            class="relative group">
             <div
-              v-if="colorObj.isSimilar"
-              class="absolute top-[-8px] right-[-8px] flex justify-center">
+              :class="[
+                'relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 cursor-pointer',
+                similarSet.has(colorObj.color)
+                  ? 'ring-2 ring-amber-400 ring-offset-1 ring-offset-white'
+                  : '',
+              ]">
+              <div
+                class="absolute inset-0 rounded"
+                :style="backgroundStyle(colorObj.color)"></div>
               <span
-                class="text-red-500 text-xs font-bold bg-white border rounded-full w-5 h-5 flex justify-center items-center"
-                >✕</span
-              >
+                v-if="colorObj.count > 1"
+                class="absolute -top-2 -right-2 bg-white text-xs font-semibold text-slate-700 border border-slate-200 rounded-full px-1.5 shadow z-10">
+                ×{{ colorObj.count }}
+              </span>
+            </div>
+            <!-- Popover -->
+            <div
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              {{ colorObj.color }}
             </div>
           </div>
         </div>
+      </Section>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
+      <!-- Couleurs transparentes -->
+      <Section
+        v-if="stats.transparentColors.length"
+        title="Transparentes"
+        desc="Couleurs avec opacité ou valeur transparente"
+        class="mt-6">
+        <div class="flex flex-wrap gap-3 mt-2">
+          <div
+            v-for="tcolor in stats.transparentColors"
+            :key="tcolor.color"
+            class="relative group">
+            <div
+              class="relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 cursor-pointer"
+              style="
+                background-image: repeating-conic-gradient(
+                  #e5e7eb 0% 25%,
+                  #fff 0% 50%
+                );
+                background-size: 8px 8px;
+              ">
+              <div
+                class="absolute inset-0 rounded"
+                :style="backgroundStyle(tcolor.color)"></div>
+              <span
+                v-if="tcolor.count > 1"
+                class="absolute -top-2 -right-2 bg-white text-xs font-semibold text-slate-700 border border-slate-200 rounded-full px-1.5 shadow z-10">
+                ×{{ tcolor.count }}
+              </span>
+            </div>
+            <!-- Popover -->
+            <div
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+              {{ tcolor.color }}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <!-- Dégradés -->
+      <Section
+        v-if="gradientsStats.totalUnique > 0"
+        title="Dégradés"
+        :desc="`${gradientsStats.total} total(aux), ${gradientsStats.totalUnique} unique(s)`"
+        class="mt-6">
+        <div class="flex flex-wrap gap-3 mt-2">
+          <div
+            v-for="(count, gradient) in gradientsStats.unique"
+            :key="gradient"
+            class="relative group">
+            <div
+              class="relative w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 cursor-pointer"
+              style="
+                background-image: repeating-conic-gradient(
+                  #e5e7eb 0% 25%,
+                  #fff 0% 50%
+                );
+                background-size: 8px 8px;
+              ">
+              <div
+                class="absolute inset-0 rounded"
+                :style="{ background: gradient }"></div>
+            </div>
+            <span
+              v-if="count > 1"
+              class="absolute -top-2 -right-2 bg-white text-xs font-semibold text-slate-700 border border-slate-200 rounded-full px-1.5 shadow z-10">
+              ×{{ count }}
+            </span>
+            <!-- Popover -->
+            <div
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 max-w-xs">
+              {{ gradient }}
+            </div>
+          </div>
+        </div>
+      </Section>
+    </div>
+
+    <!-- Synthèse des formats -->
+    <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-600">
+      <span class="text-xs uppercase text-slate-500">Formats</span>
+      <span
+        v-for="(count, fmt) in stats.formats"
+        :key="fmt"
+        class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 bg-slate-50 text-slate-700">
+        <span class="font-semibold">{{ fmt }}</span>
+        <span class="text-xs text-slate-500">{{ count }}</span>
+      </span>
+    </div>
+
+    <div class="flex gap-8 text-sm my-4">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-4 h-4 rounded ring-2 ring-amber-400 ring-offset-1 ring-offset-white shrink-0"></div>
+        <span>Couleur similaire à une autre</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <div
+          class="bg-white text-xs font-semibold text-slate-700 border border-slate-200 rounded-full px-1.5 shadow z-10">
+          ×3
+        </div>
+        <span>Nb d'utilisation de la couleur</span>
       </div>
     </div>
 
-    <!-- Groupe des couleurs transparentes -->
-    <div class="mt-6" v-if="groupedColors.transparentGroup">
-      <div class="font-semibold mb-2">Couleurs Transparentes</div>
-      <div class="flex flex-wrap gap-3">
-        <div
-          v-for="(colorObj, idx) in groupedColors.transparentGroup"
-          :key="`transparent-${idx}`"
-          class="w-10 h-10 rounded shadow-md lg:w-12 lg:h-12 relative overflow-hidden">
-          <div
-            class="absolute inset-0 bg-[linear-gradient(45deg,#fff_25%,#999_25%,#999_50%,#fff_50%,#fff_75%,#999_75%,#999)] bg-[length:10px_10px]"></div>
-          <div
-            class="absolute inset-0"
-            :style="{
-              backgroundColor: colorObj.color,
-            }"></div>
-        </div>
-      </div>
-    </div>
-    <Infos
-      v-if="groupedColors.hasSimilarColors || groupedColors.groups.length > 5">
-      <p v-if="groupedColors.hasSimilarColors">
-        Il semble qu'il y ait une ou plusieurs couleurs proches qu'il serait
-        préférable de réunir en une seule couleur.
-      </p>
-      <p v-if="groupedColors.groups.length > 5">
-        Attention à ne pas choisir trop de teintes différentes dans votre
-        harmonie colorée pour ne pas perdre en cohérence.
-      </p>
+    <Infos v-if="hasLowUniqueness" :twoColumns="true">
+      <template #summary>
+        <ul class="list-disc list-inside">
+          <li v-for="(item, key) in scoreBreakdown" :key="key">
+            {{ item.details }}
+          </li>
+        </ul>
+      </template>
+
+      <template v-if="scoreImprovements.length > 0" #recommendations>
+        <ul class="list-disc list-inside">
+          <li v-for="(improvement, idx) in scoreImprovements" :key="idx">
+            {{ improvement }}
+          </li>
+        </ul>
+      </template>
     </Infos>
   </Block>
 </template>
 
 <script setup>
 import Block from "../Block.vue";
+import Section from "../Section.vue";
 import Infos from "../Infos.vue";
 import { computed } from "vue";
 
 const props = defineProps({
-  projectData: Object,
+  colorsData: Object,
+  gradientsData: Object,
 });
 
-// Extraire les statistiques des couleurs
+// Données issues du backend (cssAnalysisResult.colors)
 const stats = computed(() => {
-  const cssAnalysis = props.projectData || {};
+  const colorsData = props.colorsData || {};
   return {
-    totalColors: cssAnalysis.total || 0,
-    uniqueColors: cssAnalysis.totalUnique || 0,
-    colors: cssAnalysis.unique || {},
+    totalColors: colorsData.totalColors || 0,
+    uniqueColors: colorsData.uniqueColors || 0,
+    formats: colorsData.formats || {},
+    colorGroups: colorsData.colorGroups || [],
+    opaqueColors: colorsData.opaqueColors || [],
+    transparentColors: colorsData.transparentColors || [],
+    similarColors: colorsData.similarColors || [],
+    hasSimilarColors: !!colorsData.hasSimilarColors,
+    scoreData: colorsData.score || {},
   };
 });
 
-// Fonction pour convertir une couleur CSS en HSL
-const getHSL = (color) => {
-  const s = new Option().style;
-  s.color = color;
+const similarSet = computed(
+  () =>
+    new Set(
+      stats.value.opaqueColors.filter((c) => c.isSimilar).map((c) => c.color)
+    )
+);
 
-  if (!s.color) return null; // Vérifie si la couleur est valide
-
-  // Crée un élément invisible pour interpréter la couleur
-  const div = document.createElement("div");
-  div.style.color = color;
-  document.body.appendChild(div);
-
-  // Récupère la couleur calculée par le navigateur
-  const computedColor = getComputedStyle(div).color;
-  document.body.removeChild(div);
-
-  // Extrait les valeurs RGB
-  const match = computedColor.match(/\d+/g);
-  if (!match || match.length < 3) return null;
-
-  const [r, g, b] = match.map(Number);
-
-  // Conversion RGB → HSL
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h, sValue, l;
-
-  l = (max + min) / 2;
-  if (max === min) {
-    h = sValue = 0; // Achromatic (gris)
-  } else {
-    const delta = max - min;
-    sValue = l > 127.5 ? delta / (510 - max - min) : delta / (max + min);
-
-    switch (max) {
-      case r:
-        h = (g - b) / delta + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / delta + 2;
-        break;
-      case b:
-        h = (r - g) / delta + 4;
-        break;
-    }
-    h = Math.round(h * 60);
-  }
-
+const gradientsStats = computed(() => {
+  const gradientsData = props.gradientsData || {};
   return {
-    h: h || 0,
-    s: Math.round(sValue * 100) || 0,
-    l: Math.round((l / 255) * 100) || 0,
-  };
-};
-
-// Fonction pour vérifier les couleurs similaires
-const areColorsSimilar = (color1, color2) => {
-  const hsl1 = getHSL(color1);
-  const hsl2 = getHSL(color2);
-
-  if (!hsl1 || !hsl2) return false;
-
-  return Math.abs(hsl1.s - hsl2.s) < 10 && Math.abs(hsl1.l - hsl2.l) < 10;
-};
-
-// Grouper les couleurs par teinte et identifier les couleurs similaires
-const groupedColors = computed(() => {
-  // Filtrer les couleurs transparentes (rgba, hsla ou "transparent")
-  const colors = Object.entries(stats.value.colors)
-    .map(([color]) => ({
-      color,
-      hsl: getHSL(color),
-      isSimilar: false,
-    }))
-    .filter(
-      (colorObj) =>
-        !colorObj.color.includes("rgba") &&
-        !colorObj.color.includes("hsla") &&
-        colorObj.color !== "transparent" // Exclure "transparent"
-    );
-
-  const groups = {};
-  let hasSimilarColors = false; // Ajout du paramètre global
-
-  colors.forEach((colorObj) => {
-    if (!colorObj.hsl) return;
-
-    const hueGroup = Math.floor(colorObj.hsl.h / 30) * 30;
-
-    if (!groups[hueGroup]) groups[hueGroup] = [];
-    groups[hueGroup].push(colorObj);
-  });
-
-  Object.values(groups).forEach((group) => {
-    for (let i = 0; i < group.length; i++) {
-      for (let j = i + 1; j < group.length; j++) {
-        if (areColorsSimilar(group[i].color, group[j].color)) {
-          group[i].isSimilar = true;
-          group[j].isSimilar = true;
-          hasSimilarColors = true; // Détecte qu'il y a des couleurs similaires
-        }
-      }
-    }
-  });
-
-  // Retourner les groupes sans les transparents et les transparents séparément
-  return {
-    groups: Object.keys(groups).map((key) => ({
-      hsl: { h: key },
-      colors: groups[key],
-    })),
-    transparentGroup: Object.entries(stats.value.colors)
-      .map(([color]) => ({
-        color,
-        hsl: getHSL(color),
-        isSimilar: false,
-      }))
-      .filter(
-        (colorObj) =>
-          colorObj.color.includes("rgba") ||
-          colorObj.color.includes("hsla") ||
-          colorObj.color === "transparent" // Ajouter "transparent" dans le groupe transparent
-      ),
-    hasSimilarColors, // Ajout du paramètre global
+    total: gradientsData.total || 0,
+    totalUnique: gradientsData.totalUnique || 0,
+    unique: gradientsData.unique || {},
+    uniquenessRatio: gradientsData.uniquenessRatio || 0,
   };
 });
+
+const backgroundStyle = (color) => ({ backgroundColor: color });
+
+const hasLowUniqueness = computed(() => {
+  const formatRatio = stats.value.formats?.uniquenessRatio;
+  const similar = stats.value.hasSimilarColors;
+  return similar || (formatRatio !== undefined && formatRatio < 0.3);
+});
+
+const scoreBreakdown = computed(() => stats.value.scoreData?.breakdown || {});
+
+const scoreImprovements = computed(
+  () => stats.value.scoreData?.improvements || []
+);
 </script>

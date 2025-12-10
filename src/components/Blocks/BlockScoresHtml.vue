@@ -53,8 +53,17 @@
             " />
         </div>
       </div>
-      <p class="col-span-5 text-xs text-gray-500 flex items-center gap-2">
-        <span class="inline-block w-3 h-3 rounded-full bg-gray-400"></span>
+      <!-- <h3
+        class="col-span-5 text-center border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-2">
+        Images
+      </h3>
+      <div class="col-span-5 flex justify-center lg:col-span-2">
+        <ProgressCircle
+          :value="imagesScore / 100"
+          :averageValue="imagesAverage ?? undefined" />
+      </div> -->
+      <p class="col-span-5 text-xs text-slate-500 flex items-center gap-2">
+        <span class="inline-block w-3 h-3 rounded-full bg-slate-400"></span>
         Le cercle et le score gris indiquent la moyenne de la classe.
       </p>
     </div>
@@ -69,6 +78,14 @@ import { computed } from "vue";
 const props = defineProps({
   projectData: Object,
   classStats: Object,
+});
+
+const imagesScore = computed(
+  () => props.projectData?.globalImagesAnalysis?.globalScore?.total || 0
+);
+const imagesAverage = computed(() => {
+  const mean = props.classStats?.stats?.imagesScore?.mean;
+  return typeof mean === "number" ? mean / 100 : null;
 });
 
 // Fonction pour calculer les moyennes de Lighthouse
