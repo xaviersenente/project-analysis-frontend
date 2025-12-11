@@ -3,54 +3,40 @@
     title="Images"
     desc="Statistiques sur les images : formats, poids total/moyen, présence des attributs alt et répartition par format.">
     <div class="grid grid-cols-2 gap-8 mb-12 lg:grid-cols-4">
-      <Section
-        title="Nombre total d'images"
-        class="col-span-2"
-        :value="globalStats.totalImages" />
+      <div class="row-span-2 flex justify-center">
+        <ProgressCircle
+          :value="imagesScore / 100"
+          :averageValue="imagesAverage ?? undefined" />
+      </div>
+      <Section title="Nombre total d'images" :value="globalStats.totalImages" />
 
-      <Section
-        title="Lazy loading"
-        subtitle="(% / images)"
-        size="sm"
-        :value="lazyLoadingRatio + '%'"
-        :additionalValue="globalStats.imagesWithLazyLoading" />
-
-      <Section title="Formats" class="row-span-2">
-        <table
-          class="min-w-full table-auto border-collapse text-left text-xs lg:text-sm">
-          <thead>
-            <tr class="bg-slate-100 *:px-3 *:py-2">
-              <th>Format</th>
-              <th class="text-right">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(count, fmt) in filteredFormats"
-              :key="fmt"
-              class="hover:bg-slate-50 transition-colors *:px-3 *:py-2 *:border-b *:border-b-slate-300">
-              <td class="uppercase">{{ fmt }}</td>
-              <td class="text-right font-mono">{{ count }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <Section title="Attributs Alt">
+        <div class="space-y-3">
+          <PropertyBar
+            label="Avec alt"
+            :count="globalStats.imagesWithAlt"
+            :maxCount="globalStats.totalImages"
+            :percent="
+              Math.round(
+                (globalStats.imagesWithAlt / globalStats.totalImages) * 100
+              )
+            "
+            barColor="bg-blue-500" />
+        </div>
       </Section>
 
-      <Section
-        title="Alt présents"
-        subtitle="(manquants)"
-        size="sm"
-        :value="globalStats.imagesWithAlt"
-        :additionalValue="globalStats.imagesWithoutAlt"
-        :class="getAltImg(globalStats.imagesWithoutAlt)">
+      <Section title="Formats">
+        <div class="space-y-3">
+          <PropertyBar
+            v-for="(count, fmt) in filteredFormats"
+            :key="fmt"
+            :label="fmt.toUpperCase()"
+            :count="count"
+            :maxCount="globalStats.totalImages"
+            :percent="Math.round((count / globalStats.totalImages) * 100)"
+            barColor="bg-blue-500" />
+        </div>
       </Section>
-
-      <Section
-        title="Décoratives"
-        subtitle="(ratio)"
-        size="sm"
-        :value="globalStats.decorativeImages"
-        :additionalValue="decorativePercent + '%'" />
 
       <Section
         title="Poids moyen"
@@ -59,6 +45,28 @@
         :value="formatSize(globalStats.averageWeight)"
         :additionalValue="formatSize(globalStats.top5AverageWeight)"
         :class="getSizeClass(globalStats.top5AverageWeight)">
+      </Section>
+
+      <Section title="Images décoratives">
+        <div class="space-y-3">
+          <PropertyBar
+            label="Décoratives"
+            :count="globalStats.decorativeImages"
+            :maxCount="globalStats.totalImages"
+            :percent="decorativePercent"
+            barColor="bg-blue-500" />
+        </div>
+      </Section>
+
+      <Section title="Lazy loading">
+        <div class="space-y-3">
+          <PropertyBar
+            label="Avec lazy loading"
+            :count="globalStats.imagesWithLazyLoading"
+            :maxCount="globalStats.totalImages"
+            :percent="lazyLoadingRatio"
+            barColor="bg-blue-500" />
+        </div>
       </Section>
     </div>
 
@@ -157,10 +165,12 @@
 import { ref, computed } from "vue";
 import { getFileName, formatSize } from "../../js/helpers";
 import Block from "../Block.vue";
+import ProgressCircle from "../ProgressCircle.vue";
 import Button from "../Button.vue";
 import Modal from "../Modal.vue";
 import Infos from "../Infos.vue";
 import Section from "../Section.vue";
+import PropertyBar from "../PropertyBar.vue";
 
 const props = defineProps({
   projectData: {
@@ -172,6 +182,19 @@ const props = defineProps({
     required: false,
     default: () => ({}),
   },
+  classStats: {
+    type: Object,
+    required: false,
+    default: () => ({}),
+  },
+});
+
+const imagesScore = computed(
+  () => props.projectData?.globalImagesAnalysis?.globalScore?.total || 0
+);
+const imagesAverage = computed(() => {
+  const mean = props.classStats?.stats?.htmlImages?.mean;
+  return typeof mean === "number" ? mean / 100 : null;
 });
 
 const isModalOpen = ref(false);
@@ -205,21 +228,15 @@ const filteredFormats = computed(() => {
   );
 });
 
+const getFileNameFromPath = (path) => {
+  return path.split("/").pop();
+};
+
 // Classe CSS basée sur la taille
 const getSizeClass = (size) => {
   if (size < 250000) return "text-green-600";
   if (size <= 500000) return "text-orange-500";
   return "text-red-500";
-};
-
-const getAltImg = (size) => {
-  if (size < 5) return "text-green-600";
-  if (size <= 15) return "text-orange-500";
-  return "text-red-500";
-};
-
-const getFileNameFromPath = (path) => {
-  return path.split("/").pop();
 };
 
 // Images (pour les modales seulement)
