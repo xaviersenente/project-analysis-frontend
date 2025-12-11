@@ -11,7 +11,7 @@
         <h4 class="text-sm">Validité</h4>
         <ProgressCircle
           :value="stats.validationScore / 100"
-          :averageValue="props.classStats?.stats?.validation?.mean / 100" />
+          :averageValue="classStatsData.validation?.mean / 100" />
       </div>
       <h3
         class="col-span-3 text-center row-start-1 border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-4">
@@ -23,9 +23,7 @@
           <h4 class="text-sm">Performance</h4>
           <ProgressCircle
             :value="stats.performanceAverage"
-            :averageValue="
-              props.classStats?.stats?.lighthouse?.performance?.mean / 100
-            "
+            :averageValue="classStatsData.lighthouse?.performance?.mean / 100"
             class="opacity-50" />
         </div>
         <div>
@@ -33,7 +31,7 @@
           <ProgressCircle
             :value="stats.accessibilityAverage"
             :averageValue="
-              props.classStats?.stats?.lighthouse?.accessibility?.mean / 100
+              classStatsData.lighthouse?.accessibility?.mean / 100
             " />
         </div>
         <div>
@@ -41,27 +39,17 @@
           <ProgressCircle
             :value="stats.bestPracticesAverage"
             :averageValue="
-              props.classStats?.stats?.lighthouse?.bestPractices?.mean / 100
+              classStatsData.lighthouse?.bestPractices?.mean / 100
             " />
         </div>
         <div>
           <h4 class="text-sm">SEO</h4>
           <ProgressCircle
             :value="stats.seoAverage"
-            :averageValue="
-              props.classStats?.stats?.lighthouse?.seo?.mean / 100
-            " />
+            :averageValue="classStatsData.lighthouse?.seo?.mean / 100" />
         </div>
       </div>
-      <!-- <h3
-        class="col-span-5 text-center border-b border-b-slate-300 text-xl font-bold p-3 uppercase text-slate-500 lg:col-span-2">
-        Images
-      </h3>
-      <div class="col-span-5 flex justify-center lg:col-span-2">
-        <ProgressCircle
-          :value="imagesScore / 100"
-          :averageValue="imagesAverage ?? undefined" />
-      </div> -->
+
       <p class="col-span-5 text-xs text-slate-500 flex items-center gap-2">
         <span class="inline-block w-3 h-3 rounded-full bg-slate-400"></span>
         Le cercle et le score gris indiquent la moyenne de la classe.
@@ -80,13 +68,8 @@ const props = defineProps({
   classStats: Object,
 });
 
-const imagesScore = computed(
-  () => props.projectData?.globalImagesAnalysis?.globalScore?.total || 0
-);
-const imagesAverage = computed(() => {
-  const mean = props.classStats?.stats?.imagesScore?.mean;
-  return typeof mean === "number" ? mean / 100 : null;
-});
+// Simplification de l'accès aux stats de classe
+const classStatsData = computed(() => props.classStats?.stats || {});
 
 // Fonction pour calculer les moyennes de Lighthouse
 const getAverage = (key) => {

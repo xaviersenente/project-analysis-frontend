@@ -196,6 +196,7 @@
             id="images"
             :projectData="projectData"
             :globalImagesAnalysis="projectData.globalImagesAnalysis"
+            :classStats="classStats"
             class="col-span-12 scroll-mt-28" />
 
           <Block
