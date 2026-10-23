@@ -242,7 +242,9 @@ const getSizeClass = (size) => {
 // Images (pour les modales seulement)
 const allImages = computed(() =>
   props.projectData.pages.flatMap((page) =>
-    page.lighthouseReport.requests.filter((req) => req.resourceType === "Image")
+    (page.lighthouseReport?.requests || []).filter(
+      (req) => req.resourceType === "Image"
+    )
   )
 );
 

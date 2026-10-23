@@ -9,22 +9,17 @@ export function useAverageCalculator(projectData) {
   /**
    * Calcule la moyenne d'une métrique spécifique
    * @param {string} key - Clé de la métrique (performance, accessibility, etc.)
-   * @returns {number} Moyenne calculée avec 2 décimales
+   * @returns {number|null} Moyenne calculée avec 2 décimales, null si rien n'est mesuré
    */
   const getAverage = (key) => {
-    if (
-      !projectData.value?.pages ||
-      !Array.isArray(projectData.value.pages) ||
-      projectData.value.pages.length === 0
-    ) {
-      return 0;
-    }
-
-    const total = projectData.value.pages.reduce(
-      (sum, page) => sum + (page.lighthouseReport?.[key] || 0),
-      0
+    // Seules les pages mesurées comptent (F4)
+    const pages = (projectData.value?.pages || []).filter(
+      (page) => typeof page.lighthouseReport?.[key] === "number"
     );
-    return parseFloat((total / projectData.value.pages.length).toFixed(2));
+    if (pages.length === 0) return null;
+
+    const total = pages.reduce((sum, page) => sum + page.lighthouseReport[key], 0);
+    return parseFloat((total / pages.length).toFixed(2));
   };
 
   /**

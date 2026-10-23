@@ -153,11 +153,28 @@
           <div
             class="col-span-12 flex flex-col gap-2 lg:flex-row lg:items-end lg:gap-8">
             <h1 class="text-3xl font-bold lg:text-5xl">
-              {{ projectData.pages[0].title }}
+              {{ projectData.pages[0]?.title ?? "Analyse incomplète" }}
             </h1>
             <h2 class="text-xl">
               Projet réalisé par {{ selectedProject.nom }}
             </h2>
+          </div>
+
+          <!-- Étapes qui ont échoué : ni notées, ni imputées à l'étudiant (F4) -->
+          <div
+            v-if="projectData.nonMesurable?.length"
+            class="col-span-12 bg-amber-50 border border-amber-300 rounded-lg p-4"
+            role="status">
+            <p class="font-semibold">Non mesurable</p>
+            <p class="text-sm mb-2">
+              Ces étapes de l'analyse ont échoué. Elles ne comptent pas dans les
+              scores.
+            </p>
+            <ul class="text-sm list-disc pl-5">
+              <li v-for="(item, index) in projectData.nonMesurable" :key="index">
+                <strong>{{ item.etape }}</strong> : {{ item.raison }}
+              </li>
+            </ul>
           </div>
 
           <Block
@@ -177,27 +194,32 @@
           </Block>
 
           <BlockScores
+            v-if="projectData.pages.length"
             id="scores"
             :projectData="projectData"
             :classStats="classStats"
             class="col-span-12 lg:col-span-6 xl:col-span-8 scroll-mt-28" />
 
           <BlockFilesHtml
+            v-if="projectData.pages.length"
             id="files"
             :files="projectData.pages"
             class="col-span-12 scroll-mt-28" />
 
           <BlockTags
+            v-if="projectData.globalAnalysis"
             id="tags"
             :projectData="projectData"
             class="col-span-12 xl:col-span-6 scroll-mt-28" />
 
           <BlockStructure
+            v-if="projectData.pages.length"
             id="structure"
             :projectData="projectData"
             class="col-span-12 xl:col-span-6 scroll-mt-28" />
 
           <BlockImages
+            v-if="projectData.globalImagesAnalysis"
             id="images"
             :projectData="projectData"
             :globalImagesAnalysis="projectData.globalImagesAnalysis"
@@ -220,66 +242,78 @@
             </p>
           </Block>
 
-          <BlockScoresCss
-            id="css-scores"
-            :projectData="projectData"
-            :customProperties="projectData.cssAnalysisResult.customProperties"
-            :imports="projectData.cssAnalysisResult.imports"
-            :classAnalysis="projectData.classAnalysis"
-            :classStats="classStats"
-            class="col-span-12 lg:col-span-6 xl:col-span-8 scroll-mt-28" />
+          <template v-if="projectData.cssAnalysisResult">
+            <BlockScoresCss
+              v-if="projectData.cssAnalysisResult.customProperties"
+              id="css-scores"
+              :projectData="projectData"
+              :customProperties="projectData.cssAnalysisResult.customProperties"
+              :imports="projectData.cssAnalysisResult.imports"
+              :classAnalysis="projectData.classAnalysis"
+              :classStats="classStats"
+              class="col-span-12 lg:col-span-6 xl:col-span-8 scroll-mt-28" />
 
-          <BlockCssStats
-            id="css-stats"
-            :cssAnalysisResult="projectData.cssAnalysisResult"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssStats
+              id="css-stats"
+              :cssAnalysisResult="projectData.cssAnalysisResult"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssVariables
-            id="css-variables"
-            :projectData="projectData.cssAnalysisResult.customProperties"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssVariables
+              v-if="projectData.cssAnalysisResult.customProperties"
+              id="css-variables"
+              :projectData="projectData.cssAnalysisResult.customProperties"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssColor
-            id="css-colors"
-            :colorsData="projectData.cssAnalysisResult.colors"
-            :gradientsData="projectData.cssAnalysisResult.values.gradients"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssColor
+              v-if="projectData.cssAnalysisResult.colors"
+              id="css-colors"
+              :colorsData="projectData.cssAnalysisResult.colors"
+              :gradientsData="projectData.cssAnalysisResult.values.gradients"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockTypography
-            id="typography"
-            :typography="projectData.cssAnalysisResult.typography"
-            class="col-span-12 scroll-mt-28" />
+            <BlockTypography
+              v-if="projectData.cssAnalysisResult.typography"
+              id="typography"
+              :typography="projectData.cssAnalysisResult.typography"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssOrganization
-            id="css-organization"
-            :imports="projectData.cssAnalysisResult.imports"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssOrganization
+              v-if="projectData.cssAnalysisResult.imports"
+              id="css-organization"
+              :imports="projectData.cssAnalysisResult.imports"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockClasses
-            v-if="projectData.classAnalysis"
-            id="classes"
-            :classAnalysis="projectData.classAnalysis"
-            class="col-span-12 scroll-mt-28" />
+            <BlockClasses
+              v-if="projectData.classAnalysis"
+              id="classes"
+              :classAnalysis="projectData.classAnalysis"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssSelectors
-            id="css-selectors"
-            :selectors="projectData.cssAnalysisResult.selectors"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssSelectors
+              id="css-selectors"
+              :selectors="projectData.cssAnalysisResult.selectors"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssProperties
-            id="css-properties"
-            :properties="projectData.cssAnalysisResult.properties"
-            class="col-span-12 scroll-mt-28" />
+            <BlockCssProperties
+              id="css-properties"
+              :properties="projectData.cssAnalysisResult.properties"
+              class="col-span-12 scroll-mt-28" />
 
-          <BlockCssRules
-            id="css-rules"
-            :rules="projectData.cssAnalysisResult.rules"
-            class="col-span-12 lg:col-span-7 scroll-mt-28" />
+            <BlockCssRules
+              id="css-rules"
+              :rules="projectData.cssAnalysisResult.rules"
+              class="col-span-12 lg:col-span-7 scroll-mt-28" />
 
-          <BlockCssUnit
-            id="css-units"
-            :units="projectData.cssAnalysisResult.values.units"
-            class="col-span-12 lg:col-span-5 scroll-mt-28" />
+            <BlockCssUnit
+              id="css-units"
+              :units="projectData.cssAnalysisResult.values.units"
+              class="col-span-12 lg:col-span-5 scroll-mt-28" />
+          </template>
+          <p
+            v-else
+            class="col-span-12 lg:col-span-6 xl:col-span-8 bg-white rounded-lg p-8">
+            Le CSS n'a pas pu être analysé : voir « Non mesurable ».
+          </p>
         </div>
       </div>
     </main>

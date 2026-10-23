@@ -31,13 +31,19 @@
               <td>
                 <div>
                   <span
-                    v-if="file.validationErrors.length === 0"
+                    v-if="file.validationErrors === null"
+                    class="px-2 py-0.5 text-slate-500 inline-block"
+                    :title="file.validation?.raison"
+                    >Non mesurable</span
+                  >
+                  <span
+                    v-else-if="file.validationErrors.length === 0"
                     class="px-2 py-0.5 border border-transparent rounded text-green-700 inline-block"
                     >Valide&nbsp;!</span
                   >
 
                   <button
-                    v-if="file.validationErrors.length > 0"
+                    v-else
                     @click="openModal(file.validationErrors)"
                     class="px-2 py-0.5 border rounded cursor-pointer focus:outline-none"
                     :class="{
@@ -61,7 +67,10 @@
                   " />
               </td> -->
               <td v-for="metric in metrics" :key="metric.key" class="font-mono">
-                <Tag :value="file.lighthouseReport[metric.key]" />
+                <Tag
+                  v-if="typeof file.lighthouseReport?.[metric.key] === 'number'"
+                  :value="file.lighthouseReport[metric.key]" />
+                <span v-else class="text-slate-500">—</span>
               </td>
             </tr>
           </tbody>
@@ -217,23 +226,23 @@ const adviceMessages = computed(() => {
       message: "Ajoutez une balise viewport.",
     },
     {
-      condition: props.files.some((file) => file.validationErrors.length > 0),
+      condition: props.files.some((file) => file.validationErrors?.length > 0),
       message: "Corrigez les erreurs W3C.",
     },
     {
       condition: props.files.some(
-        (file) => file.lighthouseReport.accessibility < 100
+        (file) => file.lighthouseReport?.accessibility < 1
       ),
       message: "Améliorez l'accessibilité.",
     },
     {
       condition: props.files.some(
-        (file) => file.lighthouseReport.bestPractices < 100
+        (file) => file.lighthouseReport?.bestPractices < 1
       ),
       message: "Améliorez les bonnes pratiques.",
     },
     {
-      condition: props.files.some((file) => file.lighthouseReport.seo < 100),
+      condition: props.files.some((file) => file.lighthouseReport?.seo < 1),
       message: "Améliorez le SEO.",
     },
   ];
@@ -269,12 +278,19 @@ const average = computed(() => {
       acc.deadLinks += file.deadLinks || 0;
       acc.externalLinks += file.externalLinks || 0;
       acc.mailtoLinks += file.mailtoLinks || 0;
-      acc.validationErrors += file.validationErrors.length || 0;
+      // Les mesures absentes ne comptent pas dans les moyennes (F4)
+      if (Array.isArray(file.validationErrors)) {
+        acc.validationErrors += file.validationErrors.length;
+        acc.pagesValidees++;
+      }
       acc.imagesScore += file.imagesAnalysis?.score?.total || 0;
-      acc.performance += file.lighthouseReport?.performance || 0;
-      acc.accessibility += file.lighthouseReport?.accessibility || 0;
-      acc.bestPractices += file.lighthouseReport?.bestPractices || 0;
-      acc.seo += file.lighthouseReport?.seo || 0;
+      if (file.lighthouseReport) {
+        acc.performance += file.lighthouseReport.performance || 0;
+        acc.accessibility += file.lighthouseReport.accessibility || 0;
+        acc.bestPractices += file.lighthouseReport.bestPractices || 0;
+        acc.seo += file.lighthouseReport.seo || 0;
+        acc.pagesLighthouse++;
+      }
 
       acc.favicon = acc.favicon && file.favicon;
       acc.viewport = acc.viewport && file.viewport;
@@ -286,6 +302,8 @@ const average = computed(() => {
       externalLinks: 0,
       mailtoLinks: 0,
       validationErrors: 0,
+      pagesValidees: 0,
+      pagesLighthouse: 0,
       performance: 0,
       accessibility: 0,
       bestPractices: 0,
@@ -297,17 +315,23 @@ const average = computed(() => {
   );
 
   const formatNumber = (value) => value.toFixed(2).replace(".", ",");
+  const moyenneLighthouse = (total) =>
+    sum.pagesLighthouse
+      ? ((total * 100) / sum.pagesLighthouse).toFixed(0)
+      : "—";
 
   return {
     deadLinks: formatNumber(sum.deadLinks / totalFiles),
     externalLinks: formatNumber(sum.externalLinks / totalFiles),
     mailtoLinks: formatNumber(sum.mailtoLinks / totalFiles),
-    validationErrors: formatNumber(sum.validationErrors / totalFiles),
+    validationErrors: sum.pagesValidees
+      ? formatNumber(sum.validationErrors / sum.pagesValidees)
+      : "—",
     imagesScore: ((sum.imagesScore || 0) / totalFiles).toFixed(0),
-    performance: ((sum.performance * 100) / totalFiles).toFixed(0),
-    accessibility: ((sum.accessibility * 100) / totalFiles).toFixed(0),
-    bestPractices: ((sum.bestPractices * 100) / totalFiles).toFixed(0),
-    seo: ((sum.seo * 100) / totalFiles).toFixed(0),
+    performance: moyenneLighthouse(sum.performance),
+    accessibility: moyenneLighthouse(sum.accessibility),
+    bestPractices: moyenneLighthouse(sum.bestPractices),
+    seo: moyenneLighthouse(sum.seo),
     favicon: sum.favicon,
     viewport: sum.viewport,
   };
