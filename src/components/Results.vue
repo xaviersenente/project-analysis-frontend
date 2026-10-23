@@ -1,4 +1,9 @@
 <template>
+  <JetonForm
+    v-if="jetonRequis"
+    :refuse="jetonRefuse"
+    @valider="enregistrerJeton" />
+
   <!-- Header principal -->
   <div
     class="fixed top-0 left-0 w-full p-4 bg-white flex flex-wrap justify-between gap-8 z-20 md:p-8 shadow-sm">
@@ -151,7 +156,7 @@
               {{ projectData.pages[0].title }}
             </h1>
             <h2 class="text-xl">
-              Projet réalisé par {{ selectedProject.value }}
+              Projet réalisé par {{ selectedProject.nom }}
             </h2>
           </div>
 
@@ -304,6 +309,7 @@ import BlockTypography from "./Blocks/BlockTypography.vue";
 import BlockScoresCss from "./Blocks/BlockScoresCss.vue";
 import BlockCssOrganization from "./Blocks/BlockCssOrganization.vue";
 import BlockClasses from "./Blocks/BlockClasses.vue";
+import JetonForm from "./JetonForm.vue";
 
 // Import des composables
 import { useProjectData } from "../composables/useProjectData";
@@ -321,6 +327,9 @@ const {
   projectsOptions,
   loading,
   fetchProjectData,
+  jetonRequis,
+  jetonRefuse,
+  enregistrerJeton,
 } = useProjectData();
 
 const { activeSection, showScrollTop, setActiveSection, scrollToTop } =

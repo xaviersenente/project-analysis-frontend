@@ -1,6 +1,28 @@
 import { ref, computed, onMounted } from "vue";
 import { getApiBaseUrl } from "../js/constants";
 
+const CLE_JETON = "webscope-jeton";
+
+/**
+ * Lecture et écriture du jeton dans le sessionStorage (peut être indisponible)
+ */
+const lireJeton = () => {
+  try {
+    return sessionStorage.getItem(CLE_JETON) || "";
+  } catch {
+    return "";
+  }
+};
+
+const ecrireJeton = (valeur) => {
+  try {
+    if (valeur) sessionStorage.setItem(CLE_JETON, valeur);
+    else sessionStorage.removeItem(CLE_JETON);
+  } catch {
+    // Le jeton reste en mémoire pour cette page
+  }
+};
+
 /**
  * Composable pour gérer le chargement et l'état des données du projet
  * @returns {Object} État et méthodes pour gérer les données du projet
@@ -14,21 +36,60 @@ export function useProjectData() {
   const classStats = ref(null);
   const fonts = ref([]);
   const loading = ref(false);
+  const jeton = ref("");
+  const jetonRequis = ref(false);
+  const jetonRefuse = ref(false);
+
+  /**
+   * Appel de l'API avec le jeton (S2) ; un 401 redemande le jeton
+   */
+  const apiFetch = async (chemin) => {
+    const response = await fetch(`${API_BASE_URL}${chemin}`, {
+      headers: { Authorization: `Bearer ${jeton.value}` },
+    });
+    if (response.status === 401) {
+      if (jeton.value) jetonRefuse.value = true;
+      jeton.value = "";
+      ecrireJeton("");
+      jetonRequis.value = true;
+      throw new Error("Jeton refusé");
+    }
+    if (!response.ok) throw new Error(`Erreur ${response.status}`);
+    return response.json();
+  };
+
+  /**
+   * Enregistre le jeton saisi puis charge les données
+   * @param {string} valeur - Jeton fourni par l'enseignant
+   */
+  const enregistrerJeton = (valeur) => {
+    jeton.value = valeur.trim();
+    ecrireJeton(jeton.value);
+    jetonRequis.value = false;
+    jetonRefuse.value = false;
+    chargerDonnees();
+  };
 
   /**
    * Prépare les options pour le composant CustomSelect
    */
-  const projectsOptions = computed(() =>
-    projects.value.map((project) => ({ value: project, label: project }))
-  );
+  const projectsOptions = computed(() => projects.value.map(toOption));
+
+  /**
+   * Un projet de la promo devient une option : le slug en valeur, le nom et le groupe en libellé
+   */
+  const toOption = ({ slug, nom, groupe, analyse }) => ({
+    value: slug,
+    nom,
+    label: [nom, groupe].filter(Boolean).join(" · ") + (analyse ? "" : " (non analysé)"),
+  });
 
   /**
    * Récupère les statistiques de classe depuis l'API
    */
   const fetchClassStats = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/stats/class`);
-      classStats.value = await response.json();
+      classStats.value = await apiFetch("/stats/class");
     } catch (error) {
       console.error("Erreur lors du chargement des statistiques :", error);
     }
@@ -39,14 +100,11 @@ export function useProjectData() {
    */
   const fetchProjects = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/scan/projects`);
-      projects.value = await response.json();
+      projects.value = await apiFetch("/scan/projects");
 
-      if (projects.value.length > 0) {
-        selectedProject.value = {
-          value: projects.value[0],
-          label: projects.value[0],
-        };
+      const premier = projects.value.find((project) => project.analyse);
+      if (premier) {
+        selectedProject.value = toOption(premier);
         await fetchProjectData();
       }
     } catch (error) {
@@ -62,10 +120,9 @@ export function useProjectData() {
 
     loading.value = true;
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/scan/project/${selectedProject.value.value}`
+      projectData.value = await apiFetch(
+        `/scan/project/${encodeURIComponent(selectedProject.value.value)}`
       );
-      projectData.value = await response.json();
       extractFontsFromImport();
     } catch (error) {
       console.error("Erreur lors du chargement du projet :", error);
@@ -117,10 +174,16 @@ export function useProjectData() {
     }
   };
 
-  // Initialisation au montage du composant
-  onMounted(() => {
+  const chargerDonnees = () => {
     fetchProjects();
     fetchClassStats();
+  };
+
+  // Initialisation au montage du composant : sans jeton, on le demande d'abord
+  onMounted(() => {
+    jeton.value = lireJeton();
+    if (jeton.value) chargerDonnees();
+    else jetonRequis.value = true;
   });
 
   return {
@@ -132,5 +195,8 @@ export function useProjectData() {
     loading,
     projectsOptions,
     fetchProjectData,
+    jetonRequis,
+    jetonRefuse,
+    enregistrerJeton,
   };
 }

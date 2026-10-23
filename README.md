@@ -126,8 +126,11 @@ L'application se connecte à une API backend pour récupérer les données des p
 
 ### Endpoints utilisés :
 
-- `GET /scan/projects` - Liste des projets disponibles
-- `GET /scan/project/:projectName` - Données d'analyse d'un projet spécifique
+- `GET /scan/projects` - Liste des projets de la promo (slug, nom, groupe)
+- `GET /scan/project/:slug` - Données d'analyse d'un projet spécifique
+- `GET /stats/class` - Statistiques de la promo
+
+Chaque requête envoie `Authorization: Bearer <jeton>`. Le jeton est saisi dans l'interface et gardé dans le `sessionStorage` : il n'est jamais inscrit dans le code, où il serait public.
 
 ## 📊 Fonctions Utilitaires (helpers.js)
 
