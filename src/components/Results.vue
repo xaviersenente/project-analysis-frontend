@@ -282,7 +282,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { computed } from "vue";
 import Block from "./Block.vue";
 import HtmlIcon from "../icons/Html.vue";
 import CssIcon from "../icons/Css.vue";
@@ -305,67 +305,31 @@ import BlockScoresCss from "./Blocks/BlockScoresCss.vue";
 import BlockCssOrganization from "./Blocks/BlockCssOrganization.vue";
 import BlockClasses from "./Blocks/BlockClasses.vue";
 
-// Récupère l'URL de base depuis les variables d'environnement
-// En production sur Render, on utilise toujours l'URL de production
-const API_BASE_URL = import.meta.env.PROD
-  ? "https://project-analysis-backend.onrender.com"
-  : import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+// Import des composables
+import { useProjectData } from "../composables/useProjectData";
+import { useActiveSection } from "../composables/useActiveSection";
+import { useMobileNav } from "../composables/useMobileNav";
 
-// console.log("API_BASE_URL:", API_BASE_URL);
-// console.log("Environment MODE:", import.meta.env.MODE);
-// console.log("Environment PROD:", import.meta.env.PROD);
-// console.log("Environment DEV:", import.meta.env.DEV);
+// Import de la configuration
+import { NAV_SECTIONS } from "../js/navigationConfig";
 
-const projects = ref([]);
-const selectedProject = ref(null);
-const projectData = ref(null);
-const classStats = ref(null);
-const fonts = ref([]);
-const loading = ref(false);
-const activeSection = ref(null);
-const mobileNavOpen = ref(false);
-const showScrollTop = ref(false);
+// Utilisation des composables
+const {
+  projectData,
+  classStats,
+  selectedProject,
+  projectsOptions,
+  loading,
+  fetchProjectData,
+} = useProjectData();
 
-// Prépare les options pour CustomSelect
-const projectsOptions = computed(() =>
-  projects.value.map((project) => ({ value: project, label: project }))
-);
+const { activeSection, showScrollTop, setActiveSection, scrollToTop } =
+  useActiveSection();
+
+const { mobileNavOpen, toggleMobileNav } = useMobileNav();
 
 // Structure de navigation
-const navSections = [
-  {
-    title: "HTML",
-    variant: "html",
-    icon: "html",
-    links: [
-      { section: "html", label: "Introduction" },
-      { section: "scores", label: "Scores" },
-      { section: "files", label: "Fichiers" },
-      { section: "tags", label: "Balises" },
-      { section: "structure", label: "Structure" },
-      { section: "images", label: "Images" },
-    ],
-  },
-  {
-    title: "CSS",
-    variant: "css",
-    icon: "css",
-    links: [
-      { section: "css", label: "Introduction" },
-      { section: "css-scores", label: "Scores" },
-      { section: "css-stats", label: "Métriques" },
-      { section: "css-variables", label: "Variables" },
-      { section: "css-colors", label: "Couleurs" },
-      { section: "typography", label: "Typographie" },
-      { section: "css-organization", label: "Organisation" },
-      { section: "classes", label: "Classes" },
-      { section: "css-selectors", label: "Sélecteurs" },
-      { section: "css-properties", label: "Propriétés" },
-      { section: "css-rules", label: "Règles" },
-      { section: "css-units", label: "Unités" },
-    ],
-  },
-];
+const navSections = NAV_SECTIONS;
 
 // Props communes pour NavLink
 const navLinkProps = computed(() => ({
@@ -373,149 +337,14 @@ const navLinkProps = computed(() => ({
   mobile: mobileNavOpen.value,
 }));
 
+// Gestion de la navigation selon le mode (mobile ou desktop)
 const handleNavigate = computed(() =>
   mobileNavOpen.value ? handleMobileNavClick : setActiveSection
 );
 
-// Gestion de la navigation mobile
-const toggleMobileNav = () => {
-  mobileNavOpen.value = !mobileNavOpen.value;
-};
-
+// Gestion du clic sur la navigation mobile
 const handleMobileNavClick = (section) => {
   setActiveSection(section);
   toggleMobileNav();
-};
-
-// Définit la section active
-const setActiveSection = (section) => {
-  activeSection.value = section;
-};
-
-// Gestion du scroll pour le bouton retour en haut
-const handleScroll = () => {
-  showScrollTop.value = window.scrollY > 500;
-
-  // Détection de la section visible
-  const sections = [
-    "html",
-    "scores",
-    "files",
-    "tags",
-    "structure",
-    "images",
-    "css",
-    "css-stats",
-    "css-colors",
-    "css-variables",
-    "typography",
-    "css-selectors",
-    "css-rules",
-    "css-properties",
-    "css-units",
-    "classes",
-  ];
-
-  for (const section of sections) {
-    const element = document.getElementById(section);
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      if (rect.top <= 150 && rect.bottom >= 150) {
-        activeSection.value = section;
-        break;
-      }
-    }
-  }
-};
-
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
-
-// Récupère les statistiques de classe depuis l'API
-const fetchClassStats = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/stats/class`);
-    classStats.value = await response.json();
-  } catch (error) {
-    console.error("Erreur lors du chargement des statistiques :", error);
-  }
-};
-
-// Récupère les projets depuis l'API
-const fetchProjects = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/scan/projects`);
-    projects.value = await response.json();
-
-    if (projects.value.length > 0) {
-      selectedProject.value = {
-        value: projects.value[0],
-        label: projects.value[0],
-      };
-      fetchProjectData();
-    }
-  } catch (error) {
-    console.error("Erreur lors du chargement des projets :", error);
-  }
-};
-
-const fetchProjectData = async () => {
-  if (!selectedProject.value) return;
-  const response = await fetch(
-    `${API_BASE_URL}/scan/project/${selectedProject.value.value}`
-  );
-  projectData.value = await response.json();
-  extractFontsFromImport();
-};
-
-onMounted(() => {
-  fetchProjects();
-  fetchClassStats();
-  window.addEventListener("scroll", handleScroll);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
-
-// Fonction pour extraire les polices depuis @import et les charger dynamiquement
-const extractFontsFromImport = () => {
-  fonts.value = [];
-  const importObj =
-    projectData.value?.cssAnalysisResult?.atrules?.import?.unique || {};
-  const importUrl = Object.keys(importObj)[0] || "";
-
-  if (importUrl) {
-    const url = importUrl.match(/url\("(.+?)"\)/)?.[1];
-
-    if (url) {
-      loadGoogleFonts(url);
-
-      const fontFamilies = [...url.matchAll(/family=([^&]+)/g)].map(
-        (match) => match[1]
-      );
-
-      fonts.value = fontFamilies.map((family) =>
-        family.split(":")[0].replace(/\+/g, " ")
-      );
-    }
-  }
-};
-
-const loadGoogleFonts = (url) => {
-  const existingLink = document.querySelector(`link[data-dynamic-fonts]`);
-  if (existingLink) {
-    existingLink.href = url;
-  } else {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = url;
-    link.setAttribute("data-dynamic-fonts", "true");
-    document.head.appendChild(link);
-  }
 };
 </script>

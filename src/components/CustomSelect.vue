@@ -61,10 +61,26 @@ const props = defineProps({
   options: {
     type: Array,
     required: true,
+    validator: (value) => {
+      return value.every(
+        (option) =>
+          typeof option === "object" &&
+          option.hasOwnProperty("value") &&
+          option.hasOwnProperty("label")
+      );
+    },
   },
   selectedOption: {
     type: Object,
     default: null,
+    validator: (value) => {
+      return (
+        value === null ||
+        (typeof value === "object" &&
+          value.hasOwnProperty("value") &&
+          value.hasOwnProperty("label"))
+      );
+    },
   },
 });
 

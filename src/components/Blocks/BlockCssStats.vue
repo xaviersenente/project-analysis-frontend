@@ -30,7 +30,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { gap } from "../../js/helpers";
+import { gap, getGapClass } from "../../js/helpers";
 import Block from "../Block.vue";
 import Section from "../Section.vue";
 
@@ -51,12 +51,4 @@ const gapDeclaration = computed(() =>
     props.cssAnalysisResult.declarations.totalUnique
   )
 );
-
-// Fonction pour déterminer la classe en fonction de la valeur d'écart
-const getGapClass = (gapValue) => {
-  if (gapValue <= 10) return "text-green-600";
-  if (gapValue <= 25) return "text-yellow-500";
-  if (gapValue <= 40) return "text-orange-500";
-  return "text-red-500";
-};
 </script>

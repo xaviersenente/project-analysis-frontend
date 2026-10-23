@@ -31,13 +31,34 @@
 import { computed } from "vue";
 
 const props = defineProps({
-  title: String,
-  subtitle: String,
-  definition: String,
-  value: [String, Number],
-  additionalValue: [String, Number],
-  rightValue: [String, Number],
-  rightClass: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  subtitle: {
+    type: String,
+    default: "",
+  },
+  definition: {
+    type: String,
+    default: "",
+  },
+  value: {
+    type: [String, Number],
+    default: null,
+  },
+  additionalValue: {
+    type: [String, Number],
+    default: null,
+  },
+  rightValue: {
+    type: [String, Number],
+    default: null,
+  },
+  rightClass: {
+    type: String,
+    default: "",
+  },
   size: {
     type: String,
     default: "default",

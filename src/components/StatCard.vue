@@ -9,8 +9,14 @@
 
 <script setup>
 defineProps({
-  value: [Number, String],
-  label: String,
+  value: {
+    type: [Number, String],
+    required: true,
+  },
+  label: {
+    type: String,
+    required: true,
+  },
   bgClass: {
     type: String,
     default: "bg-slate-50",

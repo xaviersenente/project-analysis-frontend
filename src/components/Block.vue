@@ -18,6 +18,9 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { VARIANT_COLORS } from "../js/constants";
+
 const props = defineProps({
   title: String,
   desc: String,
@@ -29,9 +32,11 @@ const props = defineProps({
 });
 
 // Définition des classes en fonction du variant
-const variantClasses = {
-  default: "bg-white",
-  html: "bg-orange-600 text-white",
-  css: "bg-blue-600 text-white",
-}[props.variant];
+const variantClasses = computed(() => {
+  const colors = VARIANT_COLORS[props.variant];
+  if (props.variant === "default") {
+    return colors.bg;
+  }
+  return `${colors.bg} text-white`;
+});
 </script>

@@ -56,6 +56,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { PROGRESS_CIRCLE } from "../js/constants";
 
 // Déclaration de la prop avec validation
 const props = defineProps({
@@ -73,7 +74,7 @@ const props = defineProps({
 
 // Calcule le style du cercle de progression
 const circleStyle = computed(() => {
-  const radius = 52; // Rayon du cercle principal
+  const radius = PROGRESS_CIRCLE.mainRadius;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - props.value);
   return {
@@ -87,7 +88,7 @@ const circleStyle = computed(() => {
 // Calcule le style du cercle de moyenne
 const averageCircleStyle = computed(() => {
   if (props.averageValue === null) return {};
-  const radius = 44; // Rayon du cercle de moyenne
+  const radius = PROGRESS_CIRCLE.averageRadius;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - props.averageValue);
   return {

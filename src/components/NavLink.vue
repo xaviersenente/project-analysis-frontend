@@ -17,6 +17,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { VARIANT_COLORS } from "../js/constants";
 
 const props = defineProps({
   section: {
@@ -33,7 +34,7 @@ const props = defineProps({
   },
   variant: {
     type: String,
-    default: "html", // 'html' ou 'css'
+    default: "html",
     validator: (value) => ["html", "css"].includes(value),
   },
   mobile: {
@@ -46,15 +47,9 @@ const emit = defineEmits(["navigate"]);
 
 const isActive = computed(() => props.activeSection === props.section);
 
-const activeColor = computed(() => {
-  return props.variant === "html" ? "text-orange-600" : "text-blue-600";
-});
+const activeColor = computed(() => VARIANT_COLORS[props.variant].text);
 
-const hoverColor = computed(() => {
-  return props.variant === "html"
-    ? "hover:text-orange-600"
-    : "hover:text-blue-600";
-});
+const hoverColor = computed(() => VARIANT_COLORS[props.variant].hover);
 
 const handleClick = () => {
   emit("navigate", props.section);
