@@ -50,15 +50,15 @@ const texteRecherche = `${c.id} ${c.libelle}`;
   class:list={["scroll-mt-20", c.statut === "R" && "bg-page/40"]}>
   <details class="ligne-critere group">
     <summary
-      class="grid min-h-11 cursor-pointer list-none grid-cols-[1rem_3rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 px-4 py-2 hover:bg-neutre-fond md:grid-cols-[1rem_3rem_minmax(0,1fr)_7.5rem_8.5rem_12rem_4.5rem_1.25rem]">
+      class="grid min-h-11 cursor-pointer list-none grid-cols-[1rem_3rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 px-4 py-2 hover:bg-neutre-fond xl:grid-cols-[1rem_3rem_minmax(0,1fr)_7.5rem_8.5rem_12rem_4.5rem_1.25rem]">
       <svg viewBox="0 0 16 16" class="size-3 text-texte-doux transition-transform group-open:rotate-90" aria-hidden="true"
         ><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg
       >
       <span class="font-mono text-sm font-semibold">{c.id}</span>
       <span class="min-w-0">{c.libelle}</span>
-      <span class={`hidden text-xs md:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
+      <span class={`hidden text-xs xl:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
       <Verdict verdict={c.verdict} statut={c.statut} />
-      <span class="col-span-2 col-start-3 text-sm md:col-span-1 md:col-start-auto">
+      <span class="col-span-2 col-start-3 text-sm xl:col-span-1 xl:col-start-auto">
         {
           c.verdict === "non-mesurable" ? (
             <span class="text-texte-doux">Non mesurable</span>
@@ -71,7 +71,7 @@ const texteRecherche = `${c.id} ${c.libelle}`;
           )
         }
       </span>
-      <span class="hidden text-right text-sm md:block">
+      <span class="hidden text-right text-sm xl:block">
         {
           c.statut === "C" && c.points ? (
             c.points.obtenus === null ? (
@@ -87,7 +87,7 @@ const texteRecherche = `${c.id} ${c.libelle}`;
           ) : null
         }
       </span>
-      <span class="hidden md:inline-flex"><IconeMethode methode={c.methode} /></span>
+      <span class="hidden xl:inline-flex"><IconeMethode methode={c.methode} /></span>
     </summary>
 
     <div class="space-y-3 border-t border-bordure bg-page px-4 py-3 md:pl-[5.5rem]">
