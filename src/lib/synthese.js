@@ -58,13 +58,15 @@ const moyenne = (valeurs) =>
   Math.round((valeurs.reduce((s, v) => s + v, 0) / valeurs.length) * 10) / 10;
 
 /**
- * Moyennes de la promo, sur les seuls projets analysés.
+ * Moyennes de la promo, sur les seuls projets analysés
+ * (un projet dont rien n'a pu être mesuré n'y compte pas).
  * Par axe, la moyenne est une proportion (0 à 1) : le maximum d'un axe varie
  * d'un projet à l'autre quand des critères ne sont pas mesurables.
  * @param {Array} resultats - Résultats v2
  * @returns {{ totale: number, parAxe: Record<string, number> } | null}
  */
-export const moyennesPromo = (resultats) => {
+export const moyennesPromo = (tousLesResultats) => {
+  const resultats = tousLesResultats.filter((r) => r.note.max > 0);
   if (resultats.length === 0) return null;
   const ratio = (r, axe) => r.note.parAxe[axe].obtenus / Math.max(r.note.parAxe[axe].max, 1);
   return {

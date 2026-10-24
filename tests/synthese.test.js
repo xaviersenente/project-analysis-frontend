@@ -80,6 +80,7 @@ test("moyennes de la promo : par axe et note totale, sur les projets analysés",
   const resultat = (totale, a) => ({
     note: {
       totale,
+      max: 100,
       parAxe: {
         graphique: { obtenus: a, max: 20 },
         ergonomie: { obtenus: 20, max: 25 },
@@ -94,4 +95,7 @@ test("moyennes de la promo : par axe et note totale, sur les projets analysés",
   assert.equal(moyennes.parAxe.graphique, 0.65);
   assert.equal(moyennes.parAxe.accessibilite, 0.8);
   assert.equal(moyennesPromo([]), null);
+  // Un projet entièrement non mesurable (dépôt inaccessible) ne tire pas la moyenne vers 0
+  const vide = { note: { totale: 0, max: 0, parAxe: resultat(0, 0).note.parAxe } };
+  assert.equal(moyennesPromo([resultat(70, 10), vide]).totale, 70);
 });
