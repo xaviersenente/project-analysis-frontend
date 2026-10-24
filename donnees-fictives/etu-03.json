@@ -1865,6 +1865,207 @@
       }
     ]
   },
+  "blocs": {
+    "graphique": {
+      "palette": [
+        {
+          "variable": "--surface",
+          "valeur": "#fffdf7",
+          "role": "surface"
+        },
+        {
+          "variable": "--surface-alt",
+          "valeur": "#f4f1e8",
+          "role": "surface"
+        },
+        {
+          "variable": "--texte",
+          "valeur": "#1a1a1a",
+          "role": "texte"
+        },
+        {
+          "variable": "--texte-doux",
+          "valeur": "#5c5c5c",
+          "role": "texte"
+        },
+        {
+          "variable": "--accent",
+          "valeur": "#f5c518",
+          "role": "accent"
+        },
+        {
+          "variable": "--accent-fonce",
+          "valeur": "#8a6d00",
+          "role": "accent"
+        },
+        {
+          "variable": "--bordure",
+          "valeur": "#e2ddd0",
+          "role": "bordure"
+        }
+      ],
+      "espacements": [
+        {
+          "variable": "--petit",
+          "valeur": "0.5rem",
+          "px": 8
+        },
+        {
+          "variable": "--moyen",
+          "valeur": "1rem",
+          "px": 16
+        },
+        {
+          "variable": "--grand",
+          "valeur": "2rem",
+          "px": 32
+        }
+      ],
+      "typographie": {
+        "famille": "Space Grotesk",
+        "tailles": [
+          {
+            "variable": "--taille-1",
+            "valeur": "0.875rem",
+            "px": 14
+          },
+          {
+            "variable": "--taille-2",
+            "valeur": "1rem",
+            "px": 16
+          },
+          {
+            "variable": "--taille-3",
+            "valeur": "1.25rem",
+            "px": 20
+          },
+          {
+            "variable": "--taille-4",
+            "valeur": "1.5rem",
+            "px": 24
+          },
+          {
+            "variable": "--taille-5",
+            "valeur": "2rem",
+            "px": 32
+          },
+          {
+            "variable": "--taille-6",
+            "valeur": "2.75rem",
+            "px": 44
+          }
+        ]
+      }
+    },
+    "accessibilite": {
+      "lighthouse": {
+        "performance": 82,
+        "accessibilite": 100,
+        "bonnesPratiques": 100,
+        "seo": 92
+      },
+      "contrastes": [],
+      "contenusAttendus": [
+        {
+          "balise": "article",
+          "pages": [
+            "works.html",
+            "events.html"
+          ]
+        },
+        {
+          "balise": "nav",
+          "pages": [
+            "index.html",
+            "works.html",
+            "work.html",
+            "about.html",
+            "team.html",
+            "events.html",
+            "event.html",
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "figure",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "figcaption",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "blockquote",
+          "pages": [
+            "about.html"
+          ]
+        },
+        {
+          "balise": "form",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "label",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "video",
+          "pages": [
+            "work.html"
+          ]
+        },
+        {
+          "balise": "time",
+          "pages": [
+            "events.html",
+            "event.html"
+          ]
+        },
+        {
+          "balise": "dl",
+          "pages": [
+            "event.html"
+          ]
+        }
+      ]
+    },
+    "methodologie": {
+      "javascript": {
+        "fichiers": 1,
+        "lignes": 6,
+        "motifs": []
+      },
+      "classesInutilisees": {
+        "total": 48,
+        "classes": [
+          "ancienne-carte",
+          "test",
+          "bloc-vide",
+          "titre2",
+          "hero--old",
+          "nav__lien--actif-old"
+        ]
+      },
+      "bem": {
+        "ratio": 92,
+        "points": 5,
+        "totalClasses": 48,
+        "horsConvention": [
+          "boutonRouge"
+        ]
+      }
+    }
+  },
   "alertes": [],
   "nonMesurable": []
 }

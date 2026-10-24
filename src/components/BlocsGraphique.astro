@@ -1,0 +1,134 @@
+---
+/**
+ * Graphique : palette par rôle, échelle d'espacement, échelle typographique, polices chargées
+ */
+import { grouperPalette, estClaire, largeurRelative } from "../lib/blocs.js";
+import { nombre } from "../lib/format.js";
+
+interface Props {
+  bloc: any | undefined;
+  polices: any[] | undefined;
+}
+
+const { bloc, polices } = Astro.props;
+const ROLE: Record<string, string> = {
+  surface: "Surface",
+  texte: "Texte",
+  accent: "Accent",
+  bordure: "Bordure",
+  autre: "Sans rôle (nommée par sa teinte)",
+};
+const groupes = bloc?.palette ? grouperPalette(bloc.palette) : [];
+const maxEspace = bloc?.espacements ? Math.max(...bloc.espacements.map((e: any) => e.px), 1) : 1;
+const famille = bloc?.typographie?.famille;
+const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : [];
+---
+
+<div class="grid gap-4 border-b border-bordure p-4 lg:grid-cols-2">
+  <!-- Palette -->
+  <div class="rounded-md border border-bordure p-3">
+    <h3 class="mb-2 text-sm font-semibold">Palette déclarée dans <code class="font-mono">:root</code></h3>
+    {
+      !bloc?.palette ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <div class="space-y-2">
+          {groupes.map((g) => (
+            <div>
+              <p class:list={["text-xs font-semibold", g.role === "autre" ? "text-partiel" : "text-texte-doux"]}>
+                {g.role === "autre" && <span aria-hidden="true">◐ </span>}
+                {ROLE[g.role]}
+              </p>
+              <ul class="mt-1 flex flex-wrap gap-2">
+                {g.couleurs.map((c: any) => (
+                  <li class="flex items-center gap-2 rounded border border-bordure py-1 pr-2 pl-1">
+                    <span
+                      class:list={["size-6 rounded", estClaire(c.valeur) && "ring-1 ring-texte-doux/40"]}
+                      style={`background: ${c.valeur}`}
+                      aria-hidden="true"
+                    />
+                    <span class="font-mono text-xs">
+                      <span class="block">{c.variable}</span>
+                      <span class="block text-texte-doux">{c.valeur}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <!-- Échelle d'espacement -->
+  <div class="rounded-md border border-bordure p-3">
+    <h3 class="mb-2 text-sm font-semibold">Échelle d'espacement</h3>
+    {
+      !bloc?.espacements ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <ul class="space-y-1.5">
+          {bloc.espacements.map((e: any) => (
+            <li class="grid grid-cols-[8rem_4rem_minmax(0,1fr)] items-center gap-2 text-xs">
+              <span class="font-mono">{e.variable ?? "—"}</span>
+              <span class="text-right text-texte-doux">{nombre(e.px)} px</span>
+              <span class="h-3 rounded-sm bg-texte-doux/60" style={{ width: largeurRelative(e.px, maxEspace) }} aria-hidden="true" />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <!-- Échelle typographique -->
+  <div class="rounded-md border border-bordure p-3 lg:col-span-2">
+    <h3 class="mb-2 text-sm font-semibold">
+      Échelle typographique
+      {
+        bloc?.typographie && (
+          <span class="font-normal text-texte-doux">
+            · {bloc.typographie.tailles.length} tailles{famille && <>, en {famille} si la police est installée sur ce poste</>}
+          </span>
+        )
+      }
+    </h3>
+    {
+      !bloc?.typographie ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <ul class="space-y-1">
+          {bloc.typographie.tailles.map((t: any) => (
+            <li class="grid grid-cols-[8rem_6rem_minmax(0,1fr)] items-baseline gap-2">
+              <span class="font-mono text-xs">{t.variable ?? "en dur"}</span>
+              <span class="text-xs text-texte-doux">
+                {t.valeur.endsWith("px") ? `${nombre(t.px)} px` : `${t.valeur} · ${nombre(t.px)} px`}
+              </span>
+              <span class="truncate leading-tight" style={`font-size: ${t.px}px; font-family: "${famille ?? ""}", var(--font-sans)`} aria-hidden="true">
+                Le studio BBrands
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <!-- Polices chargées : le détail est dans Ressources -->
+  {
+    polices && (
+      <p class="text-sm lg:col-span-2">
+        <span class="font-semibold">Polices chargées :</span>{" "}
+        {familles.map((f, i) => (
+          <>
+            {i > 0 && ", "}
+            {f} ({polices.filter((p: any) => p.famille === f).map((p: any) => p.graisse).join(", ")})
+          </>
+        ))}
+        {" "}·{" "}
+        {nombre(polices.reduce((s: number, p: any) => s + p.poidsKo, 0))} Ko ·{" "}
+        <a href="#ressources" class="text-accent underline underline-offset-2">détail dans Ressources</a>
+      </p>
+    )
+  }
+</div>

@@ -7,6 +7,9 @@ import SectionAxe from "../../components/SectionAxe.astro";
 import SectionAVenir from "../../components/SectionAVenir.astro";
 import VueParPage from "../../components/VueParPage.astro";
 import Ressources from "../../components/Ressources.astro";
+import BlocsGraphique from "../../components/BlocsGraphique.astro";
+import BlocsAccessibilite from "../../components/BlocsAccessibilite.astro";
+import BlocsMethodologie from "../../components/BlocsMethodologie.astro";
 import Verdict from "../../components/Verdict.astro";
 import { AXES } from "../../config/axes.js";
 import { badgesParAxe, compterVerdicts } from "../../lib/synthese.js";
@@ -27,6 +30,9 @@ export function getStaticPaths() {
 const { projet, precedent, suivant } = Astro.props;
 const { resultats, options, moyennes } = donneesSite();
 const resultat = resultats.get(projet.slug) ?? null;
+// Seuils lus dans les critères du résultat
+const seuilDe = (id: string) => resultat?.criteres.find((c: any) => c.id === id)?.seuil?.nombre ?? null;
+
 const recommandations = resultat
   ? resultat.criteres.filter((c: any) => c.statut === "R" && ["non-respecte", "partiel"].includes(c.verdict))
   : [];
@@ -61,8 +67,11 @@ const recommandations = resultat
                 axe={axe}
                 criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
                 pointsAxe={resultat.note.parAxe[axe.id]}
-                moyenne={moyennes?.parAxe[axe.id] ?? null}
-              />
+                moyenne={moyennes?.parAxe[axe.id] ?? null}>
+                {axe.id === "graphique" && <BlocsGraphique bloc={resultat.blocs?.graphique} polices={resultat.ressources?.polices} />}
+                {axe.id === "accessibilite" && <BlocsAccessibilite bloc={resultat.blocs?.accessibilite} objectifLighthouse={seuilDe("A13")} />}
+                {axe.id === "methodologie" && <BlocsMethodologie bloc={resultat.blocs?.methodologie} seuilBem={seuilDe("M7")} />}
+              </SectionAxe>
             ))}
 
             <VueParPage pages={resultat.pages} />

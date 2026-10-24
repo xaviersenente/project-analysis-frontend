@@ -1461,7 +1461,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1508,7 +1508,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1555,7 +1555,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1602,7 +1602,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1649,7 +1649,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1696,7 +1696,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1743,7 +1743,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -1790,7 +1790,7 @@
         },
         "menuPopover": {
           "verdict": "non-respecte",
-          "detail": "menu ouvert par js/menu.js"
+          "detail": "menu en case à cocher, sans popover"
         },
         "ariaCurrent": {
           "verdict": "respecte",
@@ -2094,6 +2094,203 @@
         ]
       }
     ]
+  },
+  "blocs": {
+    "graphique": {
+      "palette": [
+        {
+          "variable": "--jaune",
+          "valeur": "#f5c518",
+          "role": "autre"
+        },
+        {
+          "variable": "--noir",
+          "valeur": "#111111",
+          "role": "autre"
+        },
+        {
+          "variable": "--gris",
+          "valeur": "#7b7b7b",
+          "role": "autre"
+        },
+        {
+          "variable": "--blanc",
+          "valeur": "#ffffff",
+          "role": "autre"
+        }
+      ],
+      "espacements": [
+        {
+          "variable": "--espace-1",
+          "valeur": "0.25rem",
+          "px": 4
+        },
+        {
+          "variable": "--espace-2",
+          "valeur": "0.5rem",
+          "px": 8
+        },
+        {
+          "variable": "--espace-3",
+          "valeur": "1rem",
+          "px": 16
+        },
+        {
+          "variable": "--espace-4",
+          "valeur": "1.5rem",
+          "px": 24
+        },
+        {
+          "variable": "--espace-5",
+          "valeur": "2rem",
+          "px": 32
+        },
+        {
+          "variable": "--espace-6",
+          "valeur": "3rem",
+          "px": 48
+        }
+      ],
+      "typographie": {
+        "famille": "Space Grotesk",
+        "tailles": [
+          {
+            "variable": "--taille-1",
+            "valeur": "0.875rem",
+            "px": 14
+          },
+          {
+            "variable": "--taille-2",
+            "valeur": "1rem",
+            "px": 16
+          },
+          {
+            "variable": "--taille-3",
+            "valeur": "1.25rem",
+            "px": 20
+          },
+          {
+            "variable": "--taille-4",
+            "valeur": "1.5rem",
+            "px": 24
+          },
+          {
+            "variable": "--taille-5",
+            "valeur": "2rem",
+            "px": 32
+          },
+          {
+            "variable": "--taille-6",
+            "valeur": "2.75rem",
+            "px": 44
+          }
+        ]
+      }
+    },
+    "accessibilite": {
+      "lighthouse": {
+        "performance": null,
+        "accessibilite": null,
+        "bonnesPratiques": null,
+        "seo": null
+      },
+      "contenusAttendus": [
+        {
+          "balise": "article",
+          "pages": [
+            "works.html",
+            "events.html"
+          ]
+        },
+        {
+          "balise": "nav",
+          "pages": [
+            "index.html",
+            "works.html",
+            "work.html",
+            "about.html",
+            "team.html",
+            "events.html",
+            "event.html",
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "figure",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "figcaption",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "blockquote",
+          "pages": []
+        },
+        {
+          "balise": "form",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "label",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "video",
+          "pages": [
+            "work.html"
+          ]
+        },
+        {
+          "balise": "time",
+          "pages": [
+            "events.html",
+            "event.html"
+          ]
+        },
+        {
+          "balise": "dl",
+          "pages": [
+            "event.html"
+          ]
+        }
+      ]
+    },
+    "methodologie": {
+      "javascript": {
+        "fichiers": 0,
+        "lignes": 0,
+        "motifs": []
+      },
+      "classesInutilisees": {
+        "total": 48,
+        "classes": [
+          "ancienne-carte"
+        ]
+      },
+      "bem": {
+        "ratio": 38,
+        "points": 0,
+        "totalClasses": 48,
+        "horsConvention": [
+          "boutonRouge",
+          "carteTitre",
+          "grand-titre-jaune",
+          "menuMobile",
+          "bloc2"
+        ]
+      }
+    }
   },
   "alertes": [
     {

@@ -97,6 +97,78 @@ export const pageSchema = z.object({
   controles: z.object(Object.fromEntries(CONTROLES_PAGE.map((c) => [c, celluleSchema]))),
 });
 
+export const ROLES_COULEUR = ["surface", "texte", "accent", "bordure", "autre"];
+
+const tailleSchema = z.object({
+  variable: z.string().nullable(),
+  valeur: z.string(),
+  px: z.number().min(0),
+});
+
+export const blocsSchema = z
+  .object({
+    graphique: z
+      .object({
+        // Variables de couleur de :root, avec le rôle déduit de leur nom
+        palette: z.array(z.object({ variable: z.string(), valeur: z.string(), role: z.enum(ROLES_COULEUR) })),
+        espacements: z.array(tailleSchema),
+        typographie: z.object({
+          famille: z.string().nullable(),
+          tailles: z.array(tailleSchema),
+        }),
+      })
+      .partial(),
+    accessibilite: z
+      .object({
+        // Scores sur 100 ; seul celui d'accessibilité compte dans la note
+        lighthouse: z.object({
+          performance: z.number().nullable(),
+          accessibilite: z.number().nullable(),
+          bonnesPratiques: z.number().nullable(),
+          seo: z.number().nullable(),
+        }),
+        contrastes: z.array(
+          z.object({
+            texte: z.string(),
+            fond: z.string(),
+            rapport: z.number(),
+            requis: z.number(),
+            page: z.string(),
+            selecteur: z.string(),
+          })
+        ),
+        // Balises imposées par le sujet (fichier de promo) et les pages où elles figurent
+        contenusAttendus: z.array(z.object({ balise: z.string(), pages: z.array(z.string()) })),
+      })
+      .partial(),
+    methodologie: z
+      .object({
+        javascript: z.object({
+          fichiers: z.number().int().min(0),
+          lignes: z.number().int().min(0),
+          motifs: z.array(
+            z.object({
+              motif: z.string(),
+              occurrence: occurrenceSchema,
+              alternative: z.object({ titre: z.string(), code: z.string() }),
+            })
+          ),
+        }),
+        classesInutilisees: z.object({
+          total: z.number().int().min(0),
+          classes: z.array(z.string()),
+        }),
+        bem: z.object({
+          ratio: z.number().min(0).max(100),
+          points: z.number().min(0),
+          totalClasses: z.number().int().min(0),
+          horsConvention: z.array(z.string()),
+        }),
+      })
+      .partial(),
+  })
+  .partial();
+
 export const ressourcesSchema = z.object({
   images: z.array(
     z.object({
@@ -177,6 +249,8 @@ export const resultatSchema = z.object({
   // Vue par page : absente si l'inventaire des pages a échoué
   pages: z.array(pageSchema).optional(),
   ressources: ressourcesSchema.optional(),
+  // Blocs propres à chaque axe ; un bloc absent est « Non mesurable »
+  blocs: blocsSchema.optional(),
   // Précisé avec la timeline (lot 3)
   historique: z.looseObject({}).optional(),
 });

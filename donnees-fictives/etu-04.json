@@ -2166,6 +2166,256 @@
       }
     ]
   },
+  "blocs": {
+    "graphique": {
+      "palette": [
+        {
+          "variable": "--jaune",
+          "valeur": "#f5c518",
+          "role": "autre"
+        },
+        {
+          "variable": "--noir",
+          "valeur": "#111111",
+          "role": "autre"
+        },
+        {
+          "variable": "--gris",
+          "valeur": "#7b7b7b",
+          "role": "autre"
+        },
+        {
+          "variable": "--blanc",
+          "valeur": "#ffffff",
+          "role": "autre"
+        }
+      ],
+      "espacements": [
+        {
+          "variable": "--espace-1",
+          "valeur": "0.25rem",
+          "px": 4
+        },
+        {
+          "variable": "--espace-2",
+          "valeur": "0.5rem",
+          "px": 8
+        },
+        {
+          "variable": "--espace-3",
+          "valeur": "1rem",
+          "px": 16
+        },
+        {
+          "variable": "--espace-4",
+          "valeur": "1.5rem",
+          "px": 24
+        },
+        {
+          "variable": "--espace-5",
+          "valeur": "2rem",
+          "px": 32
+        },
+        {
+          "variable": "--espace-6",
+          "valeur": "3rem",
+          "px": 48
+        }
+      ],
+      "typographie": {
+        "famille": "Space Grotesk",
+        "tailles": [
+          {
+            "variable": null,
+            "valeur": "12px",
+            "px": 12
+          },
+          {
+            "variable": null,
+            "valeur": "14px",
+            "px": 14
+          },
+          {
+            "variable": null,
+            "valeur": "15px",
+            "px": 15
+          },
+          {
+            "variable": null,
+            "valeur": "16px",
+            "px": 16
+          },
+          {
+            "variable": null,
+            "valeur": "18px",
+            "px": 18
+          },
+          {
+            "variable": null,
+            "valeur": "20px",
+            "px": 20
+          },
+          {
+            "variable": null,
+            "valeur": "22px",
+            "px": 22
+          },
+          {
+            "variable": null,
+            "valeur": "28px",
+            "px": 28
+          },
+          {
+            "variable": null,
+            "valeur": "36px",
+            "px": 36
+          }
+        ]
+      }
+    },
+    "accessibilite": {
+      "lighthouse": {
+        "performance": 82,
+        "accessibilite": 100,
+        "bonnesPratiques": 100,
+        "seo": 92
+      },
+      "contrastes": [],
+      "contenusAttendus": [
+        {
+          "balise": "article",
+          "pages": [
+            "works.html",
+            "events.html"
+          ]
+        },
+        {
+          "balise": "nav",
+          "pages": [
+            "index.html",
+            "works.html",
+            "work.html",
+            "about.html",
+            "team.html",
+            "events.html",
+            "event.html",
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "figure",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "figcaption",
+          "pages": [
+            "work.html",
+            "team.html"
+          ]
+        },
+        {
+          "balise": "blockquote",
+          "pages": []
+        },
+        {
+          "balise": "form",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "label",
+          "pages": [
+            "contact.html"
+          ]
+        },
+        {
+          "balise": "video",
+          "pages": []
+        },
+        {
+          "balise": "time",
+          "pages": [
+            "events.html",
+            "event.html"
+          ]
+        },
+        {
+          "balise": "dl",
+          "pages": [
+            "event.html"
+          ]
+        }
+      ]
+    },
+    "methodologie": {
+      "javascript": {
+        "fichiers": 1,
+        "lignes": 42,
+        "motifs": [
+          {
+            "motif": "Menu ouvert par classList.toggle",
+            "occurrence": {
+              "fichier": "js/menu.js",
+              "ligne": 4,
+              "colonne": 3,
+              "extrait": "bouton.addEventListener(\"click\", () => menu.classList.toggle(\"ouvert\"));",
+              "surligne": [
+                44,
+                70
+              ]
+            },
+            "alternative": {
+              "titre": "Un popover, sans JavaScript",
+              "code": "<button popovertarget=\"menu\">Menu</button>\n<nav id=\"menu\" popover>…</nav>"
+            }
+          },
+          {
+            "motif": "Affichage piloté par element.style",
+            "occurrence": {
+              "fichier": "js/menu.js",
+              "ligne": 11,
+              "colonne": 5,
+              "extrait": "panneau.style.display = \"block\";",
+              "surligne": [
+                8,
+                21
+              ]
+            },
+            "alternative": {
+              "titre": "Une classe ou un état CSS",
+              "code": ".panneau:popover-open { display: block; }"
+            }
+          }
+        ]
+      },
+      "classesInutilisees": {
+        "total": 48,
+        "classes": [
+          "ancienne-carte",
+          "test",
+          "bloc-vide"
+        ]
+      },
+      "bem": {
+        "ratio": 12,
+        "points": 0,
+        "totalClasses": 48,
+        "horsConvention": [
+          "boutonRouge",
+          "carteTitre",
+          "grand-titre-jaune",
+          "menuMobile",
+          "bloc2",
+          "photoEquipe",
+          "lien-footer"
+        ]
+      }
+    }
+  },
   "alertes": [
     {
       "type": "pages-404",

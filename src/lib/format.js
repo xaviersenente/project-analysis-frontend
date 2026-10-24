@@ -47,5 +47,8 @@ export const seuilCritere = (critere) => {
   return critere.detailSeuil ?? "—";
 };
 
+/** Rapport de contraste : 3.14 → « 3,1:1 » */
+export const rapport = (valeur) => `${nombreFr.format(Math.round(valeur * 10) / 10)}:1`;
+
 /** Points : « 3 pts », « 1 pt » */
 export const points = (n) => `${nombre(n)} pt${Math.abs(n) > 1 ? "s" : ""}`;

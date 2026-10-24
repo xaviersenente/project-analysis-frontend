@@ -1,0 +1,131 @@
+---
+/**
+ * Accessibilité : les quatre scores Lighthouse (seul celui d'accessibilité compte),
+ * les paires en échec de contraste, les contenus attendus par le sujet
+ */
+import { estClaire, largeurRelative } from "../lib/blocs.js";
+import { nombre, rapport } from "../lib/format.js";
+
+interface Props {
+  bloc: any | undefined;
+  objectifLighthouse: number | null;
+}
+
+const { bloc, objectifLighthouse } = Astro.props;
+const SCORES = [
+  { cle: "accessibilite", libelle: "Accessibilité", compte: true },
+  { cle: "performance", libelle: "Performance", compte: false },
+  { cle: "bonnesPratiques", libelle: "Bonnes pratiques", compte: false },
+  { cle: "seo", libelle: "SEO", compte: false },
+];
+---
+
+<div class="grid gap-4 border-b border-bordure p-4 lg:grid-cols-2">
+  <!-- Lighthouse -->
+  <div class="rounded-md border border-bordure p-3">
+    <h3 class="mb-2 text-sm font-semibold">Scores Lighthouse <span class="font-normal text-texte-doux">· moyenne des pages</span></h3>
+    {
+      !bloc?.lighthouse ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <ul class="space-y-2">
+          {SCORES.map((s) => {
+            const score = bloc.lighthouse[s.cle];
+            return (
+              <li class="grid grid-cols-[9rem_3rem_minmax(0,1fr)] items-center gap-2 text-sm">
+                <span>
+                  <span class:list={[s.compte && "font-semibold"]}>{s.libelle}</span>
+                  <span class="block text-xs text-texte-doux">{s.compte ? "compte dans la note" : "information"}</span>
+                </span>
+                <span class:list={["text-right font-semibold", s.compte && objectifLighthouse !== null && score !== null && score < objectifLighthouse && "text-non-respecte"]}>
+                  {score === null ? "?" : nombre(score)}
+                </span>
+                {score === null ? (
+                  <span class="text-xs text-texte-doux">non mesurable</span>
+                ) : (
+                  <span class="relative h-2 rounded-full bg-neutre-fond" aria-hidden="true">
+                    <span class:list={["absolute inset-y-0 left-0 rounded-full", s.compte ? "bg-axe-accessibilite" : "bg-texte-doux/50"]} style={{ width: largeurRelative(score, 100) }} />
+                    {s.compte && objectifLighthouse !== null && (
+                      <span class="absolute -top-1 -bottom-1 w-0.5 bg-texte" style={{ left: `${objectifLighthouse}%` }} title={`Objectif ${objectifLighthouse}`} />
+                    )}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </div>
+
+  <!-- Contrastes -->
+  <div class="rounded-md border border-bordure p-3">
+    <h3 class="mb-2 text-sm font-semibold">
+      Paires en échec de contraste
+      {bloc?.contrastes && <span class="font-normal text-texte-doux"> ({bloc.contrastes.length})</span>}
+    </h3>
+    {
+      !bloc?.contrastes ? (
+        <p class="text-sm text-texte-doux">Non mesurable : la mesure se fait dans le navigateur.</p>
+      ) : bloc.contrastes.length === 0 ? (
+        <p class="text-sm text-respecte">
+          <span aria-hidden="true">✓ </span>Aucune paire en échec.
+        </p>
+      ) : (
+        <ul class="space-y-2">
+          {bloc.contrastes.map((c: any) => (
+            <li class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+              <span class="flex items-center gap-1" aria-hidden="true">
+                <span class:list={["size-5 rounded", estClaire(c.texte) && "ring-1 ring-texte-doux/40"]} style={`background: ${c.texte}`} />
+                <span class:list={["size-5 rounded", estClaire(c.fond) && "ring-1 ring-texte-doux/40"]} style={`background: ${c.fond}`} />
+              </span>
+              <span class="font-mono text-xs">
+                {c.texte} sur {c.fond}
+              </span>
+              <span class="font-semibold text-non-respecte">
+                {rapport(c.rapport)} <span class="font-normal text-texte-doux">· requis {rapport(c.requis)}</span>
+              </span>
+              <span class="font-mono text-xs text-texte-doux">
+                {c.page} · {c.selecteur}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <!-- Contenus attendus -->
+  <div class="rounded-md border border-bordure p-3 lg:col-span-2">
+    <h3 class="mb-2 text-sm font-semibold">Contenus attendus par le sujet</h3>
+    {
+      !bloc?.contenusAttendus ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <ul class="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+          {bloc.contenusAttendus.map((t: any) =>
+            t.pages.length === 0 ? (
+              <li class="flex min-h-9 items-center gap-2 rounded border border-non-respecte bg-non-respecte-fond px-2 text-sm text-non-respecte">
+                <span aria-hidden="true">✕</span>
+                <code class="font-mono font-semibold">{t.balise}</code> absente
+              </li>
+            ) : (
+              <li class="rounded border border-bordure text-sm">
+                <details>
+                  <summary class="flex min-h-9 cursor-pointer items-center gap-2 px-2">
+                    <span class="text-respecte" aria-hidden="true">✓</span>
+                    <code class="font-mono">{t.balise}</code>
+                    <span class="text-xs text-texte-doux">
+                      {t.pages.length} page{t.pages.length > 1 ? "s" : ""}
+                    </span>
+                  </summary>
+                  <p class="px-2 pb-2 font-mono text-xs text-texte-doux">{t.pages.join(", ")}</p>
+                </details>
+              </li>
+            )
+          )}
+        </ul>
+      )
+    }
+  </div>
+</div>

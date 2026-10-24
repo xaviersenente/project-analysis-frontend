@@ -228,7 +228,9 @@ const genererPages = (criteres, profil) => {
       if (c.verdict === "non-mesurable") {
         controles[cle] = { verdict: "non-mesurable", detail: c.raison };
       } else if (["non-respecte", "partiel"].includes(c.verdict) && (enEchec === null || enEchec.includes(fichier))) {
-        controles[cle] = { verdict: "non-respecte", detail: detailEchec };
+        // Sans motif JavaScript (M4 respecté), le menu repose sur une case à cocher
+        const sansJs = cle === "menuPopover" && !["non-respecte", "partiel"].includes(verdictDe("M4").verdict);
+        controles[cle] = { verdict: "non-respecte", detail: sansJs ? "menu en case à cocher, sans popover" : detailEchec };
       } else {
         controles[cle] = { verdict: "respecte", detail: detailSucces };
       }
@@ -325,6 +327,127 @@ const genererRessources = (criteres, profil) => {
   };
 };
 
+// --- Blocs propres à chaque axe ---
+
+const genererBlocs = (criteres, profil) => {
+  const critere = (id) => criteres.find((c) => c.id === id);
+  const echoue = (id) => ["non-respecte", "partiel"].includes(critere(id).verdict);
+  const rem = (r) => ({ valeur: `${r}rem`, px: r * 16 });
+
+  const palette = echoue("G1")
+    ? [
+        { variable: "--jaune", valeur: "#f5c518", role: "autre" },
+        { variable: "--noir", valeur: "#111111", role: "autre" },
+        { variable: "--gris", valeur: "#7b7b7b", role: "autre" },
+        { variable: "--blanc", valeur: "#ffffff", role: "autre" },
+      ]
+    : [
+        { variable: "--surface", valeur: "#fffdf7", role: "surface" },
+        { variable: "--surface-alt", valeur: "#f4f1e8", role: "surface" },
+        { variable: "--texte", valeur: "#1a1a1a", role: "texte" },
+        { variable: "--texte-doux", valeur: "#5c5c5c", role: "texte" },
+        { variable: "--accent", valeur: "#f5c518", role: "accent" },
+        { variable: "--accent-fonce", valeur: "#8a6d00", role: "accent" },
+        { variable: "--bordure", valeur: "#e2ddd0", role: "bordure" },
+      ];
+
+  const espacements = echoue("G3")
+    ? [
+        { variable: "--petit", ...rem(0.5) },
+        { variable: "--moyen", ...rem(1) },
+        { variable: "--grand", ...rem(2) },
+      ]
+    : [0.25, 0.5, 1, 1.5, 2, 3].map((r, i) => ({ variable: `--espace-${i + 1}`, ...rem(r) }));
+
+  const tailles = echoue("G8") || echoue("G7")
+    ? [12, 14, 15, 16, 18, 20, 22, 28, 36].map((px) => ({ variable: null, valeur: `${px}px`, px }))
+    : [0.875, 1, 1.25, 1.5, 2, 2.75].map((r, i) => ({ variable: `--taille-${i + 1}`, ...rem(r) }));
+
+  const a13 = critere("A13");
+  const lighthouse =
+    a13.verdict === "non-mesurable"
+      ? { performance: null, accessibilite: null, bonnesPratiques: null, seo: null }
+      : { performance: 82, accessibilite: Math.round(a13.valeur ?? 90), bonnesPratiques: 100, seo: 92 };
+
+  const contrastes = echoue("A12")
+    ? [
+        { texte: "#9a9a9a", fond: "#ffffff", rapport: 2.8, requis: 4.5, page: "index.html", selecteur: ".legende" },
+        { texte: "#ffffff", fond: "#f5c518", rapport: 1.6, requis: 3, page: "index.html", selecteur: ".bouton" },
+        { texte: "#7b7b7b", fond: "#f4f1e8", rapport: 3.9, requis: 4.5, page: "team.html", selecteur: ".carte__date" },
+      ]
+    : [];
+
+  const PAGES_BALISES = {
+    article: ["works.html", "events.html"],
+    nav: PAGES.map(([f]) => f),
+    figure: ["work.html", "team.html"],
+    figcaption: ["work.html", "team.html"],
+    blockquote: ["about.html"],
+    form: ["contact.html"],
+    label: ["contact.html"],
+    video: ["work.html"],
+    time: ["events.html", "event.html"],
+    dl: ["event.html"],
+  };
+  const absentes = echoue("A15") ? (profil.echecs.includes("A1") ? ["blockquote", "video"] : ["blockquote"]) : [];
+  const contenusAttendus = Object.entries(PAGES_BALISES).map(([balise, pages]) => ({
+    balise,
+    pages: absentes.includes(balise) ? [] : pages,
+  }));
+
+  const javascript = echoue("M4")
+    ? {
+        fichiers: 1,
+        lignes: 42,
+        motifs: [
+          {
+            motif: "Menu ouvert par classList.toggle",
+            occurrence: occ("js/menu.js", 4, 3, "bouton.addEventListener(\"click\", () => menu.classList.toggle(\"ouvert\"));", "classList.toggle(\"ouvert\")"),
+            alternative: {
+              titre: "Un popover, sans JavaScript",
+              code: "<button popovertarget=\"menu\">Menu</button>\n<nav id=\"menu\" popover>…</nav>",
+            },
+          },
+          {
+            motif: "Affichage piloté par element.style",
+            occurrence: occ("js/menu.js", 11, 5, "panneau.style.display = \"block\";", "style.display"),
+            alternative: {
+              titre: "Une classe ou un état CSS",
+              code: ".panneau:popover-open { display: block; }",
+            },
+          },
+        ],
+      }
+    : profil.bem > 80
+      ? { fichiers: 1, lignes: 6, motifs: [] }
+      : { fichiers: 0, lignes: 0, motifs: [] };
+
+  const TOUTES_CLASSES = ["ancienne-carte", "test", "bloc-vide", "titre2", "hero--old", "nav__lien--actif-old"];
+  const m5 = critere("M5").verdict;
+  const classesInutilisees = {
+    total: 48,
+    classes: m5 === "non-respecte" ? TOUTES_CLASSES : m5 === "partiel" ? TOUTES_CLASSES.slice(0, 3) : TOUTES_CLASSES.slice(0, 1),
+  };
+
+  const HORS_CONVENTION = ["boutonRouge", "carteTitre", "grand-titre-jaune", "menuMobile", "bloc2", "photoEquipe", "lien-footer", "Hero"];
+  const bem = {
+    ratio: profil.bem,
+    points: profil.bem >= 70 ? 5 : profil.bem >= 50 ? 3 : 0,
+    totalClasses: 48,
+    horsConvention: HORS_CONVENTION.slice(0, Math.max(1, Math.round(((100 - profil.bem) / 100) * HORS_CONVENTION.length))),
+  };
+
+  return {
+    graphique: { palette, espacements, typographie: { famille: "Space Grotesk", tailles } },
+    accessibilite: {
+      lighthouse,
+      ...(critere("A12").verdict === "non-mesurable" ? {} : { contrastes }),
+      contenusAttendus,
+    },
+    methodologie: { javascript, classesInutilisees, bem },
+  };
+};
+
 const genererResultat = (slug, profil, index) => {
   const criteres = catalogue.criteres.map((modele) => {
     const { id } = modele;
@@ -418,6 +541,7 @@ const genererResultat = (slug, profil, index) => {
     criteres,
     pages: genererPages(criteres, profil),
     ressources: genererRessources(criteres, profil),
+    blocs: genererBlocs(criteres, profil),
     alertes: profil.alertes,
     nonMesurable: [...new Set(Object.values(profil.nonMesurables))].map((raison) => ({
       etape: "Lighthouse et mesures en navigateur",

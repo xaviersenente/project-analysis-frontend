@@ -1,0 +1,124 @@
+---
+/**
+ * Méthodologie : le JavaScript (motifs à côté de leur alternative CSS ou HTML),
+ * les classes inutilisées, le bonus BEM
+ */
+import OccurrenceLigne from "./OccurrenceLigne.astro";
+import { largeurRelative } from "../lib/blocs.js";
+import { nombre, points } from "../lib/format.js";
+
+interface Props {
+  bloc: any | undefined;
+  seuilBem: number | null;
+}
+
+const { bloc, seuilBem } = Astro.props;
+const js = bloc?.javascript;
+const bem = bloc?.bem;
+const inutilisees = bloc?.classesInutilisees;
+---
+
+<div class="grid gap-4 border-b border-bordure p-4 lg:grid-cols-2">
+  <!-- JavaScript -->
+  <div class="rounded-md border border-bordure p-3 lg:col-span-2">
+    <h3 class="mb-1 text-sm font-semibold">JavaScript</h3>
+    {
+      !js ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <>
+          <p class="mb-2 text-sm text-texte-doux">
+            {js.fichiers === 0
+              ? "Aucun JavaScript."
+              : `${js.fichiers} fichier${js.fichiers > 1 ? "s" : ""}, ${nombre(js.lignes)} lignes (information).`}
+            {js.fichiers > 0 && js.motifs.length === 0 && " Aucun motif ne remplace du CSS : rien à signaler."}
+          </p>
+          {js.motifs.length > 0 && (
+            <ul class="space-y-3">
+              {js.motifs.map((m: any) => (
+                <li class="grid gap-2 lg:grid-cols-2">
+                  <div>
+                    <p class="mb-1 text-sm font-semibold text-non-respecte">
+                      <span aria-hidden="true">✕ </span>
+                      {m.motif}
+                    </p>
+                    <ul>
+                      <OccurrenceLigne occurrence={m.occurrence} disposition="empilee" />
+                    </ul>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-sm font-semibold text-respecte">
+                      <span aria-hidden="true">→ </span>
+                      {m.alternative.titre}
+                    </p>
+                    <pre class="rounded bg-respecte-fond px-2 py-1 font-mono text-xs break-all whitespace-pre-wrap"><code>{m.alternative.code}</code></pre>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )
+    }
+  </div>
+
+  <!-- Classes inutilisées -->
+  <div class="rounded-md border border-bordure p-3">
+    <h3 class="mb-2 text-sm font-semibold">
+      Classes CSS inutilisées
+      {inutilisees && <span class="font-normal text-texte-doux"> · {inutilisees.classes.length} sur {inutilisees.total}</span>}
+    </h3>
+    {
+      !inutilisees ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : inutilisees.classes.length === 0 ? (
+        <p class="text-sm text-respecte">
+          <span aria-hidden="true">✓ </span>Toutes les classes servent.
+        </p>
+      ) : (
+        <ul class="flex flex-wrap gap-1.5">
+          {inutilisees.classes.map((c: string) => (
+            <li class="rounded bg-neutre-fond px-1.5 font-mono text-xs">.{c}</li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <!-- BEM : un bonus -->
+  <div class:list={["rounded-md border p-3", bem?.points > 0 ? "border-bonus/40 bg-bonus-fond" : "border-bordure"]}>
+    <h3 class="mb-2 text-sm font-semibold">
+      BEM <span class="font-normal text-texte-doux">· bonus</span>
+    </h3>
+    {
+      !bem ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <>
+          <p class="text-sm">
+            <span class="font-semibold">{nombre(bem.ratio)} %</span> des {nombre(bem.totalClasses)} classes suivent la convention.{" "}
+            {bem.points > 0 ? (
+              <span class="font-semibold text-bonus">+ {points(bem.points)} de bonus</span>
+            ) : (
+              <span class="text-texte-doux">Pas de bonus : cela ne retire aucun point.</span>
+            )}
+          </p>
+          <span class="relative mt-2 block h-2 rounded-full bg-surface ring-1 ring-bordure" aria-hidden="true">
+            <span class:list={["absolute inset-y-0 left-0 rounded-full", bem.points > 0 ? "bg-bonus" : "bg-texte-doux/50"]} style={{ width: largeurRelative(bem.ratio, 100) }} />
+            {seuilBem !== null && <span class="absolute -top-1 -bottom-1 w-0.5 bg-texte" style={{ left: `${seuilBem}%` }} title={`${seuilBem} % : bonus complet`} />}
+          </span>
+          {bem.horsConvention.length > 0 && (
+            <>
+              <p class="mt-3 mb-1 text-xs text-texte-doux">Hors convention :</p>
+              <ul class="flex flex-wrap gap-1.5">
+                {bem.horsConvention.map((c: string) => (
+                  <li class="rounded bg-surface px-1.5 font-mono text-xs ring-1 ring-bordure">.{c}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      )
+    }
+  </div>
+</div>

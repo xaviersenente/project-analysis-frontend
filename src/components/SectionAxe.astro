@@ -30,6 +30,9 @@ const id = (suffixe: string) => `${axe.id}-${suffixe}`;
     <JaugeAxe axe={axe} obtenus={pointsAxe.obtenus} max={pointsAxe.max} moyenne={moyenne} lien={false} />
   </header>
 
+  <!-- Blocs propres à l'axe (palette, scores, JavaScript…) -->
+  <slot />
+
   <!-- Filtres : affichés seulement quand le script les rend opérants -->
   <form class="filtres flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-bordure px-4 py-3" hidden aria-label={`Filtrer les critères ${axe.nom}`}>
     <fieldset class="flex rounded-md border border-bordure p-0.5">

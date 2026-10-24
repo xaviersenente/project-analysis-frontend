@@ -6,16 +6,19 @@ interface Props {
   occurrence: { fichier: string; ligne: number | null; colonne: number | null; extrait: string; surligne?: [number, number] | null };
   // « neutre » pour un critère à juger : rien n'est encore jugé fautif
   ton?: "fautif" | "neutre";
+  // « empilee » : la position au-dessus de l'extrait, pour les colonnes étroites
+  disposition?: "ligne" | "empilee";
 }
 
-const { occurrence: o, ton = "fautif" } = Astro.props;
+const { occurrence: o, ton = "fautif", disposition = "ligne" } = Astro.props;
 const classeMarque =
   ton === "fautif" ? "bg-non-respecte-fond text-non-respecte" : "bg-surface text-texte ring-1 ring-bordure";
 const { avant, fautif, apres } = decouperExtrait(o.extrait, o.surligne);
 const position = o.ligne ? `${o.fichier}:${o.ligne}${o.colonne ? `:${o.colonne}` : ""}` : o.fichier;
 ---
 
-<li class="grid gap-1 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-3">
+<li class:list={["grid gap-1", disposition === "ligne" && "md:grid-cols-[14rem_minmax(0,1fr)] md:gap-3"]}>
   <span class="font-mono text-xs text-texte-doux break-all">{position}</span>
-  <code class="block overflow-x-auto rounded bg-neutre-fond px-2 py-1 font-mono text-xs whitespace-pre">{avant}{fautif && <mark class={`rounded-sm px-0.5 font-semibold underline decoration-wavy underline-offset-2 ${classeMarque}`}>{fautif}</mark>}{apres}</code>
+  <!-- L'extrait passe à la ligne : pas de zone défilante, la partie fautive reste visible -->
+  <code class="block rounded bg-neutre-fond px-2 py-1 font-mono text-xs break-all whitespace-pre-wrap">{avant}{fautif && <mark class={`rounded-sm px-0.5 font-semibold underline decoration-wavy underline-offset-2 ${classeMarque}`}>{fautif}</mark>}{apres}</code>
 </li>
