@@ -1934,7 +1934,8 @@
           "events.html",
           "event.html",
           "contact.html"
-        ]
+        ],
+        "vignette": "vignettes/9883f24c5d51.svg"
       },
       {
         "fichier": "assets/img/hero.avif",
@@ -1946,7 +1947,8 @@
         "loading": "eager",
         "pages": [
           "index.html"
-        ]
+        ],
+        "vignette": "vignettes/642395fbcd56.svg"
       },
       {
         "fichier": "assets/img/IMG_2041.webp",
@@ -1958,7 +1960,8 @@
         "loading": "lazy",
         "pages": [
           "index.html"
-        ]
+        ],
+        "vignette": "vignettes/a3e3fceb5a3f.svg"
       },
       {
         "fichier": "assets/img/brand-lab.webp",
@@ -1971,7 +1974,8 @@
         "pages": [
           "works.html",
           "work.html"
-        ]
+        ],
+        "vignette": "vignettes/4b8bc9797876.svg"
       },
       {
         "fichier": "assets/img/studio.webp",
@@ -1983,7 +1987,8 @@
         "loading": "lazy",
         "pages": [
           "about.html"
-        ]
+        ],
+        "vignette": "vignettes/1bed844509a4.svg"
       },
       {
         "fichier": "assets/img/clara.webp",
@@ -1995,7 +2000,8 @@
         "loading": "lazy",
         "pages": [
           "team.html"
-        ]
+        ],
+        "vignette": "vignettes/b4c4b1582be5.svg"
       },
       {
         "fichier": "assets/img/brand-day.webp",
@@ -2008,7 +2014,8 @@
         "pages": [
           "events.html",
           "event.html"
-        ]
+        ],
+        "vignette": "vignettes/aab52efad14d.svg"
       },
       {
         "fichier": "assets/svg/instagram.svg",
@@ -2027,7 +2034,8 @@
           "events.html",
           "event.html",
           "contact.html"
-        ]
+        ],
+        "vignette": null
       },
       {
         "fichier": "assets/img/equipe.jpg",
@@ -2039,7 +2047,8 @@
         "loading": null,
         "pages": [
           "team.html"
-        ]
+        ],
+        "vignette": "vignettes/7430da21db0a.svg"
       },
       {
         "fichier": "assets/img/carte.png",
@@ -2051,7 +2060,8 @@
         "loading": "lazy",
         "pages": [
           "contact.html"
-        ]
+        ],
+        "vignette": "vignettes/47b46f5ee3ed.svg"
       }
     ],
     "poidsAccueilKo": 717,

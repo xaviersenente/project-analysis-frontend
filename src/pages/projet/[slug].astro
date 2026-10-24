@@ -67,7 +67,8 @@ const recommandations = resultat
                 axe={axe}
                 criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
                 pointsAxe={resultat.note.parAxe[axe.id]}
-                moyenne={moyennes?.parAxe[axe.id] ?? null}>
+                moyenne={moyennes?.parAxe[axe.id] ?? null}
+                images={resultat.ressources?.images}>
                 {axe.id === "graphique" && <BlocsGraphique bloc={resultat.blocs?.graphique} polices={resultat.ressources?.polices} />}
                 {axe.id === "accessibilite" && <BlocsAccessibilite bloc={resultat.blocs?.accessibilite} objectifLighthouse={seuilDe("A13")} />}
                 {axe.id === "methodologie" && <BlocsMethodologie bloc={resultat.blocs?.methodologie} seuilBem={seuilDe("M7")} />}

@@ -6,13 +6,16 @@
 import Verdict from "./Verdict.astro";
 import IconeMethode from "./IconeMethode.astro";
 import Occurrences from "./Occurrences.astro";
+import ListeAlt from "./ListeAlt.astro";
 import { valeurCritere, seuilCritere, nombre, points } from "../lib/format.js";
 
 interface Props {
   critere: any;
+  // Images du site, pour juger la qualité des alt (A6)
+  images?: any[];
 }
 
-const { critere: c } = Astro.props;
+const { critere: c, images } = Astro.props;
 
 const STATUT: Record<string, { libelle: string; classe: string }> = {
   C: { libelle: "Contrainte", classe: "text-texte" },
@@ -122,6 +125,8 @@ const texteRecherche = `${c.id} ${c.libelle}`;
           </div>
         )
       }
+
+      {c.id === "A6" && images && images.length > 0 && <ListeAlt images={images} />}
 
       {
         c.occurrences.length > 0 && (

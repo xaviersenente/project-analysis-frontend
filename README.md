@@ -24,6 +24,8 @@ npm run build      # site statique dans dist/
 
 Le dossier contient `promo.json` et un fichier `<slug>.json` par projet analysé. Un projet de la promo sans fichier s'affiche « non analysé ». Un fichier qui ne respecte pas le schéma arrête le build, avec le fichier et le champ en cause.
 
+Les vignettes d'images vivent dans `vignettes/<slug>/` du même dossier. Elles sont servies en développement, puis copiées au build dans `dist/projet/<slug>/vignettes/`, sous la page du projet : la règle d'accès d'un étudiant les protège aussi.
+
 Les données fictives se régénèrent avec `node scripts/genererDonneesFictives.js`, à partir de `donnees-fictives/catalogue-criteres.json` (la grille de `CRITERES-SAE105-2026.md`).
 
 ## Structure

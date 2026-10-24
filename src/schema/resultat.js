@@ -213,8 +213,12 @@ export const ressourcesSchema = z.object({
   images: z.array(
     z.object({
       fichier: z.string(),
-      // Vignette copiée par l'analyse locale, relative au site ; absente sinon
-      vignette: z.string().nullable().optional(),
+      // Vignette créée par l'analyse locale, relative à la page du projet ; null si l'image manque
+      vignette: z
+        .string()
+        .regex(/^vignettes\/[a-z0-9-]+\.(webp|svg)$/)
+        .nullable()
+        .optional(),
       format: z.string(),
       poidsKo: z.number().min(0),
       largeur: z.number().int().positive().nullable(),

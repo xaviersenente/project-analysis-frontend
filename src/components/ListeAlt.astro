@@ -1,0 +1,45 @@
+---
+/**
+ * Pour juger la qualité des alt (A6) : chaque image en vignette, à côté de son alt
+ */
+interface Props {
+  images: any[];
+}
+
+const { images } = Astro.props;
+---
+
+<div>
+  <p class="mb-2 text-sm font-semibold">
+    Toutes les images et leur alt <span class="font-normal text-texte-doux">({images.length})</span>
+  </p>
+  <ul class="grid gap-2 md:grid-cols-2">
+    {
+      images.map((image) => (
+        <li class="grid grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-3 rounded border border-bordure bg-surface p-1.5">
+          {image.vignette ? (
+            <img src={image.vignette} alt="" width="56" height="56" loading="lazy" class="size-14 rounded object-cover" />
+          ) : (
+            <span class="flex size-14 items-center justify-center rounded bg-neutre-fond text-center text-[0.625rem] leading-tight text-texte-doux">
+              sans vignette
+            </span>
+          )}
+          <span class="min-w-0 text-sm">
+            {image.alt === null ? (
+              <span class="font-semibold text-non-respecte">
+                <span aria-hidden="true">✕ </span>alt absent
+              </span>
+            ) : image.alt === "" ? (
+              <span class="text-neutre">
+                décorative <code class="font-mono text-xs">alt=""</code>
+              </span>
+            ) : (
+              <q class="block">{image.alt}</q>
+            )}
+            <span class="block truncate font-mono text-xs text-texte-doux">{image.fichier.split("/").pop()}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

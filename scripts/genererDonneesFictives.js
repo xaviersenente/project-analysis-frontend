@@ -6,6 +6,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 
 const dossier = path.resolve("donnees-fictives");
 const catalogue = JSON.parse(
@@ -695,8 +696,40 @@ fs.writeFileSync(
   ) + "\n"
 );
 
+// --- Vignettes fictives : un aplat coloré et le format, en SVG ---
+
+const TEINTES = { svg: "#1a1a1a", avif: "#f5c518", webp: "#8a6d00", jpg: "#b45309", png: "#5c5c5c" };
+
+const ecrireVignettes = (slug, resultat) => {
+  const dossierVignettes = path.join(dossier, "vignettes", slug);
+  fs.rmSync(dossierVignettes, { recursive: true, force: true });
+  fs.mkdirSync(dossierVignettes, { recursive: true });
+  resultat.ressources.images.forEach((image, i) => {
+    // Une image sur dix reste sans vignette : le fichier manquait lors de l'analyse
+    if (image.fichier.includes("instagram")) {
+      image.vignette = null;
+      return;
+    }
+    // Même règle de nommage que le backend (services/source/vignettes.js)
+    const nom = `${createHash("sha1").update(image.fichier).digest("hex").slice(0, 12)}.svg`;
+    const fond = TEINTES[image.format] ?? "#475569";
+    const texte = ["#f5c518", "#fffdf7"].includes(fond) ? "#1a1a1a" : "#ffffff";
+    fs.writeFileSync(
+      path.join(dossierVignettes, nom),
+      `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">` +
+        `<rect width="96" height="96" fill="${fond}"/>` +
+        `<circle cx="${30 + (i * 13) % 40}" cy="38" r="14" fill="${texte}" opacity="0.35"/>` +
+        `<path d="M0 96 L34 58 L56 78 L72 64 L96 90 V96 Z" fill="${texte}" opacity="0.25"/>` +
+        `<text x="8" y="88" font-family="monospace" font-size="12" fill="${texte}">${image.format}</text>` +
+        `</svg>\n`
+    );
+    image.vignette = `vignettes/${nom}`;
+  });
+};
+
 Object.entries(PROFILS).forEach(([slug, profil], index) => {
   const resultat = genererResultat(slug, profil, index);
+  ecrireVignettes(slug, resultat);
   // Le critère M10 porte le nombre de sessions de la timeline
   resultat.criteres.find((c) => c.id === "M10").valeur = resultat.historique.indicateurs.sessions;
   fs.writeFileSync(path.join(dossier, `${slug}.json`), JSON.stringify(resultat, null, 2) + "\n");

@@ -11,9 +11,10 @@ interface Props {
   criteres: any[];
   pointsAxe: { obtenus: number; max: number };
   moyenne: number | null;
+  images?: any[];
 }
 
-const { axe, criteres, pointsAxe, moyenne } = Astro.props;
+const { axe, criteres, pointsAxe, moyenne, images } = Astro.props;
 const id = (suffixe: string) => `${axe.id}-${suffixe}`;
 ---
 
@@ -71,7 +72,7 @@ const id = (suffixe: string) => `${axe.id}-${suffixe}`;
   </form>
 
   <ul class="divide-y divide-bordure">
-    {criteres.map((c) => <LigneCritere critere={c} />)}
+    {criteres.map((c) => <LigneCritere critere={c} images={images} />)}
   </ul>
   <p class="aucun px-4 py-3 text-sm text-texte-doux" hidden>Aucun critère ne correspond à ces filtres.</p>
 </section>
