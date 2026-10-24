@@ -1,0 +1,36 @@
+{
+  "promo": "SAÉ 105 · 2026-2027 (données fictives)",
+  "dateRendu": "2027-01-15T23:59:00+01:00",
+  "projets": [
+    {
+      "slug": "etu-01",
+      "nom": "Lemoine Clara",
+      "groupe": "TP B2"
+    },
+    {
+      "slug": "etu-02",
+      "nom": "Marchal Hugo",
+      "groupe": "TP A1"
+    },
+    {
+      "slug": "etu-03",
+      "nom": "Roux Inès",
+      "groupe": "TP B1"
+    },
+    {
+      "slug": "etu-04",
+      "nom": "Benali Yanis",
+      "groupe": "TP A2"
+    },
+    {
+      "slug": "etu-05",
+      "nom": "Fontaine Léa",
+      "groupe": "TP A1"
+    },
+    {
+      "slug": "etu-06",
+      "nom": "Garnier Noah",
+      "groupe": "TP B2"
+    }
+  ]
+}

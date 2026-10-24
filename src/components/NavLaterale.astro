@@ -1,0 +1,140 @@
+---
+import { AXES, COULEUR_AXE } from "../config/axes.js";
+
+interface Props {
+  // Contraintes non respectées par axe ; null si le projet n'est pas analysé
+  badges: Record<string, number> | null;
+  recommandations?: number;
+}
+
+const { badges, recommandations = 0 } = Astro.props;
+
+const tousLesGroupes = [
+  { titre: "Projet", entrees: [{ id: "synthese", libelle: "Synthèse" }] },
+  {
+    titre: "Axes",
+    entrees: AXES.map((axe) => ({
+      id: `axe-${axe.id}`,
+      libelle: axe.nom,
+      pastille: COULEUR_AXE[axe.id].pastille,
+      badge: badges?.[axe.id] ?? null,
+    })),
+  },
+  {
+    titre: "Analyse",
+    entrees: [
+      { id: "par-page", libelle: "Vue par page" },
+      { id: "timeline", libelle: "Timeline" },
+      { id: "ressources", libelle: "Ressources" },
+      { id: "recommandations", libelle: "Recommandations", badge: badges ? recommandations : null, calme: true },
+    ],
+  },
+];
+// Un projet non analysé n'a que sa synthèse
+const groupes = badges ? tousLesGroupes : tousLesGroupes.slice(0, 1);
+---
+
+<!--
+  Une seule navigation : colonne fixe dès 1024 px, tiroir en popover en dessous.
+  Le popover s'ouvre sans JavaScript (bouton de la barre supérieure).
+-->
+<nav
+  id="navigation"
+  popover
+  aria-label="Sections du projet"
+  class="navigation fixed inset-y-0 left-0 m-0 h-full w-64 overflow-y-auto border-r border-bordure bg-surface p-4 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-56 lg:shrink-0">
+  <button
+    type="button"
+    popovertarget="navigation"
+    popovertargetaction="hide"
+    class="lg:hidden mb-4 inline-flex h-10 items-center rounded-md border border-bordure px-3 text-sm"
+    autofocus>
+    Fermer
+  </button>
+
+  {
+    groupes.map((groupe) => (
+      <section class="mb-6" aria-labelledby={`nav-${groupe.titre}`}>
+        <h2 id={`nav-${groupe.titre}`} class="mb-2 px-2 text-xs font-semibold tracking-wide text-texte-doux uppercase">
+          {groupe.titre}
+        </h2>
+        <ul class="space-y-0.5">
+          {groupe.entrees.map((entree) => (
+            <li>
+              <a
+                href={`#${entree.id}`}
+                data-section={entree.id}
+                class="lien-section flex h-9 items-center gap-2 rounded-md px-2 text-sm hover:bg-neutre-fond">
+                {"pastille" in entree && entree.pastille && (
+                  <span class={`size-2 shrink-0 rounded-full ${entree.pastille}`} aria-hidden="true" />
+                )}
+                <span class="flex-1">{entree.libelle}</span>
+                {"badge" in entree && entree.badge !== null && entree.badge !== undefined && entree.badge > 0 && (
+                  <span
+                    class:list={[
+                      "rounded px-1.5 text-xs font-semibold",
+                      "calme" in entree && entree.calme ? "bg-neutre-fond text-neutre" : "bg-non-respecte-fond text-non-respecte",
+                    ]}>
+                    {entree.badge}
+                    <span class="sr-only">
+                      {"calme" in entree && entree.calme ? " recommandations à suivre" : " contraintes non respectées"}
+                    </span>
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</nav>
+
+<style>
+  /* Dès 1024 px, la navigation est toujours visible : le popover ne sert qu'au tiroir */
+  @media (min-width: 64rem) {
+    .navigation[popover] {
+      display: block;
+      position: sticky;
+      inset: auto;
+      top: 4rem;
+      translate: none;
+    }
+  }
+  .navigation::backdrop {
+    background: rgb(15 23 42 / 0.4);
+  }
+  .lien-section[aria-current="location"] {
+    background: var(--color-accent-fond);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // La section affichée est mise en évidence dans la navigation
+  const liens = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>(".lien-section")].map((a) => [a.dataset.section, a])
+  );
+  const observateur = new IntersectionObserver(
+    (entrees) => {
+      for (const entree of entrees) {
+        if (!entree.isIntersecting) continue;
+        liens.forEach((lien) => lien.removeAttribute("aria-current"));
+        liens.get(entree.target.id)?.setAttribute("aria-current", "location");
+      }
+    },
+    { rootMargin: "-20% 0px -70% 0px" }
+  );
+  liens.forEach((_, id) => {
+    const section = id ? document.getElementById(id) : null;
+    if (section) observateur.observe(section);
+  });
+
+  // Dans le tiroir, choisir une section le referme
+  const navigation = document.getElementById("navigation");
+  navigation?.addEventListener("click", (evenement) => {
+    const cible = evenement.target as HTMLElement;
+    if (cible.closest("a") && navigation.matches(":popover-open")) navigation.hidePopover();
+  });
+</script>

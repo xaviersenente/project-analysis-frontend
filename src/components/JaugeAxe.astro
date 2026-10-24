@@ -1,0 +1,49 @@
+---
+import { COULEUR_AXE } from "../config/axes.js";
+import { nombre } from "../lib/format.js";
+
+interface Props {
+  axe: { id: string; nom: string };
+  obtenus: number;
+  max: number;
+  // Moyenne de la promo, en proportion de l'axe (0 à 1)
+  moyenne: number | null;
+  lien?: boolean;
+}
+
+const { axe, obtenus, max, moyenne: ratioMoyen, lien = true } = Astro.props;
+const pourcent = (n: number) => `${Math.max(0, Math.min(100, (n / Math.max(max, 1)) * 100))}%`;
+// Ramenée aux points de ce projet, pour se lire sur la même échelle
+const moyenne = ratioMoyen === null ? null : Math.round(ratioMoyen * max * 10) / 10;
+const Racine = lien ? "a" : "div";
+---
+
+<Racine
+  href={lien ? `#axe-${axe.id}` : undefined}
+  class:list={["block rounded-md px-2 py-1.5", lien && "hover:bg-neutre-fond"]}>
+  <span class="flex items-baseline justify-between gap-3 text-sm">
+    <span class="flex items-center gap-2 font-semibold">
+      <span class={`size-2 rounded-full ${COULEUR_AXE[axe.id].pastille}`} aria-hidden="true"></span>
+      {axe.nom}
+    </span>
+    <span>
+      <span class="font-semibold">{nombre(obtenus)}</span>
+      <span class="text-texte-doux"> / {nombre(max)}</span>
+    </span>
+  </span>
+  <span
+    class="relative mt-1.5 block h-2 rounded-full bg-neutre-fond"
+    role="img"
+    aria-label={`${axe.nom} : ${nombre(obtenus)} sur ${nombre(max)}${moyenne !== null ? `, moyenne de la promo ${nombre(moyenne)}` : ""}`}>
+    <span class={`absolute inset-y-0 left-0 rounded-full ${COULEUR_AXE[axe.id].pastille}`} style={{ width: pourcent(obtenus) }}></span>
+    {
+      moyenne !== null && (
+        <span
+          class="absolute -top-1 -bottom-1 w-0.5 bg-texte"
+          style={{ left: pourcent(moyenne) }}
+          title={`Moyenne de la promo : ${nombre(moyenne)}`}
+        />
+      )
+    }
+  </span>
+</Racine>

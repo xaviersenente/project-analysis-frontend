@@ -1,0 +1,1385 @@
+{
+  "version": 2,
+  "source": {
+    "depot": "mmi-montbeliard/sae105-2026-etu-01",
+    "ref": "main",
+    "sha": "e1b07d3e8d1c2b",
+    "raison": "dernier commit avant la date de rendu",
+    "analyseLe": "2027-01-16T09:10:00+01:00"
+  },
+  "projet": {
+    "slug": "etu-01",
+    "nom": "Lemoine Clara",
+    "groupe": "TP B2"
+  },
+  "liens": {
+    "site": "https://mmi-montbeliard.github.io/sae105-2026-etu-01/",
+    "depot": "https://github.com/mmi-montbeliard/sae105-2026-etu-01",
+    "figma": "https://www.figma.com/design/exemple-etu-01"
+  },
+  "note": {
+    "base": 57,
+    "max": 100,
+    "bonus": 5,
+    "totale": 62,
+    "lettre": "E",
+    "aJuger": 3,
+    "parAxe": {
+      "graphique": {
+        "obtenus": 9,
+        "max": 20
+      },
+      "ergonomie": {
+        "obtenus": 16,
+        "max": 25
+      },
+      "accessibilite": {
+        "obtenus": 19,
+        "max": 30
+      },
+      "methodologie": {
+        "obtenus": 13,
+        "max": 25
+      }
+    }
+  },
+  "criteres": [
+    {
+      "id": "G1",
+      "axe": "graphique",
+      "libelle": "Palette d'interface : des variables de rôle dans :root",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 4,
+        "unite": "variables"
+      },
+      "piste": "Nommez les couleurs par leur rôle (--surface, --texte, --accent) plutôt que par leur teinte.",
+      "sourceCours": "CM 9 · TP 5",
+      "verdict": "respecte",
+      "valeur": 4.2,
+      "points": {
+        "obtenus": 4,
+        "max": 4
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G2",
+      "axe": "graphique",
+      "libelle": "Les couleurs passent par les variables",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 90,
+        "unite": "%"
+      },
+      "piste": "Remplacez les couleurs écrites en dur par var(--…) en dehors de :root.",
+      "sourceCours": "CM 9",
+      "verdict": "non-respecte",
+      "valeur": 54,
+      "points": {
+        "obtenus": 0,
+        "max": 4
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 142,
+          "colonne": 3,
+          "extrait": ".carte { color: #7b7b7b; }",
+          "surligne": [
+            16,
+            23
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 188,
+          "colonne": 3,
+          "extrait": ".bouton { background: #222; }",
+          "surligne": [
+            22,
+            26
+          ]
+        }
+      ],
+      "totalOccurrences": 12
+    },
+    {
+      "id": "G3",
+      "axe": "graphique",
+      "libelle": "Échelle d'espacement : margin, padding et gap en var()",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 80,
+        "unite": "%"
+      },
+      "piste": "Déclarez une échelle d'espacement et utilisez-la pour margin, padding et gap.",
+      "sourceCours": "TP 4",
+      "verdict": "non-respecte",
+      "valeur": 48,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 97,
+          "colonne": 3,
+          "extrait": ".entete { padding: 18px 24px; }",
+          "surligne": [
+            19,
+            28
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "G4",
+      "axe": "graphique",
+      "libelle": "Polices web : woff2, font-display: swap et pile de secours",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": null,
+      "detailSeuil": "les trois présents",
+      "piste": "Hébergez les polices en woff2, ajoutez font-display: swap et une pile de secours.",
+      "sourceCours": "CM 9 · TP 5",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G5",
+      "axe": "graphique",
+      "libelle": "Graisses limitées",
+      "statut": "R",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 4,
+        "unite": "fichiers"
+      },
+      "piste": "Deux graisses suffisent presque toujours.",
+      "sourceCours": "CM 9",
+      "verdict": "respecte",
+      "valeur": 3,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G6",
+      "axe": "graphique",
+      "libelle": "Préchargement des polices du premier écran",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "link rel=\"preload\" as=\"font\"",
+      "piste": "Préchargez la police du titre avec <link rel=\"preload\" as=\"font\" crossorigin>.",
+      "sourceCours": "TP 5",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G7",
+      "axe": "graphique",
+      "libelle": "Unités : font-size en rem, line-height sans unité",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 90,
+        "unite": "%"
+      },
+      "piste": "Passez les tailles de texte en rem et les interlignes sans unité.",
+      "sourceCours": "CM 9 · TP 4",
+      "verdict": "partiel",
+      "valeur": 81,
+      "points": {
+        "obtenus": 2,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 61,
+          "colonne": 3,
+          "extrait": "h2 { font-size: 22px; line-height: 28px; }",
+          "surligne": [
+            16,
+            20
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "G8",
+      "axe": "graphique",
+      "libelle": "Échelle typographique resserrée",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 7,
+        "unite": "tailles"
+      },
+      "piste": "Regroupez les tailles proches sur une échelle de six ou sept pas.",
+      "sourceCours": "CM 9",
+      "verdict": "respecte",
+      "valeur": 5,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G9",
+      "axe": "graphique",
+      "libelle": "Longueur de ligne bornée",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "une max-width en ch",
+      "piste": "Limitez la largeur du texte courant, par exemple max-width: 65ch.",
+      "sourceCours": "CM 9 · TP 5",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G10",
+      "axe": "graphique",
+      "libelle": "Aboutissement graphique",
+      "statut": "C",
+      "methode": "manuel",
+      "seuil": null,
+      "detailSeuil": "grille enseignant",
+      "piste": "Fidélité à l'identité de la SAÉ 103, hiérarchie et rythme vertical.",
+      "sourceCours": "SAÉ 105, axe 1",
+      "verdict": "a-juger",
+      "valeur": null,
+      "points": {
+        "obtenus": null,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E1",
+      "axe": "ergonomie",
+      "libelle": "Menu en popover, sans JavaScript",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "sur chaque page",
+      "piste": "Ouvrez le menu avec popover et popovertarget, sans JavaScript.",
+      "sourceCours": "CM 5 · TP 3",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E2",
+      "axe": "ergonomie",
+      "libelle": "Page courante signalée (aria-current)",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "sur chaque page",
+      "piste": "Ajoutez aria-current=\"page\" au lien de la page affichée.",
+      "sourceCours": "TP 3",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "about.html",
+          "ligne": 14,
+          "colonne": 9,
+          "extrait": "<a href=\"about.html\" class=\"nav__lien\">À propos</a>",
+          "surligne": [
+            0,
+            20
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "E3",
+      "axe": "ergonomie",
+      "libelle": "États :hover, :focus-visible et :active",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "les trois",
+      "piste": "Déclarez les trois états sur les liens et les boutons.",
+      "sourceCours": "CM 9 · TP 5",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E4",
+      "axe": "ergonomie",
+      "libelle": "Cibles tactiles de 44 × 44 px",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 44,
+        "unite": "px"
+      },
+      "piste": "Agrandissez la zone cliquable avec du padding, pas la police.",
+      "sourceCours": "CM 6 · TP 4",
+      "verdict": "respecte",
+      "valeur": 46.2,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E5",
+      "axe": "ergonomie",
+      "libelle": "Pas de défilement horizontal à 360 px",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 360,
+        "unite": "px"
+      },
+      "piste": "Cherchez l'élément trop large : une image sans max-width ou une largeur fixe.",
+      "sourceCours": "TP 4",
+      "verdict": "respecte",
+      "valeur": 252,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E6",
+      "axe": "ergonomie",
+      "libelle": "Mouvement minimal : transitions sur opacity et transform",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "aucune transition sur height, width, top…",
+      "piste": "Animez opacity et transform, pas les dimensions ni la position.",
+      "sourceCours": "CM 9",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E7",
+      "axe": "ergonomie",
+      "libelle": "Liens explicites hors de leur contexte",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "lien vague"
+      },
+      "piste": "Remplacez « voir plus » par la destination du lien.",
+      "sourceCours": "CM 3 · TP 2",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "index.html",
+          "ligne": 48,
+          "colonne": 9,
+          "extrait": "<a href=\"works.html\">Voir plus</a>",
+          "surligne": [
+            21,
+            30
+          ]
+        },
+        {
+          "fichier": "events.html",
+          "ligne": 31,
+          "colonne": 9,
+          "extrait": "<a href=\"event.html\">En savoir plus</a>",
+          "surligne": [
+            21,
+            35
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    {
+      "id": "E8",
+      "axe": "ergonomie",
+      "libelle": "Formulaires efficaces : type et autocomplete",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "type adapté et autocomplete sur les champs d'identité",
+      "piste": "Utilisez type=\"email\" et autocomplete=\"name\" sur les champs concernés.",
+      "sourceCours": "CM 5 · TP 3",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E9",
+      "axe": "ergonomie",
+      "libelle": "Liens mailto: et tel:",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "présents",
+      "piste": "Rendez l'adresse et le téléphone cliquables.",
+      "sourceCours": "TP 2 · TP 3",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E10",
+      "axe": "ergonomie",
+      "libelle": "Poids des images",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 150,
+        "unite": "Ko"
+      },
+      "piste": "Recadrez et compressez les images au-delà de 150 Ko.",
+      "sourceCours": "CM 2 · TP 1",
+      "verdict": "non-respecte",
+      "valeur": 300,
+      "points": {
+        "obtenus": 0,
+        "max": 2
+      },
+      "occurrences": [
+        {
+          "fichier": "assets/img/equipe.jpg",
+          "ligne": null,
+          "colonne": null,
+          "extrait": "equipe.jpg · 312 Ko · 2400 × 1600",
+          "surligne": [
+            13,
+            19
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "E11",
+      "axe": "ergonomie",
+      "libelle": "Poids de la page d'accueil",
+      "statut": "R",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "<",
+        "nombre": 1024,
+        "unite": "Ko"
+      },
+      "piste": "Visez moins de 1 Mo transférés pour l'accueil.",
+      "sourceCours": "TP 1",
+      "verdict": "respecte",
+      "valeur": 717,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E12",
+      "axe": "ergonomie",
+      "libelle": "Formats : photos en AVIF ou WebP, icônes en SVG",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 90,
+        "unite": "%"
+      },
+      "piste": "Convertissez les photos en AVIF ou WebP.",
+      "sourceCours": "CM 2 · TP 1",
+      "verdict": "partiel",
+      "valeur": 81,
+      "points": {
+        "obtenus": 1,
+        "max": 2
+      },
+      "occurrences": [
+        {
+          "fichier": "assets/img/equipe.jpg",
+          "ligne": null,
+          "colonne": null,
+          "extrait": "equipe.jpg (JPEG)",
+          "surligne": [
+            12,
+            16
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "E13",
+      "axe": "ergonomie",
+      "libelle": "Images dimensionnées, lazy sous la ligne de flottaison",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 90,
+        "unite": "%"
+      },
+      "piste": "Ajoutez width et height à chaque image.",
+      "sourceCours": "TP 1",
+      "verdict": "non-respecte",
+      "valeur": 54,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E14",
+      "axe": "ergonomie",
+      "libelle": "Vidéo : controls, poster, preload=\"none\"",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "les attributs présents",
+      "piste": "Ajoutez controls, poster et preload=\"none\" à la vidéo.",
+      "sourceCours": "TP 2",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "E15",
+      "axe": "ergonomie",
+      "libelle": "Lighthouse Performance",
+      "statut": "I",
+      "methode": "navigateur",
+      "seuil": null,
+      "piste": "Dépend de l'hébergement : affiché à titre d'information.",
+      "sourceCours": "—",
+      "verdict": "respecte",
+      "valeur": 82,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A1",
+      "axe": "accessibilite",
+      "libelle": "head : lang, charset et viewport",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "sur chaque page",
+      "piste": "Déclarez lang=\"fr\", le charset et le viewport sur chaque page.",
+      "sourceCours": "CM 2 · TP 1",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A2",
+      "axe": "accessibilite",
+      "libelle": "title et meta description différents d'une page à l'autre",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "doublon"
+      },
+      "piste": "Donnez à chaque page un titre et une description propres.",
+      "sourceCours": "TP 1",
+      "verdict": "respecte",
+      "valeur": 0,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A3",
+      "axe": "accessibilite",
+      "libelle": "Repères de page : header, nav étiqueté, main unique, footer",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "sur chaque page",
+      "piste": "Structurez chaque page avec header, nav aria-label, un seul main et footer.",
+      "sourceCours": "CM 4 · TP 2",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "contact.html",
+          "ligne": 12,
+          "colonne": 5,
+          "extrait": "<nav class=\"nav\">",
+          "surligne": [
+            0,
+            17
+          ]
+        },
+        {
+          "fichier": "team.html",
+          "ligne": 9,
+          "colonne": 3,
+          "extrait": "<div class=\"contenu\">",
+          "surligne": [
+            0,
+            21
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    {
+      "id": "A4",
+      "axe": "accessibilite",
+      "libelle": "Plan des titres : un seul h1, aucun niveau sauté",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "écart"
+      },
+      "piste": "Gardez un seul h1 et descendez les niveaux un par un.",
+      "sourceCours": "CM 4 · TP 2",
+      "verdict": "partiel",
+      "valeur": 1,
+      "points": {
+        "obtenus": 2,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "works.html",
+          "ligne": 27,
+          "colonne": 5,
+          "extrait": "<h4 class=\"projet__titre\">Brand Lab</h4>",
+          "surligne": [
+            0,
+            3
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "A5",
+      "axe": "accessibilite",
+      "libelle": "alt présent sur chaque image (alt=\"\" accepté)",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 100,
+        "unite": "%"
+      },
+      "piste": "Ajoutez un alt à chaque image ; alt=\"\" pour une image décorative.",
+      "sourceCours": "CM 3",
+      "verdict": "non-respecte",
+      "valeur": 71,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "team.html",
+          "ligne": 41,
+          "colonne": 9,
+          "extrait": "<img src=\"assets/img/clara.webp\" width=\"320\" height=\"320\">",
+          "surligne": [
+            0,
+            32
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "A6",
+      "axe": "accessibilite",
+      "libelle": "Qualité des alt",
+      "statut": "R",
+      "methode": "manuel",
+      "seuil": null,
+      "detailSeuil": "jugée à la main",
+      "piste": "Décrivez ce que l'image apporte, pas le nom du fichier.",
+      "sourceCours": "CM 3 · TP 2",
+      "verdict": "a-juger",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A7",
+      "axe": "accessibilite",
+      "libelle": "Champs étiquetés et bouton d'envoi",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 100,
+        "unite": "%"
+      },
+      "piste": "Liez chaque champ à un label par for et id.",
+      "sourceCours": "CM 5 · TP 3",
+      "verdict": "respecte",
+      "valeur": 100,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A8",
+      "axe": "accessibilite",
+      "libelle": "Boutons nommés",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 100,
+        "unite": "%"
+      },
+      "piste": "Donnez un texte ou un aria-label au bouton du menu.",
+      "sourceCours": "TP 5",
+      "verdict": "respecte",
+      "valeur": 100,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A9",
+      "axe": "accessibilite",
+      "libelle": "autofocus sur le bouton de fermeture du menu",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "présent",
+      "piste": "Placez autofocus sur le bouton qui ferme le menu.",
+      "sourceCours": "TP 5",
+      "verdict": "non-respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A10",
+      "axe": "accessibilite",
+      "libelle": "Focus visible : pas d'outline: none sans remplacement",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "suppression"
+      },
+      "piste": "Remplacez outline: none par un style :focus-visible.",
+      "sourceCours": "CM 9 · TP 5",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 2
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 210,
+          "colonne": 3,
+          "extrait": ".nav__lien:focus { outline: none; }",
+          "surligne": [
+            19,
+            32
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "A11",
+      "axe": "accessibilite",
+      "libelle": "prefers-reduced-motion dès qu'il y a du mouvement",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": null,
+      "detailSeuil": "présent si mouvement",
+      "piste": "Coupez les animations dans @media (prefers-reduced-motion: reduce).",
+      "sourceCours": "CM 9",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A12",
+      "axe": "accessibilite",
+      "libelle": "Contraste des paires texte et fond",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "échec"
+      },
+      "piste": "Foncez le texte ou éclaircissez le fond jusqu'à 4,5:1.",
+      "sourceCours": "CM 6 · CM 9",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 2
+      },
+      "occurrences": [
+        {
+          "fichier": "index.html",
+          "ligne": 52,
+          "colonne": 7,
+          "extrait": "<p class=\"legende\">#9a9a9a sur #ffffff · 2,8:1 · requis 4,5:1</p>",
+          "surligne": [
+            41,
+            46
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "A13",
+      "axe": "accessibilite",
+      "libelle": "Lighthouse Accessibilité",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 95,
+        "unite": ""
+      },
+      "piste": "Corrigez les audits signalés par Lighthouse, page par page.",
+      "sourceCours": "TP 3",
+      "verdict": "respecte",
+      "valeur": 99.8,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A14",
+      "axe": "accessibilite",
+      "libelle": "Reflow au zoom 200 %",
+      "statut": "R",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 180,
+        "unite": "px"
+      },
+      "piste": "Vérifiez la page à 180 px de large.",
+      "sourceCours": "CM 6 · TP 3",
+      "verdict": "respecte",
+      "valeur": 126,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A15",
+      "axe": "accessibilite",
+      "libelle": "Contenus attendus par le sujet",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 100,
+        "unite": "%"
+      },
+      "piste": "Ajoutez les balises demandées par le sujet.",
+      "sourceCours": "Sujet de la SAÉ",
+      "verdict": "respecte",
+      "valeur": 100,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "A16",
+      "axe": "accessibilite",
+      "libelle": "Bon usage de ces balises",
+      "statut": "R",
+      "methode": "manuel",
+      "seuil": null,
+      "detailSeuil": "jugé à la main",
+      "piste": "time datetime, dl pour les couples libellé et valeur, figure avec figcaption.",
+      "sourceCours": "CM 3 · CM 4 · TP 2",
+      "verdict": "a-juger",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M1",
+      "axe": "methodologie",
+      "libelle": "Validation HTML (W3C)",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "erreur"
+      },
+      "piste": "Passez chaque page au validateur et corrigez les erreurs.",
+      "sourceCours": "CM 1",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "contact.html",
+          "ligne": 33,
+          "colonne": 11,
+          "extrait": "<label for=\"email\">Courriel</label><input id=\"mail\">",
+          "surligne": [
+            42,
+            51
+          ]
+        },
+        {
+          "fichier": "works.html",
+          "ligne": 58,
+          "colonne": 5,
+          "extrait": "<p><div class=\"projet\">",
+          "surligne": [
+            3,
+            7
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    {
+      "id": "M2",
+      "axe": "methodologie",
+      "libelle": "Validation CSS",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "erreur"
+      },
+      "piste": "Passez la feuille au validateur CSS.",
+      "sourceCours": "TP 5",
+      "verdict": "respecte",
+      "valeur": 0,
+      "points": {
+        "obtenus": 3,
+        "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M3",
+      "axe": "methodologie",
+      "libelle": "Ni !important, ni sélecteur d'id",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": ""
+      },
+      "piste": "Visez des classes, et réglez la spécificité sans !important.",
+      "sourceCours": "TP 4",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 77,
+          "colonne": 3,
+          "extrait": "#hero { margin-top: 0; }",
+          "surligne": [
+            0,
+            5
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 154,
+          "colonne": 11,
+          "extrait": ".titre { color: var(--texte) !important; }",
+          "surligne": [
+            29,
+            39
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    {
+      "id": "M4",
+      "axe": "methodologie",
+      "libelle": "JavaScript minimal : ce qui se fait en CSS se fait en CSS",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "motif"
+      },
+      "piste": "Remplacez ces motifs par leur équivalent CSS ou HTML.",
+      "sourceCours": "CM 5",
+      "verdict": "non-respecte",
+      "valeur": 3,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "js/menu.js",
+          "ligne": 4,
+          "colonne": 3,
+          "extrait": "bouton.addEventListener(\"click\", () => menu.classList.toggle(\"ouvert\"));",
+          "surligne": [
+            44,
+            60
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "M5",
+      "axe": "methodologie",
+      "libelle": "CSS mort : classes jamais utilisées",
+      "statut": "C",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 5,
+        "unite": "%"
+      },
+      "piste": "Supprimez les classes que plus aucune page n'utilise.",
+      "sourceCours": "TP 5",
+      "verdict": "non-respecte",
+      "valeur": 10,
+      "points": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "occurrences": [
+        {
+          "fichier": "css/style.css",
+          "ligne": 301,
+          "colonne": 1,
+          "extrait": ".ancienne-carte { … }",
+          "surligne": [
+            0,
+            15
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "M6",
+      "axe": "methodologie",
+      "libelle": "Une feuille unique, ordonnée en sections",
+      "statut": "R",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 3,
+        "unite": "sections"
+      },
+      "piste": "Ordonnez la feuille : Variables, Bases, Blocs, Utilitaires.",
+      "sourceCours": "CM 10 · TP 4",
+      "verdict": "respecte",
+      "valeur": 3.2,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M7",
+      "axe": "methodologie",
+      "libelle": "BEM",
+      "statut": "B",
+      "methode": "auto",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 70,
+        "unite": "%"
+      },
+      "piste": "Nommez les classes en bloc__element--modificateur.",
+      "sourceCours": "CM 10 · TP 5",
+      "verdict": "respecte",
+      "valeur": 74,
+      "points": {
+        "obtenus": 5,
+        "max": 5
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M8",
+      "axe": "methodologie",
+      "libelle": "Nommage des fichiers et dossier assets rangé",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 100,
+        "unite": "%"
+      },
+      "piste": "Minuscules, sans espace ni accent.",
+      "sourceCours": "TP 1",
+      "verdict": "respecte",
+      "valeur": 100,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M9",
+      "axe": "methodologie",
+      "libelle": "Aucune ressource cassée",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "404"
+      },
+      "piste": "Corrigez les chemins : relatifs, et avec la bonne casse.",
+      "sourceCours": "CM 2",
+      "verdict": "respecte",
+      "valeur": 0,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M10",
+      "axe": "methodologie",
+      "libelle": "Timeline des commits régulière",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 6,
+        "unite": "sessions"
+      },
+      "piste": "Travaillez et commitez régulièrement, pas la veille du rendu.",
+      "sourceCours": "Rendu GitHub",
+      "verdict": "respecte",
+      "valeur": 6.3,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M11",
+      "axe": "methodologie",
+      "libelle": "Messages de commit explicites",
+      "statut": "R",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 10,
+        "unite": "%"
+      },
+      "piste": "Dites ce que fait le commit, pas « update ».",
+      "sourceCours": "TP 1",
+      "verdict": "non-respecte",
+      "valeur": 20,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M12",
+      "axe": "methodologie",
+      "libelle": "README rempli",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "champ vide"
+      },
+      "piste": "Renseignez nom, groupe, URL du site et URL Figma.",
+      "sourceCours": "Gabarit du dépôt",
+      "verdict": "respecte",
+      "valeur": 0,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M13",
+      "axe": "methodologie",
+      "libelle": "NOTES.md et journal IA",
+      "statut": "C",
+      "methode": "depot",
+      "seuil": null,
+      "detailSeuil": "sections présentes et non vides",
+      "piste": "Complétez chaque section de NOTES.md.",
+      "sourceCours": "TP 1 à 5",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": {
+        "obtenus": 2,
+        "max": 2
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "M14",
+      "axe": "methodologie",
+      "libelle": "Tag de rendu",
+      "statut": "R",
+      "methode": "depot",
+      "seuil": null,
+      "detailSeuil": "un tag v1",
+      "piste": "Posez le tag v1 sur le commit rendu.",
+      "sourceCours": "TP 3 · TP 5",
+      "verdict": "respecte",
+      "valeur": null,
+      "points": null,
+      "occurrences": [],
+      "totalOccurrences": 0
+    }
+  ],
+  "alertes": [
+    {
+      "type": "js-remplace-css",
+      "message": "JavaScript détecté qui remplace du CSS",
+      "details": "js/menu.js, chargé sur 8 pages"
+    },
+    {
+      "type": "autre-auteur",
+      "message": "Commits d'un autre auteur",
+      "details": "2 commits de t.marchal"
+    }
+  ],
+  "nonMesurable": []
+}

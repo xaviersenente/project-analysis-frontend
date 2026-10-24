@@ -1,0 +1,131 @@
+---
+import SelecteurProjet from "./SelecteurProjet.vue";
+import { date } from "../lib/format.js";
+
+interface Props {
+  options: Array<{ slug: string; nom: string; groupe: string; note: number | null; lettre: string | null }>;
+  courantSlug: string | null;
+  precedent: string | null;
+  suivant: string | null;
+  analyseLe?: string | null;
+  liens?: { site: string | null; depot: string | null; figma: string | null } | null;
+}
+
+const { options, courantSlug, precedent, suivant, analyseLe = null, liens = null } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const urlProjet = (slug: string) => `${base}projet/${slug}/`;
+const nomDe = (slug: string | null) => options.find((o) => o.slug === slug)?.nom;
+
+const liensExternes = [
+  { cle: "site", libelle: "Site en ligne", court: "Site", url: liens?.site ?? null },
+  { cle: "depot", libelle: "Dépôt GitHub", court: "Dépôt", url: liens?.depot ?? null },
+  { cle: "figma", libelle: "Maquette Figma", court: "Figma", url: liens?.figma ?? null },
+];
+---
+
+<header
+  class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-bordure bg-surface px-4"
+  data-precedent={precedent ? urlProjet(precedent) : undefined}
+  data-suivant={suivant ? urlProjet(suivant) : undefined}
+  id="barre-superieure">
+  <!-- Tiroir de navigation sous 1024 px : un popover, sans JavaScript -->
+  <button
+    type="button"
+    popovertarget="navigation"
+    class="lg:hidden inline-flex size-10 items-center justify-center rounded-md border border-bordure"
+    aria-label="Ouvrir la navigation">
+    <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"
+      ><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg
+    >
+  </button>
+
+  <a href={base} class="flex items-baseline gap-2 whitespace-nowrap font-bold">
+    WebScope <span class="text-xs font-semibold text-texte-doux">SAÉ 105</span>
+  </a>
+
+  <nav aria-label="Changer de projet" class="ml-2 flex min-w-0 flex-1 items-center gap-2">
+    {
+      precedent ? (
+        <a
+          href={urlProjet(precedent)}
+          class="inline-flex h-10 items-center gap-1 rounded-md border border-bordure px-3 text-sm whitespace-nowrap hover:bg-neutre-fond"
+          aria-label={`Projet précédent : ${nomDe(precedent)}`}>
+          <kbd class="font-mono text-xs text-texte-doux" aria-hidden="true">←</kbd>
+          <span class="hidden xl:inline">Précédent</span>
+        </a>
+      ) : (
+        <span class="inline-flex h-10 items-center rounded-md border border-bordure px-3 text-sm text-texte-doux opacity-60" aria-hidden="true">←</span>
+      )
+    }
+    <SelecteurProjet client:load options={options} courantSlug={courantSlug} />
+    {
+      suivant ? (
+        <a
+          href={urlProjet(suivant)}
+          class="inline-flex h-10 items-center gap-1 rounded-md border border-bordure px-3 text-sm whitespace-nowrap hover:bg-neutre-fond"
+          aria-label={`Projet suivant : ${nomDe(suivant)}`}>
+          <span class="hidden xl:inline">Suivant</span>
+          <kbd class="font-mono text-xs text-texte-doux" aria-hidden="true">→</kbd>
+        </a>
+      ) : (
+        <span class="inline-flex h-10 items-center rounded-md border border-bordure px-3 text-sm text-texte-doux opacity-60" aria-hidden="true">→</span>
+      )
+    }
+  </nav>
+
+  {
+    analyseLe && (
+      <p class="hidden 2xl:block text-sm text-texte-doux whitespace-nowrap">
+        Analysé le <time datetime={analyseLe}>{date(analyseLe)}</time>
+      </p>
+    )
+  }
+
+  {
+    liens && (
+      <ul class="flex items-center gap-1" aria-label="Liens du projet">
+        {liensExternes.map((lien) => (
+          <li>
+            {lien.url ? (
+              <a
+                href={lien.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex h-10 items-center gap-1.5 rounded-md px-2 text-sm hover:bg-neutre-fond">
+                <span class="size-2 rounded-full bg-accent" aria-hidden="true" />
+                <span class="hidden xl:inline">{lien.libelle}</span>
+                <span class="xl:hidden" aria-hidden="true">{lien.court}</span>
+                <span class="xl:hidden sr-only">{lien.libelle}</span>
+                <span class="sr-only">(nouvel onglet)</span>
+              </a>
+            ) : (
+              <span class="inline-flex h-10 items-center gap-1.5 px-2 text-sm text-texte-doux" title="Non renseigné dans le README">
+                <span class="size-2 rounded-full border border-texte-doux" aria-hidden="true" />
+                <span class="hidden xl:inline">{lien.libelle} : non renseigné</span>
+                <span class="xl:hidden" aria-hidden="true">{lien.court}</span>
+                <span class="xl:hidden sr-only">{lien.libelle} : non renseigné</span>
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</header>
+
+<script>
+  // ← et → enchaînent les projets, sauf quand on écrit dans un champ
+  const barre = document.getElementById("barre-superieure");
+  document.addEventListener("keydown", (evenement) => {
+    const cible = evenement.target as HTMLElement;
+    if (cible.closest("input, textarea, select, [contenteditable]")) return;
+    if (evenement.altKey || evenement.ctrlKey || evenement.metaKey) return;
+    const url =
+      evenement.key === "ArrowLeft"
+        ? barre?.dataset.precedent
+        : evenement.key === "ArrowRight"
+          ? barre?.dataset.suivant
+          : undefined;
+    if (url) window.location.href = url;
+  });
+</script>

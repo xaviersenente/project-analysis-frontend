@@ -1,0 +1,103 @@
+---
+import Base from "../../layouts/Base.astro";
+import BarreSuperieure from "../../components/BarreSuperieure.astro";
+import NavLaterale from "../../components/NavLaterale.astro";
+import Synthese from "../../components/Synthese.astro";
+import SectionAxe from "../../components/SectionAxe.astro";
+import SectionAVenir from "../../components/SectionAVenir.astro";
+import Verdict from "../../components/Verdict.astro";
+import { AXES } from "../../config/axes.js";
+import { badgesParAxe, compterVerdicts } from "../../lib/synthese.js";
+import { donneesSite } from "../../lib/site.js";
+
+export function getStaticPaths() {
+  const { promo } = donneesSite();
+  return promo.projets.map((projet, index) => ({
+    params: { slug: projet.slug },
+    props: {
+      projet,
+      precedent: promo.projets[index - 1]?.slug ?? null,
+      suivant: promo.projets[index + 1]?.slug ?? null,
+    },
+  }));
+}
+
+const { projet, precedent, suivant } = Astro.props;
+const { resultats, options, moyennes } = donneesSite();
+const resultat = resultats.get(projet.slug) ?? null;
+const recommandations = resultat
+  ? resultat.criteres.filter((c: any) => c.statut === "R" && ["non-respecte", "partiel"].includes(c.verdict))
+  : [];
+---
+
+<Base titre={`${projet.nom} · ${projet.groupe}`}>
+  <BarreSuperieure
+    options={options}
+    courantSlug={projet.slug}
+    precedent={precedent}
+    suivant={suivant}
+    analyseLe={resultat?.source.analyseLe ?? null}
+    liens={resultat?.liens ?? null}
+  />
+
+  <div class="lg:flex">
+    <NavLaterale
+      badges={resultat ? badgesParAxe(resultat.criteres) : null}
+      recommandations={resultat ? compterVerdicts(resultat.criteres).recommandations : 0}
+    />
+
+    <main id="contenu" class="mx-auto w-full max-w-6xl min-w-0 space-y-8 p-4 lg:p-8">
+      <h1 class="sr-only">Analyse du projet de {projet.nom}</h1>
+
+      {
+        resultat ? (
+          <>
+            <Synthese resultat={resultat} moyennes={moyennes} />
+
+            {AXES.map((axe) => (
+              <SectionAxe
+                axe={axe}
+                criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
+                pointsAxe={resultat.note.parAxe[axe.id]}
+                moyenne={moyennes?.parAxe[axe.id] ?? null}
+              />
+            ))}
+
+            <SectionAVenir id="par-page" titre="Vue par page" description="La matrice des pages et des critères vérifiés page par page arrive dans une prochaine étape de la refonte." />
+            <SectionAVenir id="timeline" titre="Timeline" description="La frise des commits, les sessions et la date de rendu arrivent avec la lecture de l'historique (lot 3)." />
+            <SectionAVenir id="ressources" titre="Ressources" description="Le tableau des images et des polices arrive dans une prochaine étape de la refonte." />
+
+            <section id="recommandations" aria-labelledby="titre-recommandations" class="rounded-lg border border-bordure bg-surface">
+              <h2 id="titre-recommandations" class="border-b border-bordure px-4 py-3 text-xl font-bold">
+                Recommandations
+                <span class="ml-2 text-sm font-normal text-texte-doux">sans point : des pistes pour aller plus loin</span>
+              </h2>
+              {recommandations.length === 0 ? (
+                <p class="px-4 py-3 text-sm text-texte-doux">Toutes les recommandations sont suivies.</p>
+              ) : (
+                <ul class="divide-y divide-bordure">
+                  {recommandations.map((c: any) => (
+                    <li class="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-baseline gap-3 px-4 py-2.5">
+                      <a href={`#critere-${c.id}`} class="font-mono text-sm font-semibold text-accent underline underline-offset-2">{c.id}</a>
+                      <span>
+                        <span class="block">{c.libelle}</span>
+                        <span class="block text-sm text-texte-doux">{c.piste}</span>
+                      </span>
+                      <Verdict verdict={c.verdict} statut={c.statut} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </>
+        ) : (
+          <section id="synthese" class="rounded-lg border border-bordure bg-surface p-8">
+            <h2 class="text-2xl font-bold">{projet.nom} <span class="text-base font-semibold text-texte-doux">{projet.groupe}</span></h2>
+            <p class="mt-2">Ce projet n'a pas encore été analysé.</p>
+            <p class="mt-1 text-sm text-texte-doux">Lancez l'analyse en local, puis reconstruisez le site.</p>
+          </section>
+        )
+      }
+    </main>
+  </div>
+</Base>

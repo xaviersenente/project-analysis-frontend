@@ -1,0 +1,57 @@
+---
+/**
+ * Un axe : en-tête et liste des critères.
+ * Version de départ : les filtres, le dépliage et les occurrences arrivent avec l'étape suivante de la refonte.
+ */
+import JaugeAxe from "./JaugeAxe.astro";
+import Verdict from "./Verdict.astro";
+import { COULEUR_AXE } from "../config/axes.js";
+import { valeurCritere, seuilCritere } from "../lib/format.js";
+
+interface Props {
+  axe: { id: string; nom: string; description: string };
+  criteres: any[];
+  pointsAxe: { obtenus: number; max: number };
+  moyenne: number | null;
+}
+
+const { axe, criteres, pointsAxe, moyenne } = Astro.props;
+const STATUT: Record<string, string> = { C: "Contrainte", R: "Recommandation", I: "Information", B: "Bonus" };
+---
+
+<section id={`axe-${axe.id}`} aria-labelledby={`titre-axe-${axe.id}`} class={`rounded-lg border border-bordure border-l-4 bg-surface ${COULEUR_AXE[axe.id].lisere}`}>
+  <header class="grid gap-3 border-b border-bordure p-4 md:grid-cols-[minmax(0,1fr)_18rem] md:items-center">
+    <div>
+      <h2 id={`titre-axe-${axe.id}`} class="text-xl font-bold">{axe.nom}</h2>
+      <p class="text-sm text-texte-doux">{axe.description}</p>
+    </div>
+    <JaugeAxe axe={axe} obtenus={pointsAxe.obtenus} max={pointsAxe.max} moyenne={moyenne} lien={false} />
+  </header>
+
+  <ul class="divide-y divide-bordure">
+    {
+      criteres.map((c) => (
+        <li id={`critere-${c.id}`} class="grid min-h-11 grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-2 md:grid-cols-[3rem_minmax(0,1fr)_8rem_9rem_13rem]">
+          <span class="font-mono text-sm font-semibold">{c.id}</span>
+          <span class="min-w-0">
+            <span class="block">{c.libelle}</span>
+            <span class="block text-xs text-texte-doux md:hidden">{STATUT[c.statut]}</span>
+          </span>
+          <span class="hidden text-xs text-texte-doux md:block">{STATUT[c.statut]}</span>
+          <Verdict verdict={c.verdict} statut={c.statut} />
+          <span class="hidden text-sm md:block">
+            {c.verdict === "non-mesurable" ? (
+              <span class="text-texte-doux">{c.raison}</span>
+            ) : c.valeur === null && !c.detailValeur ? (
+              <span class="text-texte-doux">{seuilCritere(c)}</span>
+            ) : (
+              <>
+                {valeurCritere(c)} <span class="text-texte-doux">· {seuilCritere(c)}</span>
+              </>
+            )}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

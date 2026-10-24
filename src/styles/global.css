@@ -1,0 +1,70 @@
+/* Polices auto-hébergées (woff2, font-display: swap), comme le demande le critère G4 */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  /* Interface neutre */
+  --color-page: #f8fafc;
+  --color-surface: #ffffff;
+  --color-bordure: #e2e8f0;
+  --color-texte: #0f172a;
+  --color-texte-doux: #475569;
+
+  /* Accent : interaction seulement (liens, focus, sélection) */
+  --color-accent: #1d4ed8;
+  --color-accent-fond: #eff6ff;
+
+  /* Les cinq sémantiques de verdict, contrastes AA sur blanc et sur leur fond */
+  --color-respecte: #15803d;
+  --color-respecte-fond: #f0fdf4;
+  --color-non-respecte: #b91c1c;
+  --color-non-respecte-fond: #fef2f2;
+  --color-partiel: #92400e;
+  --color-partiel-fond: #fffbeb;
+  --color-neutre: #475569;
+  --color-neutre-fond: #f1f5f9;
+  --color-bonus: #6d28d9;
+  --color-bonus-fond: #f5f3ff;
+
+  /* Couleur d'identification de chaque axe : pastille et liseré, jamais en fond plein */
+  --color-axe-graphique: #db2777;
+  --color-axe-ergonomie: #0d9488;
+  --color-axe-accessibilite: #4f46e5;
+  --color-axe-methodologie: #a16207;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-texte);
+    font-family: var(--font-sans);
+    /* Chiffres tabulaires partout : notes, tableaux, compteurs */
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}

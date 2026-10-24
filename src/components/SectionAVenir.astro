@@ -1,0 +1,15 @@
+---
+/** Section prévue par le cahier des charges, pas encore construite */
+interface Props {
+  id: string;
+  titre: string;
+  description: string;
+}
+
+const { id, titre, description } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`titre-${id}`} class="rounded-lg border border-dashed border-bordure bg-surface p-6">
+  <h2 id={`titre-${id}`} class="text-xl font-bold">{titre}</h2>
+  <p class="mt-1 text-sm text-texte-doux">{description}</p>
+</section>

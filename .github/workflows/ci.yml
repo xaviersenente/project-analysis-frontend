@@ -1,4 +1,4 @@
-# Intégration continue : le site doit se construire à chaque push et à chaque pull request
+# Intégration continue : les tests et la construction du site, à chaque push et pull request
 name: CI
 
 on:
@@ -18,4 +18,5 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: npm run build

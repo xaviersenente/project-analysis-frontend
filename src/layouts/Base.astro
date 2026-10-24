@@ -1,0 +1,30 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  titre: string;
+  description?: string;
+}
+
+const { titre, description = "Analyse des projets web de la SAÉ 105." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{titre} · WebScope</title>
+  </head>
+  <body class="min-h-screen">
+    <a
+      href="#contenu"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-surface focus:px-3 focus:py-2"
+      >Aller au contenu</a
+    >
+    <slot />
+  </body>
+</html>

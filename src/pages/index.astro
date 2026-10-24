@@ -1,11 +1,57 @@
 ---
-import Results from '../components/Results.vue'
-import Layout from '../layouts/Layout.astro';
+import Base from "../layouts/Base.astro";
+import BarreSuperieure from "../components/BarreSuperieure.astro";
+import { donneesSite } from "../lib/site.js";
+import { date, nombre } from "../lib/format.js";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const { promo, resultats, options, moyennes } = donneesSite();
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout>
-	<Results client:load />
-</Layout>
+<Base titre="Promo">
+  <BarreSuperieure options={options} courantSlug={null} precedent={null} suivant={null} />
+
+  <main id="contenu" class="mx-auto max-w-5xl space-y-6 p-4 lg:p-8">
+    <div>
+      <h1 class="text-2xl font-bold">{promo.promo}</h1>
+      <p class="text-sm text-texte-doux">
+        Rendu le <time datetime={promo.dateRendu}>{date(promo.dateRendu)}</time> ·
+        {resultats.size} projet{resultats.size > 1 ? "s" : ""} analysé{resultats.size > 1 ? "s" : ""} sur {promo.projets.length}
+        {moyennes && <> · moyenne {nombre(moyennes.totale)}</>}
+      </p>
+    </div>
+
+    <table class="w-full overflow-hidden rounded-lg border border-bordure bg-surface text-left text-sm">
+      <caption class="sr-only">Projets de la promo</caption>
+      <thead class="bg-neutre-fond text-texte-doux">
+        <tr>
+          <th scope="col" class="px-4 py-2 font-semibold">Étudiant</th>
+          <th scope="col" class="px-4 py-2 font-semibold">Groupe</th>
+          <th scope="col" class="px-4 py-2 text-right font-semibold">Note indicative</th>
+          <th scope="col" class="px-4 py-2 font-semibold">Analyse</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-bordure">
+        {
+          options.map((o) => {
+            const resultat = resultats.get(o.slug);
+            return (
+              <tr class="hover:bg-neutre-fond">
+                <th scope="row" class="px-4 py-2 font-semibold">
+                  <a href={`${base}projet/${o.slug}/`} class="text-accent underline-offset-2 hover:underline">
+                    {o.nom}
+                  </a>
+                </th>
+                <td class="px-4 py-2">{o.groupe}</td>
+                <td class="px-4 py-2 text-right">{o.note !== null ? `${nombre(o.note)} · ${o.lettre}` : "—"}</td>
+                <td class="px-4 py-2 text-texte-doux">
+                  {resultat ? date(resultat.source.analyseLe) : "non analysé"}
+                </td>
+              </tr>
+            );
+          })
+        }
+      </tbody>
+    </table>
+  </main>
+</Base>

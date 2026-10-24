@@ -1,0 +1,189 @@
+---
+import JaugeAxe from "./JaugeAxe.astro";
+import { AXES } from "../config/axes.js";
+import { compterVerdicts, priorites } from "../lib/synthese.js";
+import { nombre, points } from "../lib/format.js";
+
+interface Props {
+  resultat: any;
+  moyennes: { totale: number; parAxe: Record<string, number> } | null;
+}
+
+const { resultat, moyennes } = Astro.props;
+const { projet, note, liens, alertes, criteres } = resultat;
+const compteurs = compterVerdicts(criteres);
+const lesPriorites = priorites(criteres);
+const pointsNonMesurables = 100 - note.max;
+
+const ICONE_ALERTE: Record<string, string> = {
+  "site-inaccessible": "Site",
+  "pages-404": "404",
+  "js-remplace-css": "JS",
+  "historique-reecrit": "Git",
+  "autre-auteur": "Auteur",
+};
+---
+
+<section id="synthese" aria-labelledby="titre-synthese" class="space-y-4">
+  <h2 id="titre-synthese" class="sr-only">Synthèse</h2>
+
+  <div class="grid gap-6 rounded-lg border border-bordure bg-surface p-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <!-- Identité et note -->
+    <div class="space-y-4">
+      <div>
+        <p class="flex items-baseline gap-3">
+          <span class="text-2xl font-bold">{projet.nom}</span>
+          <span class="text-sm font-semibold text-texte-doux">{projet.groupe}</span>
+        </p>
+        {
+          liens.site ? (
+            <a href={liens.site} class="font-mono text-sm text-accent underline underline-offset-2 break-all" target="_blank" rel="noopener noreferrer">
+              {liens.site.replace(/^https?:\/\//, "")}
+              <span class="sr-only">(nouvel onglet)</span>
+            </a>
+          ) : (
+            <p class="text-sm text-texte-doux">URL du site non renseignée</p>
+          )
+        }
+      </div>
+
+      <div class="flex items-end gap-4">
+        <p class="leading-none whitespace-nowrap">
+          <span class="text-6xl font-bold">{nombre(note.totale)}</span>
+          <span class="text-xl text-texte-doux"> / {nombre(note.max)}</span>
+        </p>
+        <p class="mb-1 rounded-md border-2 border-texte px-2 py-0.5 text-2xl font-bold">
+          <span class="sr-only">Lettre </span>{note.lettre}
+        </p>
+        <div class="mb-1 text-sm">
+          <p class="font-semibold">Note indicative</p>
+          <p class="text-texte-doux">La note réelle vient de la grille de l'enseignant.</p>
+        </div>
+      </div>
+
+      <ul class="space-y-1 text-sm text-texte-doux">
+        {
+          note.bonus > 0 && (
+            <li>
+              {nombre(note.base)} <span class="font-semibold text-bonus">+ {points(note.bonus)} de bonus</span>
+            </li>
+          )
+        }
+        {note.aJuger > 0 && <li>{points(note.aJuger)} restent à juger à la main.</li>}
+        {
+          pointsNonMesurables > 0 && (
+            <li>{points(pointsNonMesurables)} non mesurables : la note porte sur {nombre(note.max)}.</li>
+          )
+        }
+        {moyennes && <li>Moyenne de la promo : {nombre(moyennes.totale)}.</li>}
+      </ul>
+    </div>
+
+    <!-- Points par axe, avec la moyenne de la promo -->
+    <div>
+      <p class="mb-2 flex items-center justify-between px-2 text-sm">
+        <span class="font-semibold">Points par axe</span>
+        <span class="flex items-center gap-1.5 text-texte-doux">
+          <span class="inline-block h-3 w-0.5 bg-texte" aria-hidden="true"></span> moyenne de la promo
+        </span>
+      </p>
+      <div class="space-y-1">
+        {
+          AXES.map((axe) => (
+            <JaugeAxe
+              axe={axe}
+              obtenus={note.parAxe[axe.id].obtenus}
+              max={note.parAxe[axe.id].max}
+              moyenne={moyennes?.parAxe[axe.id] ?? null}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Trois compteurs -->
+  <ul class="grid gap-4 sm:grid-cols-3">
+    <li class="rounded-lg border border-bordure bg-surface p-4">
+      <a href="#priorites" class="block">
+        <span class="block text-3xl font-bold text-non-respecte">{compteurs.contraintesNonRespectees}</span>
+        <span class="text-sm">contraintes non respectées</span>
+      </a>
+    </li>
+    <li class="rounded-lg border border-bordure bg-surface p-4">
+      <a href="#recommandations" class="block">
+        <span class="block text-3xl font-bold text-neutre">{compteurs.recommandations}</span>
+        <span class="text-sm">recommandations à suivre</span>
+      </a>
+    </li>
+    <li class="rounded-lg border border-bordure bg-surface p-4">
+      <span class="block text-3xl font-bold text-neutre">{compteurs.aJuger}</span>
+      <span class="text-sm">critères à juger manuellement</span>
+    </li>
+  </ul>
+
+  <!-- Alertes : seulement s'il y en a -->
+  {
+    alertes.length > 0 && (
+      <div class="rounded-lg border border-partiel bg-partiel-fond p-4" role="region" aria-labelledby="titre-alertes">
+        <h3 id="titre-alertes" class="mb-2 font-semibold text-partiel">
+          {alertes.length} alerte{alertes.length > 1 ? "s" : ""} avant de corriger
+        </h3>
+        <ul class="space-y-1.5">
+          {alertes.map((alerte: any) => (
+            <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
+              <span class="rounded bg-surface px-1.5 font-mono text-xs font-semibold text-partiel">{ICONE_ALERTE[alerte.type]}</span>
+              <span class="font-semibold">{alerte.message}</span>
+              {alerte.details && <span class="font-mono text-xs text-texte-doux">{alerte.details}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <!-- Étapes de l'analyse qui ont échoué -->
+  {
+    resultat.nonMesurable.length > 0 && (
+      <div class="rounded-lg border border-bordure bg-neutre-fond p-4 text-sm" role="status">
+        <p class="font-semibold">Non mesurable</p>
+        <ul class="mt-1 list-disc pl-5">
+          {resultat.nonMesurable.map((item: any) => (
+            <li>
+              {item.etape} : {item.raison}. Les critères concernés ne comptent pas dans la note.
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <!-- Les 5 priorités -->
+  <div id="priorites" class="rounded-lg border border-bordure bg-surface">
+    <h3 class="border-b border-bordure px-4 py-3 font-semibold">
+      Les {lesPriorites.length} priorités
+      <span class="ml-2 text-sm font-normal text-texte-doux">les contraintes qui coûtent le plus de points</span>
+    </h3>
+    {
+      lesPriorites.length === 0 ? (
+        <p class="px-4 py-3 text-sm text-respecte">Aucune contrainte non respectée.</p>
+      ) : (
+        <ol class="divide-y divide-bordure">
+          {lesPriorites.map((c: any, index: number) => (
+            <li>
+              <a href={`#critere-${c.id}`} class="grid grid-cols-[1.5rem_3rem_minmax(0,1fr)_auto] items-baseline gap-3 px-4 py-2.5 hover:bg-neutre-fond">
+                <span class="text-sm text-texte-doux">{index + 1}</span>
+                <span class="font-mono text-sm font-semibold">{c.id}</span>
+                <span class="min-w-0">
+                  <span class="block font-semibold">{c.libelle}</span>
+                  <span class="block text-sm text-texte-doux">{c.piste}</span>
+                </span>
+                <span class="text-sm font-semibold text-non-respecte whitespace-nowrap">− {points(c.pointsPerdus)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</section>
