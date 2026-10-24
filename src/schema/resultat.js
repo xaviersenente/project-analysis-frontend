@@ -169,6 +169,46 @@ export const blocsSchema = z
   })
   .partial();
 
+export const DRAPEAUX_COMMIT = ["message-generique", "dates-divergentes", "autre-auteur"];
+
+const dateSchema = z.iso.datetime({ offset: true });
+
+export const historiqueSchema = z.object({
+  dateRendu: dateSchema,
+  // Seuils du critère M10, copiés depuis la configuration du backend
+  seuils: z.object({
+    sessionsMin: z.number().int(),
+    joursMin: z.number().int(),
+    partDernieres48hMax: z.number().min(0).max(1),
+  }),
+  indicateurs: z.object({
+    commits: z.number().int().min(0),
+    sessions: z.number().int().min(0),
+    joursActifs: z.number().int().min(0),
+    dureeProjetJours: z.number().min(0),
+    // Estimation : une session dure du premier au dernier commit, plus 30 min
+    dureeEstimeeMinutes: z.number().min(0),
+    partDernieres48h: z.number().min(0).max(1),
+    plusGrosCommit: z.number().int().min(0),
+    commitsAutreAuteur: z.number().int().min(0),
+  }),
+  sessions: z.array(z.object({ debut: dateSchema, fin: dateSchema, commits: z.number().int().min(1) })),
+  commits: z.array(
+    z.object({
+      sha: z.string(),
+      auteur: z.string(),
+      dateAuteur: dateSchema,
+      dateCommit: dateSchema,
+      message: z.string(),
+      ajouts: z.number().int().min(0),
+      suppressions: z.number().int().min(0),
+      fichiers: z.number().int().min(0),
+      drapeaux: z.array(z.enum(DRAPEAUX_COMMIT)),
+    })
+  ),
+  tags: z.array(z.object({ nom: z.string(), sha: z.string(), date: dateSchema })),
+});
+
 export const ressourcesSchema = z.object({
   images: z.array(
     z.object({
@@ -251,8 +291,8 @@ export const resultatSchema = z.object({
   ressources: ressourcesSchema.optional(),
   // Blocs propres à chaque axe ; un bloc absent est « Non mesurable »
   blocs: blocsSchema.optional(),
-  // Précisé avec la timeline (lot 3)
-  historique: z.looseObject({}).optional(),
+  // Historique Git et timeline (lot 3) ; absent si le dépôt n'a pas pu être lu
+  historique: historiqueSchema.optional(),
 });
 
 export const promoSchema = z.object({

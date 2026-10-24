@@ -2292,6 +2292,352 @@
       }
     }
   },
+  "historique": {
+    "dateRendu": "2027-01-15T23:59:00+01:00",
+    "seuils": {
+      "sessionsMin": 6,
+      "joursMin": 4,
+      "partDernieres48hMax": 0.5
+    },
+    "indicateurs": {
+      "commits": 25,
+      "sessions": 7,
+      "joursActifs": 7,
+      "dureeProjetJours": 26.1,
+      "dureeEstimeeMinutes": 634,
+      "partDernieres48h": 0,
+      "plusGrosCommit": 420,
+      "commitsAutreAuteur": 0
+    },
+    "sessions": [
+      {
+        "debut": "2026-12-18T09:00:00+01:00",
+        "fin": "2026-12-18T09:32:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-22T14:30:00+01:00",
+        "fin": "2026-12-22T15:30:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-30T10:15:00+01:00",
+        "fin": "2026-12-30T11:10:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-04T15:00:00+01:00",
+        "fin": "2027-01-04T16:53:00+01:00",
+        "commits": 5
+      },
+      {
+        "debut": "2027-01-08T09:30:00+01:00",
+        "fin": "2027-01-08T10:35:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-11T17:00:00+01:00",
+        "fin": "2027-01-11T17:57:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-13T10:00:00+01:00",
+        "fin": "2027-01-13T10:42:00+01:00",
+        "commits": 3
+      }
+    ],
+    "commits": [
+      {
+        "sha": "0000246a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-18T09:00:00+01:00",
+        "dateCommit": "2026-12-18T09:00:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 358,
+        "suppressions": 62,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "e377bf7a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-18T09:14:00+01:00",
+        "dateCommit": "2026-12-18T09:14:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 55,
+        "suppressions": 8,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "c6ef5a8a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-18T09:32:00+01:00",
+        "dateCommit": "2026-12-18T09:32:00+01:00",
+        "message": "fix",
+        "ajouts": 72,
+        "suppressions": 11,
+        "fichiers": 2,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "aa66f59a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-22T14:30:00+01:00",
+        "dateCommit": "2026-12-22T14:30:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 42,
+        "suppressions": 0,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "8dde90aa",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-22T14:42:00+01:00",
+        "dateCommit": "2026-12-22T14:42:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 43,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "71562bba",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-22T15:03:00+01:00",
+        "dateCommit": "2026-12-22T15:03:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 26,
+        "suppressions": 5,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "54cdc6ca",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-22T15:30:00+01:00",
+        "dateCommit": "2026-12-22T15:30:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 26,
+        "suppressions": 3,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "384561da",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-30T10:15:00+01:00",
+        "dateCommit": "2026-12-30T10:15:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 36,
+        "suppressions": 0,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "1bbcfcea",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-30T10:41:00+01:00",
+        "dateCommit": "2026-12-30T10:41:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 31,
+        "suppressions": 0,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "ff3497fa",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2026-12-30T11:10:00+01:00",
+        "dateCommit": "2026-12-30T11:10:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 33,
+        "suppressions": 7,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "e2ac330a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-04T15:00:00+01:00",
+        "dateCommit": "2027-01-04T15:00:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 46,
+        "suppressions": 9,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "c623ce1a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-04T15:31:00+01:00",
+        "dateCommit": "2027-01-04T15:31:00+01:00",
+        "message": "États :hover et :focus-visible",
+        "ajouts": 53,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "a99b692a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-04T16:01:00+01:00",
+        "dateCommit": "2027-01-04T16:01:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 42,
+        "suppressions": 1,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "8d13043a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-04T16:35:00+01:00",
+        "dateCommit": "2027-01-04T16:35:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 45,
+        "suppressions": 8,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "708a9f4a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-04T16:53:00+01:00",
+        "dateCommit": "2027-01-04T16:53:00+01:00",
+        "message": "README complété",
+        "ajouts": 52,
+        "suppressions": 6,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "54023a5a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-08T09:30:00+01:00",
+        "dateCommit": "2027-01-08T09:30:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 41,
+        "suppressions": 0,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "3779d56a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-08T09:46:00+01:00",
+        "dateCommit": "2027-01-08T09:46:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 32,
+        "suppressions": 5,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "1af1707a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-08T10:22:00+01:00",
+        "dateCommit": "2027-01-08T10:22:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 26,
+        "suppressions": 3,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "fe690b8a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-08T10:35:00+01:00",
+        "dateCommit": "2027-01-08T10:35:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 32,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1e0a69a",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-11T17:00:00+01:00",
+        "dateCommit": "2027-01-11T17:00:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 33,
+        "suppressions": 0,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "c55841aa",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-11T17:23:00+01:00",
+        "dateCommit": "2027-01-11T17:23:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 24,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "a8cfdcba",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-11T17:57:00+01:00",
+        "dateCommit": "2027-01-11T17:57:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 25,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "8c4777ca",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-13T10:00:00+01:00",
+        "dateCommit": "2027-01-13T10:00:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 20,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "6fbf12da",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-13T10:12:00+01:00",
+        "dateCommit": "2027-01-13T10:12:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 16,
+        "suppressions": 0,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "5336adea",
+        "auteur": "Marchal Hugo",
+        "dateAuteur": "2027-01-13T10:42:00+01:00",
+        "dateCommit": "2027-01-13T10:42:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 24,
+        "suppressions": 5,
+        "fichiers": 4,
+        "drapeaux": []
+      }
+    ],
+    "tags": [
+      {
+        "nom": "html-v1",
+        "sha": "a99b692a",
+        "date": "2027-01-04T16:01:00+01:00"
+      },
+      {
+        "nom": "v1",
+        "sha": "5336adea",
+        "date": "2027-01-13T10:42:00+01:00"
+      }
+    ]
+  },
   "alertes": [
     {
       "type": "site-inaccessible",

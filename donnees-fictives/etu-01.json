@@ -1444,7 +1444,7 @@
       "piste": "Travaillez et commitez régulièrement, pas la veille du rendu.",
       "sourceCours": "Rendu GitHub",
       "verdict": "respecte",
-      "valeur": 7,
+      "valeur": 9,
       "points": {
         "obtenus": 2,
         "max": 2
@@ -2460,6 +2460,545 @@
         ]
       }
     }
+  },
+  "historique": {
+    "dateRendu": "2027-01-15T23:59:00+01:00",
+    "seuils": {
+      "sessionsMin": 6,
+      "joursMin": 4,
+      "partDernieres48hMax": 0.5
+    },
+    "indicateurs": {
+      "commits": 41,
+      "sessions": 9,
+      "joursActifs": 9,
+      "dureeProjetJours": 20.1,
+      "dureeEstimeeMinutes": 1038,
+      "partDernieres48h": 0.33,
+      "plusGrosCommit": 420,
+      "commitsAutreAuteur": 2
+    },
+    "sessions": [
+      {
+        "debut": "2026-12-26T14:10:00+01:00",
+        "fin": "2026-12-26T14:55:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-29T10:05:00+01:00",
+        "fin": "2026-12-29T10:57:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-02T16:30:00+01:00",
+        "fin": "2027-01-02T17:09:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-05T09:20:00+01:00",
+        "fin": "2027-01-05T10:57:00+01:00",
+        "commits": 5
+      },
+      {
+        "debut": "2027-01-07T14:00:00+01:00",
+        "fin": "2027-01-07T15:17:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-09T10:40:00+01:00",
+        "fin": "2027-01-09T11:32:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-12T18:15:00+01:00",
+        "fin": "2027-01-12T19:36:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-14T20:00:00+01:00",
+        "fin": "2027-01-14T22:43:00+01:00",
+        "commits": 7
+      },
+      {
+        "debut": "2027-01-15T13:30:00+01:00",
+        "fin": "2027-01-15T16:12:00+01:00",
+        "commits": 8
+      }
+    ],
+    "commits": [
+      {
+        "sha": "0000246a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-26T14:10:00+01:00",
+        "dateCommit": "2026-12-26T14:10:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 358,
+        "suppressions": 62,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "e377bf7a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-26T14:23:00+01:00",
+        "dateCommit": "2026-12-26T14:23:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 60,
+        "suppressions": 14,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "c6ef5a8a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-26T14:55:00+01:00",
+        "dateCommit": "2026-12-26T14:55:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 65,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "aa66f59a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-29T10:05:00+01:00",
+        "dateCommit": "2026-12-29T10:05:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 65,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "8dde90aa",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-29T10:18:00+01:00",
+        "dateCommit": "2026-12-29T10:18:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 23,
+        "suppressions": 5,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "71562bba",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-29T10:42:00+01:00",
+        "dateCommit": "2026-12-29T10:42:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 27,
+        "suppressions": 6,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "54cdc6ca",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2026-12-29T10:57:00+01:00",
+        "dateCommit": "2026-12-29T10:57:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 57,
+        "suppressions": 8,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "384561da",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-02T16:30:00+01:00",
+        "dateCommit": "2027-01-02T16:30:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 60,
+        "suppressions": 8,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "1bbcfcea",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-02T16:57:00+01:00",
+        "dateCommit": "2027-01-02T16:57:00+01:00",
+        "message": "update",
+        "ajouts": 38,
+        "suppressions": 6,
+        "fichiers": 3,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "ff3497fa",
+        "auteur": "t.marchal",
+        "dateAuteur": "2027-01-02T17:09:00+01:00",
+        "dateCommit": "2027-01-02T17:09:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 52,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": [
+          "autre-auteur"
+        ]
+      },
+      {
+        "sha": "e2ac330a",
+        "auteur": "t.marchal",
+        "dateAuteur": "2027-01-05T09:20:00+01:00",
+        "dateCommit": "2027-01-05T09:20:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 33,
+        "suppressions": 8,
+        "fichiers": 1,
+        "drapeaux": [
+          "autre-auteur"
+        ]
+      },
+      {
+        "sha": "c623ce1a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-05T09:56:00+01:00",
+        "dateCommit": "2027-01-05T09:56:00+01:00",
+        "message": "update",
+        "ajouts": 32,
+        "suppressions": 2,
+        "fichiers": 1,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "a99b692a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-05T10:30:00+01:00",
+        "dateCommit": "2027-01-05T10:30:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 33,
+        "suppressions": 7,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "8d13043a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-05T10:42:00+01:00",
+        "dateCommit": "2027-01-05T10:42:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 59,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "708a9f4a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-05T10:57:00+01:00",
+        "dateCommit": "2027-01-05T10:57:00+01:00",
+        "message": "README complété",
+        "ajouts": 19,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "54023a5a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-07T14:00:00+01:00",
+        "dateCommit": "2027-01-07T14:00:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 34,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "3779d56a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-07T14:39:00+01:00",
+        "dateCommit": "2027-01-07T14:39:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 39,
+        "suppressions": 1,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "1af1707a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-07T15:05:00+01:00",
+        "dateCommit": "2027-01-07T15:05:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 41,
+        "suppressions": 5,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "fe690b8a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-07T15:17:00+01:00",
+        "dateCommit": "2027-01-07T15:17:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 17,
+        "suppressions": 2,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1e0a69a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-09T10:40:00+01:00",
+        "dateCommit": "2027-01-09T10:40:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 39,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "c55841aa",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-09T10:55:00+01:00",
+        "dateCommit": "2027-01-09T10:55:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 32,
+        "suppressions": 3,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "a8cfdcba",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-09T11:32:00+01:00",
+        "dateCommit": "2027-01-09T11:32:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 38,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "8c4777ca",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-12T18:15:00+01:00",
+        "dateCommit": "2027-01-12T18:15:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 43,
+        "suppressions": 2,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "6fbf12da",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-12T18:42:00+01:00",
+        "dateCommit": "2027-01-12T18:42:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 33,
+        "suppressions": 6,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "5336adea",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-12T19:21:00+01:00",
+        "dateCommit": "2027-01-12T19:21:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 37,
+        "suppressions": 8,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "36ae48fa",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-12T19:36:00+01:00",
+        "dateCommit": "2027-01-12T19:36:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 50,
+        "suppressions": 6,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "1a25e40a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T20:00:00+01:00",
+        "dateCommit": "2027-01-14T20:00:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 48,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "fd9d7f1a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T20:35:00+01:00",
+        "dateCommit": "2027-01-14T20:35:00+01:00",
+        "message": "États :hover et :focus-visible",
+        "ajouts": 28,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1151a2a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T21:02:00+01:00",
+        "dateCommit": "2027-01-14T21:02:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 44,
+        "suppressions": 3,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "c48cb53a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T21:16:00+01:00",
+        "dateCommit": "2027-01-14T21:16:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 57,
+        "suppressions": 7,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "a804504a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T21:49:00+01:00",
+        "dateCommit": "2027-01-14T21:49:00+01:00",
+        "message": "README complété",
+        "ajouts": 54,
+        "suppressions": 3,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "8b7beb5a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T22:06:00+01:00",
+        "dateCommit": "2027-01-14T22:06:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 43,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "6ef3866a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-14T22:43:00+01:00",
+        "dateCommit": "2027-01-14T22:43:00+01:00",
+        "message": "fix",
+        "ajouts": 78,
+        "suppressions": 1,
+        "fichiers": 2,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "526b217a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T13:30:00+01:00",
+        "dateCommit": "2027-01-15T13:30:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 60,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "35e2bc8a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T14:01:00+01:00",
+        "dateCommit": "2027-01-15T14:01:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 65,
+        "suppressions": 1,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "195a579a",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T14:18:00+01:00",
+        "dateCommit": "2027-01-15T14:18:00+01:00",
+        "message": "wip",
+        "ajouts": 33,
+        "suppressions": 1,
+        "fichiers": 1,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "fcd1f2aa",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T14:47:00+01:00",
+        "dateCommit": "2027-01-15T14:47:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 60,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "e0498dba",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T15:04:00+01:00",
+        "dateCommit": "2027-01-15T15:04:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 35,
+        "suppressions": 2,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "c3c128ca",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T15:40:00+01:00",
+        "dateCommit": "2027-01-15T15:40:00+01:00",
+        "message": ".",
+        "ajouts": 50,
+        "suppressions": 10,
+        "fichiers": 2,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "a738c3da",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T15:59:00+01:00",
+        "dateCommit": "2027-01-15T15:59:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 63,
+        "suppressions": 0,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "8ab05eea",
+        "auteur": "Lemoine Clara",
+        "dateAuteur": "2027-01-15T16:12:00+01:00",
+        "dateCommit": "2027-01-15T16:12:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 22,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      }
+    ],
+    "tags": [
+      {
+        "nom": "html-v1",
+        "sha": "c55841aa",
+        "date": "2027-01-09T10:55:00+01:00"
+      }
+    ]
   },
   "alertes": [
     {

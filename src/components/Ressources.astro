@@ -221,33 +221,6 @@ const colonnes = [
 </section>
 
 <script>
-  import { comparer } from "../lib/tableaux.js";
-
-  // Tri des tableaux marqués data-triable : un clic sur l'en-tête, puis un second pour inverser
-  for (const table of document.querySelectorAll<HTMLTableElement>("table[data-triable]")) {
-    const corps = table.tBodies[0];
-    const entetes = [...table.querySelectorAll<HTMLTableCellElement>("thead th[aria-sort]")];
-
-    table.querySelectorAll<HTMLButtonElement>("thead button[data-colonne]").forEach((bouton) => {
-      bouton.addEventListener("click", () => {
-        const th = bouton.closest("th")!;
-        const sens = th.getAttribute("aria-sort") === "ascending" ? "decroissant" : "croissant";
-        const colonne = Number(bouton.dataset.colonne);
-        const nombre = bouton.hasAttribute("data-nombre");
-        const valeur = (ligne: HTMLTableRowElement) => {
-          const brute = ligne.cells[colonne]?.dataset.valeur ?? "";
-          return nombre && brute !== "" ? Number(brute) : brute;
-        };
-        const lignes = [...corps.rows].sort((a, b) => comparer(valeur(a), valeur(b), sens));
-        corps.append(...lignes);
-
-        for (const autre of entetes) {
-          autre.setAttribute("aria-sort", "none");
-          autre.querySelector(".indicateur")!.textContent = "↕";
-        }
-        th.setAttribute("aria-sort", sens === "croissant" ? "ascending" : "descending");
-        th.querySelector(".indicateur")!.textContent = sens === "croissant" ? "↑" : "↓";
-      });
-    });
-  }
+  import { activerTri } from "../lib/triTableaux.js";
+  activerTri();
 </script>

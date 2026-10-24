@@ -47,6 +47,14 @@ export const seuilCritere = (critere) => {
   return critere.detailSeuil ?? "—";
 };
 
+/** Durée en minutes : « 45 min », « 1 h 30 », « 14 h » */
+export const duree = (minutes) => {
+  const h = Math.floor(minutes / 60);
+  const m = Math.round(minutes % 60);
+  if (h === 0) return `${m} min`;
+  return m === 0 ? `${h} h` : `${h} h ${String(m).padStart(2, "0")}`;
+};
+
 /** Rapport de contraste : 3.14 → « 3,1:1 » */
 export const rapport = (valeur) => `${nombreFr.format(Math.round(valeur * 10) / 10)}:1`;
 

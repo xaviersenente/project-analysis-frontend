@@ -1,0 +1,248 @@
+---
+/**
+ * Timeline des commits : indicateurs, frise (jours × heure de la journée), tableau des commits.
+ * La frise est un résumé visuel ; le tableau, triable, porte toutes les données.
+ */
+import { graduationsJours, indexJour, minutesDuJour, rayonCommit } from "../lib/timeline.js";
+import { date as dateLongue, duree, nombre } from "../lib/format.js";
+
+interface Props {
+  historique: any | undefined;
+}
+
+const { historique: h } = Astro.props;
+
+// --- Géométrie de la frise (viewBox de 1000 de large) ---
+const LARGEUR = 1000;
+const GAUCHE = 44;
+const DROITE = 12;
+const HAUT = 34;
+// Toute la journée, de 0 h à 24 h : un commit de nuit doit rester visible
+const HAUTEUR_GRILLE = 260;
+const BAS = HAUT + HAUTEUR_GRILLE;
+
+const jours = h ? graduationsJours(h.commits[0]?.dateCommit ?? h.dateRendu, h.dateRendu) : [];
+const largeurJour = (LARGEUR - GAUCHE - DROITE) / Math.max(jours.length, 1);
+const xJour = (index: number) => GAUCHE + index * largeurJour;
+const xCentre = (dateIso: string) => xJour(indexJour(dateIso, jours)) + largeurJour / 2;
+const y = (dateIso: string) => HAUT + (Math.min(minutesDuJour(dateIso), 1439) / 1440) * HAUTEUR_GRILLE;
+const lignes = (c: any) => c.ajouts + c.suppressions;
+const maxLignes = h ? Math.max(...h.commits.map(lignes), 1) : 1;
+
+// Zone des 48 dernières heures : les colonnes qui la recoupent
+const limite48h = h ? new Date(new Date(h.dateRendu).getTime() - 48 * 3600e3).toISOString() : null;
+const debutZone = limite48h ? xJour(indexJour(limite48h, jours)) + ((minutesDuJour(limite48h) / 1440) * largeurJour) : 0;
+const xRendu = h ? xJour(indexJour(h.dateRendu, jours)) + (minutesDuJour(h.dateRendu) / 1440) * largeurJour : 0;
+// Une étiquette de jour sur deux quand la frise est longue
+const pasEtiquette = jours.length > 20 ? 2 : 1;
+
+const heure = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit" });
+const jourCourt = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "short" });
+
+// --- Indicateurs, comparés aux seuils de M10 ---
+const ind = h?.indicateurs;
+const seuils = h?.seuils;
+const tuiles = ind
+  ? [
+      { libelle: "commits", valeur: nombre(ind.commits) },
+      { libelle: "sessions", valeur: nombre(ind.sessions), ok: ind.sessions >= seuils.sessionsMin, seuil: `≥ ${seuils.sessionsMin}` },
+      { libelle: "jours actifs", valeur: nombre(ind.joursActifs), ok: ind.joursActifs >= seuils.joursMin, seuil: `≥ ${seuils.joursMin}` },
+      { libelle: "durée du projet", valeur: `${nombre(ind.dureeProjetJours)} j` },
+      { libelle: "durée cumulée estimée", valeur: duree(ind.dureeEstimeeMinutes) },
+      {
+        libelle: "des lignes dans les 48 dernières heures",
+        valeur: `${nombre(Math.round(ind.partDernieres48h * 100))} %`,
+        ok: ind.partDernieres48h < seuils.partDernieres48hMax,
+        seuil: `< ${nombre(seuils.partDernieres48hMax * 100)} %`,
+      },
+    ]
+  : [];
+
+const DRAPEAU: Record<string, string> = {
+  "message-generique": "message générique",
+  "dates-divergentes": "dates divergentes",
+  "autre-auteur": "autre auteur",
+};
+
+const colonnes = [
+  { libelle: "Date" },
+  { libelle: "Heure" },
+  { libelle: "Message" },
+  { libelle: "Ajouts", nombre: true },
+  { libelle: "Retraits", nombre: true },
+  { libelle: "Fichiers", nombre: true },
+  { libelle: "Drapeaux" },
+];
+---
+
+<section id="timeline" aria-labelledby="titre-timeline" class="rounded-lg border border-bordure bg-surface">
+  <header class="border-b border-bordure px-4 py-3">
+    <h2 id="titre-timeline" class="text-xl font-bold">Timeline</h2>
+    <p class="text-sm text-texte-doux">La régularité du travail, d'après l'historique Git de la version évaluée.</p>
+  </header>
+
+  {
+    !h ? (
+      <p class="px-4 py-3 text-sm text-texte-doux">Non mesurable : l'historique du dépôt n'a pas pu être lu.</p>
+    ) : (
+      <div class="space-y-4 p-4">
+        <!-- Indicateurs -->
+        <ul class="grid gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          {tuiles.map((t) => (
+            <li class="rounded-md border border-bordure p-3">
+              <span class="block text-2xl font-bold">{t.valeur}</span>
+              <span class="block text-sm">{t.libelle}</span>
+              {t.seuil && (
+                <span class:list={["mt-1 block text-xs font-semibold", t.ok ? "text-respecte" : "text-non-respecte"]}>
+                  <span aria-hidden="true">{t.ok ? "✓ " : "✕ "}</span>
+                  {t.ok ? "atteint" : "non atteint"} · seuil {t.seuil}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p class="rounded-md bg-neutre-fond px-3 py-2 text-sm">
+          <span class="font-semibold">Estimation : un commit ne mesure pas du temps.</span> Une session commence après plus de 2 h sans commit ; sa
+          durée va du premier au dernier commit, plus 30 min. Les dates viennent de la machine de l'étudiant.
+        </p>
+
+        <!-- Frise -->
+        <figure>
+          <svg
+            viewBox={`0 0 ${LARGEUR} ${BAS + 30}`}
+            class="w-full"
+            role="img"
+            aria-label={`Frise des commits : ${ind.commits} commits en ${ind.sessions} sessions, du ${jourCourt.format(new Date(h.commits[0].dateCommit))} au rendu du ${jourCourt.format(new Date(h.dateRendu))}. Le détail figure dans le tableau des commits.`}>
+            <!-- Zone des 48 dernières heures -->
+            <rect x={debutZone} y={HAUT} width={Math.max(xRendu - debutZone, 0)} height={HAUTEUR_GRILLE} class="fill-partiel-fond" />
+            <text x={debutZone + 4} y={HAUT + 12} class="fill-partiel text-[10px] font-semibold">48 dernières heures</text>
+
+            <!-- Grille : un jour par colonne, l'heure de 0 h à 24 h -->
+            {jours.map((jour, i) => (
+              <>
+                <line x1={xJour(i)} x2={xJour(i)} y1={HAUT} y2={BAS} class="stroke-bordure" />
+                {i % pasEtiquette === 0 && (
+                  <text x={xJour(i) + largeurJour / 2} y={BAS + 14} text-anchor="middle" class="fill-texte-doux text-[10px]">
+                    {jour.libelle}
+                  </text>
+                )}
+              </>
+            ))}
+            {[0, 6, 12, 18, 24].map((hh) => (
+              <>
+                <line x1={GAUCHE} x2={LARGEUR - DROITE} y1={HAUT + (hh / 24) * HAUTEUR_GRILLE} y2={HAUT + (hh / 24) * HAUTEUR_GRILLE} class="stroke-bordure" stroke-dasharray={hh % 24 ? "2 3" : undefined} />
+                <text x={GAUCHE - 6} y={HAUT + (hh / 24) * HAUTEUR_GRILLE + 3} text-anchor="end" class="fill-texte-doux text-[10px]">{hh} h</text>
+              </>
+            ))}
+
+            <!-- Sessions en bandes de fond -->
+            {h.sessions.map((s: any) => {
+              const haut = y(s.debut) - 4;
+              const bas = Math.max(y(s.fin), y(s.debut)) + 4;
+              return (
+                <rect x={xCentre(s.debut) - largeurJour * 0.4} y={haut} width={largeurJour * 0.8} height={Math.max(bas - haut, 8)} rx="3" class="fill-neutre-fond stroke-texte-doux/30" />
+              );
+            })}
+
+            <!-- Commits : la surface du point suit les lignes modifiées -->
+            {h.commits.map((c: any) => (
+              <circle
+                cx={xCentre(c.dateCommit)}
+                cy={y(c.dateCommit)}
+                r={rayonCommit(lignes(c), maxLignes)}
+                class:list={[c.drapeaux.includes("autre-auteur") ? "fill-partiel" : "fill-accent", "stroke-surface"]}
+                fill-opacity="0.75"
+                stroke-width="1">
+                <title>
+                  {jourCourt.format(new Date(c.dateCommit))} à {heure.format(new Date(c.dateCommit))} · {c.message} · +{c.ajouts} −{c.suppressions}
+                  {c.drapeaux.length > 0 ? ` · ${c.drapeaux.map((d: string) => DRAPEAU[d]).join(", ")}` : ""}
+                </title>
+              </circle>
+            ))}
+
+            <!-- Tags posés -->
+            {h.tags.map((t: any) => (
+              <>
+                <line x1={xCentre(t.date)} x2={xCentre(t.date)} y1={HAUT - 14} y2={BAS} class="stroke-bonus" stroke-dasharray="3 2" />
+                <text x={xCentre(t.date)} y={HAUT - 18} text-anchor="middle" class="fill-bonus font-mono text-[10px] font-semibold">{t.nom}</text>
+              </>
+            ))}
+
+            <!-- Date de rendu -->
+            <line x1={xRendu} x2={xRendu} y1={HAUT - 6} y2={BAS} class="stroke-texte" stroke-width="2" />
+            <text x={xRendu - 4} y={HAUT - 8} text-anchor="end" class="fill-texte text-[10px] font-semibold">rendu</text>
+          </svg>
+          <figcaption class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-texte-doux">
+            <span class="flex items-center gap-1.5"><span class="inline-block size-2.5 rounded-full bg-accent" aria-hidden="true" /> un commit (taille : lignes modifiées)</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block size-2.5 rounded-full bg-partiel" aria-hidden="true" /> commit d'un autre auteur</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block h-2.5 w-4 rounded-sm bg-neutre-fond ring-1 ring-texte-doux/30" aria-hidden="true" /> une session</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block h-2.5 w-4 bg-partiel-fond" aria-hidden="true" /> 48 dernières heures</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block h-3 w-0.5 bg-texte" aria-hidden="true" /> rendu, le {dateLongue(h.dateRendu)}</span>
+            {h.tags.length > 0 && (
+              <span class="flex items-center gap-1.5">
+                <span class="inline-block h-3 w-0.5 bg-bonus" aria-hidden="true" /> tags : {h.tags.map((t: any) => `${t.nom} (${jourCourt.format(new Date(t.date))})`).join(", ")}
+              </span>
+            )}
+            {h.tags.length === 0 && <span>aucun tag posé</span>}
+          </figcaption>
+        </figure>
+
+        <!-- Tableau des commits -->
+        <div>
+          <h3 id="titre-commits" class="mb-2 font-semibold">
+            Commits <span class="font-normal text-texte-doux">({h.commits.length})</span>
+          </h3>
+          <div class="max-h-[28rem] overflow-y-auto rounded-md border border-bordure" tabindex="0" role="region" aria-label="Tableau des commits, défilable">
+            <table class="w-full text-left text-sm" data-triable>
+              <caption class="sr-only">Commits de la version évaluée. Cliquez sur un en-tête pour trier.</caption>
+              <thead class="sticky top-0 bg-surface text-texte-doux shadow-[0_1px_0_var(--color-bordure)]">
+                <tr>
+                  {colonnes.map((col, index) => (
+                    <th scope="col" class:list={["px-2 py-2 font-semibold", col.nombre && "text-right"]} aria-sort="none">
+                      <button type="button" class="inline-flex items-center gap-1 hover:text-accent" data-colonne={index} data-nombre={col.nombre ? "" : undefined}>
+                        {col.libelle}
+                        <span class="indicateur" aria-hidden="true">↕</span>
+                      </button>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-bordure">
+                {h.commits.map((c: any) => (
+                  <tr class:list={[new Date(c.dateCommit) > new Date(limite48h!) && "bg-partiel-fond/50"]}>
+                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateCommit}>{jourCourt.format(new Date(c.dateCommit))}</td>
+                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateCommit}>{heure.format(new Date(c.dateCommit))}</td>
+                    <td class="px-2 py-1.5" data-valeur={c.message}>
+                      <span class="block">{c.message}</span>
+                      <span class="block font-mono text-xs text-texte-doux">{c.sha.slice(0, 7)}</span>
+                    </td>
+                    <td class="px-2 py-1.5 text-right text-respecte" data-valeur={c.ajouts}>+{nombre(c.ajouts)}</td>
+                    <td class="px-2 py-1.5 text-right text-non-respecte" data-valeur={c.suppressions}>−{nombre(c.suppressions)}</td>
+                    <td class="px-2 py-1.5 text-right" data-valeur={c.fichiers}>{c.fichiers}</td>
+                    <td class="px-2 py-1.5" data-valeur={c.drapeaux.join(" ")}>
+                      <ul class="flex flex-wrap gap-1">
+                        {c.drapeaux.map((d: string) => (
+                          <li class="rounded bg-partiel-fond px-1.5 text-xs font-semibold whitespace-nowrap text-partiel">
+                            <span aria-hidden="true">◐ </span>
+                            {DRAPEAU[d]}
+                            {d === "autre-auteur" && <span class="font-normal"> : {c.auteur}</span>}
+                            {d === "dates-divergentes" && <span class="font-normal"> : écrit le {jourCourt.format(new Date(c.dateAuteur))}</span>}
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  import { activerTri } from "../lib/triTableaux.js";
+  activerTri();
+</script>

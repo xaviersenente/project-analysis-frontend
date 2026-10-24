@@ -1161,7 +1161,7 @@
       "piste": "Travaillez et commitez régulièrement, pas la veille du rendu.",
       "sourceCours": "Rendu GitHub",
       "verdict": "respecte",
-      "valeur": 7,
+      "valeur": 10,
       "points": {
         "obtenus": 2,
         "max": 2
@@ -2065,6 +2065,477 @@
         ]
       }
     }
+  },
+  "historique": {
+    "dateRendu": "2027-01-15T23:59:00+01:00",
+    "seuils": {
+      "sessionsMin": 6,
+      "joursMin": 4,
+      "partDernieres48hMax": 0.5
+    },
+    "indicateurs": {
+      "commits": 35,
+      "sessions": 10,
+      "joursActifs": 10,
+      "dureeProjetJours": 24.1,
+      "dureeEstimeeMinutes": 933,
+      "partDernieres48h": 0.01,
+      "plusGrosCommit": 420,
+      "commitsAutreAuteur": 0
+    },
+    "sessions": [
+      {
+        "debut": "2026-12-21T10:00:00+01:00",
+        "fin": "2026-12-21T10:45:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-23T14:00:00+01:00",
+        "fin": "2026-12-23T15:17:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-28T09:30:00+01:00",
+        "fin": "2026-12-28T10:41:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-31T10:00:00+01:00",
+        "fin": "2026-12-31T10:35:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-03T15:30:00+01:00",
+        "fin": "2027-01-03T17:25:00+01:00",
+        "commits": 5
+      },
+      {
+        "debut": "2027-01-06T09:00:00+01:00",
+        "fin": "2027-01-06T10:09:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-08T14:00:00+01:00",
+        "fin": "2027-01-08T15:26:00+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-10T10:30:00+01:00",
+        "fin": "2027-01-10T11:37:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-12T16:00:00+01:00",
+        "fin": "2027-01-12T16:50:00+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-14T11:00:00+01:00",
+        "fin": "2027-01-14T11:18:00+01:00",
+        "commits": 2
+      }
+    ],
+    "commits": [
+      {
+        "sha": "0000246a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-21T10:00:00+01:00",
+        "dateCommit": "2026-12-21T10:00:00+01:00",
+        "message": "fix",
+        "ajouts": 358,
+        "suppressions": 62,
+        "fichiers": 1,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "e377bf7a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-21T10:13:00+01:00",
+        "dateCommit": "2026-12-21T10:13:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 45,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "c6ef5a8a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-21T10:45:00+01:00",
+        "dateCommit": "2026-12-21T10:45:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 26,
+        "suppressions": 4,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "aa66f59a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-23T14:00:00+01:00",
+        "dateCommit": "2026-12-23T14:00:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 20,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "8dde90aa",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-23T14:37:00+01:00",
+        "dateCommit": "2026-12-23T14:37:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 27,
+        "suppressions": 4,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "71562bba",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-23T15:01:00+01:00",
+        "dateCommit": "2026-12-23T15:01:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 45,
+        "suppressions": 4,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "54cdc6ca",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-23T15:17:00+01:00",
+        "dateCommit": "2026-12-23T15:17:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 47,
+        "suppressions": 6,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "384561da",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-28T09:30:00+01:00",
+        "dateCommit": "2026-12-28T09:30:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 27,
+        "suppressions": 6,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "1bbcfcea",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-28T10:01:00+01:00",
+        "dateCommit": "2026-12-28T10:01:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 17,
+        "suppressions": 4,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "ff3497fa",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-28T10:19:00+01:00",
+        "dateCommit": "2026-12-28T10:19:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 38,
+        "suppressions": 2,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "e2ac330a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-28T10:41:00+01:00",
+        "dateCommit": "2026-12-28T10:41:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 43,
+        "suppressions": 7,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "c623ce1a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-31T10:00:00+01:00",
+        "dateCommit": "2026-12-31T10:00:00+01:00",
+        "message": "États :hover et :focus-visible",
+        "ajouts": 19,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "a99b692a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-31T10:20:00+01:00",
+        "dateCommit": "2026-12-31T10:20:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 16,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "8d13043a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2026-12-31T10:35:00+01:00",
+        "dateCommit": "2026-12-31T10:35:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 23,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "708a9f4a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-03T15:30:00+01:00",
+        "dateCommit": "2027-01-03T15:30:00+01:00",
+        "message": "README complété",
+        "ajouts": 38,
+        "suppressions": 0,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "54023a5a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-03T15:55:00+01:00",
+        "dateCommit": "2027-01-03T15:55:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 34,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "3779d56a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-03T16:34:00+01:00",
+        "dateCommit": "2027-01-03T16:34:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 34,
+        "suppressions": 6,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "1af1707a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-03T16:53:00+01:00",
+        "dateCommit": "2027-01-03T16:53:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 35,
+        "suppressions": 2,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "fe690b8a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-03T17:25:00+01:00",
+        "dateCommit": "2027-01-03T17:25:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 26,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1e0a69a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-06T09:00:00+01:00",
+        "dateCommit": "2027-01-06T09:00:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 44,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "c55841aa",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-06T09:22:00+01:00",
+        "dateCommit": "2027-01-06T09:22:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 42,
+        "suppressions": 7,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "a8cfdcba",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-06T09:52:00+01:00",
+        "dateCommit": "2027-01-06T09:52:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 21,
+        "suppressions": 2,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "8c4777ca",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-06T10:09:00+01:00",
+        "dateCommit": "2027-01-06T10:09:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 21,
+        "suppressions": 0,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "6fbf12da",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-08T14:00:00+01:00",
+        "dateCommit": "2027-01-08T14:00:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 14,
+        "suppressions": 2,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "5336adea",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-08T14:38:00+01:00",
+        "dateCommit": "2027-01-08T14:38:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 39,
+        "suppressions": 2,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "36ae48fa",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-08T15:00:00+01:00",
+        "dateCommit": "2027-01-08T15:00:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 15,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "1a25e40a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-08T15:26:00+01:00",
+        "dateCommit": "2027-01-08T15:26:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 13,
+        "suppressions": 3,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "fd9d7f1a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-10T10:30:00+01:00",
+        "dateCommit": "2027-01-10T10:30:00+01:00",
+        "message": "États :hover et :focus-visible",
+        "ajouts": 35,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1151a2a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-10T11:02:00+01:00",
+        "dateCommit": "2027-01-10T11:02:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 18,
+        "suppressions": 1,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "c48cb53a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-10T11:37:00+01:00",
+        "dateCommit": "2027-01-10T11:37:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 26,
+        "suppressions": 1,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "a804504a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-12T16:00:00+01:00",
+        "dateCommit": "2027-01-12T16:00:00+01:00",
+        "message": "README complété",
+        "ajouts": 15,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "8b7beb5a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-12T16:30:00+01:00",
+        "dateCommit": "2027-01-12T16:30:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 19,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "6ef3866a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-12T16:50:00+01:00",
+        "dateCommit": "2027-01-12T16:50:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 19,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "526b217a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-14T11:00:00+01:00",
+        "dateCommit": "2027-01-14T11:00:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 10,
+        "suppressions": 1,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "35e2bc8a",
+        "auteur": "Roux Inès",
+        "dateAuteur": "2027-01-14T11:18:00+01:00",
+        "dateCommit": "2027-01-14T11:18:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 7,
+        "suppressions": 1,
+        "fichiers": 3,
+        "drapeaux": []
+      }
+    ],
+    "tags": [
+      {
+        "nom": "html-v1",
+        "sha": "1af1707a",
+        "date": "2027-01-03T16:53:00+01:00"
+      },
+      {
+        "nom": "v1",
+        "sha": "35e2bc8a",
+        "date": "2027-01-14T11:18:00+01:00"
+      }
+    ]
   },
   "alertes": [],
   "nonMesurable": []

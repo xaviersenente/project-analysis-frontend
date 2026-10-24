@@ -1402,7 +1402,7 @@
       "piste": "Travaillez et commitez régulièrement, pas la veille du rendu.",
       "sourceCours": "Rendu GitHub",
       "verdict": "non-respecte",
-      "valeur": 4,
+      "valeur": 3,
       "points": {
         "obtenus": 0,
         "max": 2
@@ -2415,6 +2415,317 @@
         ]
       }
     }
+  },
+  "historique": {
+    "dateRendu": "2027-01-15T23:59:00+01:00",
+    "seuils": {
+      "sessionsMin": 6,
+      "joursMin": 4,
+      "partDernieres48hMax": 0.5
+    },
+    "indicateurs": {
+      "commits": 24,
+      "sessions": 3,
+      "joursActifs": 3,
+      "dureeProjetJours": 11.7,
+      "dureeEstimeeMinutes": 639,
+      "partDernieres48h": 0.74,
+      "plusGrosCommit": 420,
+      "commitsAutreAuteur": 0
+    },
+    "sessions": [
+      {
+        "debut": "2027-01-03T21:00:00+01:00",
+        "fin": "2027-01-03T21:32:00+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2027-01-14T19:30:00+01:00",
+        "fin": "2027-01-14T23:32:00+01:00",
+        "commits": 10
+      },
+      {
+        "debut": "2027-01-15T08:45:00+01:00",
+        "fin": "2027-01-15T13:20:00+01:00",
+        "commits": 12
+      }
+    ],
+    "commits": [
+      {
+        "sha": "0000246a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-03T21:00:00+01:00",
+        "dateCommit": "2027-01-03T21:00:00+01:00",
+        "message": ".",
+        "ajouts": 358,
+        "suppressions": 62,
+        "fichiers": 1,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "e377bf7a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-03T21:32:00+01:00",
+        "dateCommit": "2027-01-03T21:32:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 72,
+        "suppressions": 8,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "c6ef5a8a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T19:30:00+01:00",
+        "dateCommit": "2027-01-14T19:30:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 68,
+        "suppressions": 6,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "aa66f59a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T20:00:00+01:00",
+        "dateCommit": "2027-01-14T20:00:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 64,
+        "suppressions": 5,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "8dde90aa",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-05T20:33:00+01:00",
+        "dateCommit": "2027-01-14T20:33:00+01:00",
+        "message": "wip",
+        "ajouts": 98,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": [
+          "message-generique",
+          "dates-divergentes"
+        ]
+      },
+      {
+        "sha": "71562bba",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T20:49:00+01:00",
+        "dateCommit": "2027-01-14T20:49:00+01:00",
+        "message": "Formulaire de contact étiqueté",
+        "ajouts": 31,
+        "suppressions": 7,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "54cdc6ca",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T21:12:00+01:00",
+        "dateCommit": "2027-01-14T21:12:00+01:00",
+        "message": "update",
+        "ajouts": 79,
+        "suppressions": 10,
+        "fichiers": 2,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "384561da",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T21:45:00+01:00",
+        "dateCommit": "2027-01-14T21:45:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 44,
+        "suppressions": 2,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "1bbcfcea",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T22:19:00+01:00",
+        "dateCommit": "2027-01-14T22:19:00+01:00",
+        "message": "Page équipe et cartes",
+        "ajouts": 86,
+        "suppressions": 7,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "ff3497fa",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T22:48:00+01:00",
+        "dateCommit": "2027-01-14T22:48:00+01:00",
+        "message": "Page événements avec time datetime",
+        "ajouts": 42,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "e2ac330a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T23:15:00+01:00",
+        "dateCommit": "2027-01-14T23:15:00+01:00",
+        "message": "Correction des erreurs W3C",
+        "ajouts": 61,
+        "suppressions": 7,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "c623ce1a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-14T23:32:00+01:00",
+        "dateCommit": "2027-01-14T23:32:00+01:00",
+        "message": "États :hover et :focus-visible",
+        "ajouts": 72,
+        "suppressions": 17,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "a99b692a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T08:45:00+01:00",
+        "dateCommit": "2027-01-15T08:45:00+01:00",
+        "message": "Textes alternatifs des images",
+        "ajouts": 74,
+        "suppressions": 7,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "8d13043a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T09:01:00+01:00",
+        "dateCommit": "2027-01-15T09:01:00+01:00",
+        "message": "Plan des titres corrigé",
+        "ajouts": 74,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "708a9f4a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T09:28:00+01:00",
+        "dateCommit": "2027-01-15T09:28:00+01:00",
+        "message": "README complété",
+        "ajouts": 40,
+        "suppressions": 3,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "54023a5a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T10:06:00+01:00",
+        "dateCommit": "2027-01-15T10:06:00+01:00",
+        "message": "NOTES.md : journal de la semaine",
+        "ajouts": 29,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "3779d56a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T10:42:00+01:00",
+        "dateCommit": "2027-01-15T10:42:00+01:00",
+        "message": "Structure HTML de la page d'accueil",
+        "ajouts": 55,
+        "suppressions": 6,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "1af1707a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T10:56:00+01:00",
+        "dateCommit": "2027-01-15T10:56:00+01:00",
+        "message": "Ajout des pages réalisations et projet",
+        "ajouts": 69,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "fe690b8a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T11:13:00+01:00",
+        "dateCommit": "2027-01-15T11:13:00+01:00",
+        "message": "Variables de couleur dans :root",
+        "ajouts": 75,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "e1e0a69a",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T11:33:00+01:00",
+        "dateCommit": "2027-01-15T11:33:00+01:00",
+        "message": "Échelle d'espacement",
+        "ajouts": 30,
+        "suppressions": 5,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "c55841aa",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T11:50:00+01:00",
+        "dateCommit": "2027-01-15T11:50:00+01:00",
+        "message": "Menu en popover",
+        "ajouts": 62,
+        "suppressions": 3,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "a8cfdcba",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T12:25:00+01:00",
+        "dateCommit": "2027-01-15T12:25:00+01:00",
+        "message": "wip",
+        "ajouts": 32,
+        "suppressions": 0,
+        "fichiers": 3,
+        "drapeaux": [
+          "message-generique"
+        ]
+      },
+      {
+        "sha": "8c4777ca",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T12:42:00+01:00",
+        "dateCommit": "2027-01-15T12:42:00+01:00",
+        "message": "Images converties en WebP",
+        "ajouts": 41,
+        "suppressions": 9,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "6fbf12da",
+        "auteur": "Benali Yanis",
+        "dateAuteur": "2027-01-15T13:20:00+01:00",
+        "dateCommit": "2027-01-15T13:20:00+01:00",
+        "message": "Polices auto-hébergées en woff2",
+        "ajouts": 48,
+        "suppressions": 2,
+        "fichiers": 2,
+        "drapeaux": []
+      }
+    ],
+    "tags": []
   },
   "alertes": [
     {

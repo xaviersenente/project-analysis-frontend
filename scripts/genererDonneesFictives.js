@@ -448,6 +448,141 @@ const genererBlocs = (criteres, profil) => {
   };
 };
 
+// --- Historique Git : sessions de travail et commits ---
+
+const DATE_RENDU = "2027-01-15T23:59:00+01:00";
+
+// Une session : [jour, heure de début, nombre de commits, lignes moyennes par commit]
+const SESSIONS = {
+  "etu-01": [
+    ["2026-12-26", "14:10", 3, 60], ["2026-12-29", "10:05", 4, 45], ["2027-01-02", "16:30", 3, 50],
+    ["2027-01-05", "09:20", 5, 40], ["2027-01-07", "14:00", 4, 35], ["2027-01-09", "10:40", 3, 30],
+    ["2027-01-12", "18:15", 4, 40], ["2027-01-14", "20:00", 7, 55], ["2027-01-15", "13:30", 8, 45],
+  ],
+  "etu-02": [
+    ["2026-12-18", "09:00", 3, 70], ["2026-12-22", "14:30", 4, 40], ["2026-12-30", "10:15", 3, 35],
+    ["2027-01-04", "15:00", 5, 45], ["2027-01-08", "09:30", 4, 30], ["2027-01-11", "17:00", 3, 25],
+    ["2027-01-13", "10:00", 3, 20],
+  ],
+  "etu-03": [
+    ["2026-12-21", "10:00", 3, 50], ["2026-12-23", "14:00", 4, 40], ["2026-12-28", "09:30", 4, 35],
+    ["2026-12-31", "10:00", 3, 30], ["2027-01-03", "15:30", 5, 40], ["2027-01-06", "09:00", 4, 35],
+    ["2027-01-08", "14:00", 4, 30], ["2027-01-10", "10:30", 3, 25], ["2027-01-12", "16:00", 3, 20],
+    ["2027-01-14", "11:00", 2, 15],
+  ],
+  "etu-04": [
+    ["2027-01-03", "21:00", 2, 120], ["2027-01-14", "19:30", 10, 70], ["2027-01-15", "08:45", 12, 60],
+  ],
+};
+
+const MESSAGES = [
+  "Structure HTML de la page d'accueil", "Ajout des pages réalisations et projet", "Variables de couleur dans :root",
+  "Échelle d'espacement", "Menu en popover", "Formulaire de contact étiqueté", "Images converties en WebP",
+  "Polices auto-hébergées en woff2", "Page équipe et cartes", "Page événements avec time datetime",
+  "Correction des erreurs W3C", "États :hover et :focus-visible", "Textes alternatifs des images",
+  "Plan des titres corrigé", "README complété", "NOTES.md : journal de la semaine",
+];
+const GENERIQUES = ["update", "fix", "wip", "."];
+
+// Générateur pseudo-aléatoire déterministe (une graine par projet)
+const aleatoire = (graine) => {
+  let etat = [...graine].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+  return () => ((etat = (etat * 1664525 + 1013904223) >>> 0) / 2 ** 32);
+};
+
+// Une date à l'heure de Paris (hiver), au format ISO avec décalage
+const isoParis = (ms) => new Date(ms + 3600e3).toISOString().replace(/\.\d{3}Z$/, "+01:00");
+
+const genererHistorique = (slug, profil) => {
+  const hasard = aleatoire(slug);
+  const tauxGenerique = profil.recommandations.includes("M11") || profil.echecs.includes("M11") ? 0.18 : 0.04;
+  const commits = [];
+  let numero = 0;
+  for (const [jour, heure, nombre, lignes] of SESSIONS[slug]) {
+    let t = new Date(`${jour}T${heure}:00+01:00`).getTime();
+    for (let i = 0; i < nombre; i++) {
+      const total = numero === 0 ? 420 : Math.max(2, Math.round(lignes * (0.5 + hasard())));
+      const suppressions = Math.round(total * 0.2 * hasard());
+      const generique = hasard() < tauxGenerique;
+      const date = isoParis(t);
+      commits.push({
+        sha: (numero * 2654435761 + slug.length * 97).toString(16).padStart(8, "0").slice(-7) + "a",
+        auteur: profil.nom,
+        dateAuteur: date,
+        dateCommit: date,
+        message: generique ? GENERIQUES[Math.floor(hasard() * GENERIQUES.length)] : MESSAGES[numero % MESSAGES.length],
+        ajouts: total - suppressions,
+        suppressions,
+        fichiers: 1 + Math.floor(hasard() * 4),
+        drapeaux: generique ? ["message-generique"] : [],
+      });
+      numero++;
+      t += (12 + Math.floor(hasard() * 28)) * 60e3;
+    }
+  }
+
+  // Deux commits d'un autre auteur (alerte de Lemoine Clara)
+  if (profil.alertes.some((a) => a.type === "autre-auteur")) {
+    for (const index of [9, 10]) {
+      commits[index].auteur = "t.marchal";
+      commits[index].drapeaux.push("autre-auteur");
+    }
+  }
+  // Historique réécrit : une date d'auteur très antérieure à la date du commit
+  if (profil.alertes.some((a) => a.type === "historique-reecrit")) {
+    const c = commits[4];
+    c.dateAuteur = isoParis(new Date(c.dateCommit).getTime() - 9 * 864e5);
+    c.drapeaux.push("dates-divergentes");
+  }
+
+  // Sessions : une nouvelle session après plus de 2 h sans commit
+  const sessions = [];
+  for (const c of commits) {
+    const t = new Date(c.dateCommit).getTime();
+    const derniere = sessions.at(-1);
+    if (derniere && t - new Date(derniere.fin).getTime() <= 2 * 3600e3) {
+      derniere.fin = c.dateCommit;
+      derniere.commits++;
+    } else {
+      sessions.push({ debut: c.dateCommit, fin: c.dateCommit, commits: 1 });
+    }
+  }
+
+  const lignes = (c) => c.ajouts + c.suppressions;
+  const totalLignes = commits.reduce((s, c) => s + lignes(c), 0);
+  const limite48h = new Date(DATE_RENDU).getTime() - 48 * 3600e3;
+  const lignes48h = commits
+    .filter((c) => new Date(c.dateCommit).getTime() > limite48h)
+    .reduce((s, c) => s + lignes(c), 0);
+  const premier = new Date(commits[0].dateCommit).getTime();
+  const dernier = new Date(commits.at(-1).dateCommit).getTime();
+
+  const tags = [];
+  if (slug !== "etu-04") tags.push({ nom: "html-v1", sha: commits[Math.floor(commits.length / 2)].sha, date: commits[Math.floor(commits.length / 2)].dateCommit });
+  if (["etu-02", "etu-03"].includes(slug)) tags.push({ nom: "v1", sha: commits.at(-1).sha, date: commits.at(-1).dateCommit });
+
+  return {
+    dateRendu: DATE_RENDU,
+    seuils: { sessionsMin: 6, joursMin: 4, partDernieres48hMax: 0.5 },
+    indicateurs: {
+      commits: commits.length,
+      sessions: sessions.length,
+      joursActifs: new Set(commits.map((c) => c.dateCommit.slice(0, 10))).size,
+      dureeProjetJours: Math.round(((dernier - premier) / 864e5) * 10) / 10,
+      dureeEstimeeMinutes: sessions.reduce(
+        (s, x) => s + (new Date(x.fin).getTime() - new Date(x.debut).getTime()) / 60e3 + 30,
+        0
+      ),
+      partDernieres48h: Math.round((lignes48h / totalLignes) * 100) / 100,
+      plusGrosCommit: Math.max(...commits.map(lignes)),
+      commitsAutreAuteur: commits.filter((c) => c.drapeaux.includes("autre-auteur")).length,
+    },
+    sessions,
+    commits,
+    tags,
+  };
+};
+
 const genererResultat = (slug, profil, index) => {
   const criteres = catalogue.criteres.map((modele) => {
     const { id } = modele;
@@ -542,6 +677,7 @@ const genererResultat = (slug, profil, index) => {
     pages: genererPages(criteres, profil),
     ressources: genererRessources(criteres, profil),
     blocs: genererBlocs(criteres, profil),
+    historique: genererHistorique(slug, profil),
     alertes: profil.alertes,
     nonMesurable: [...new Set(Object.values(profil.nonMesurables))].map((raison) => ({
       etape: "Lighthouse et mesures en navigateur",
@@ -560,10 +696,10 @@ fs.writeFileSync(
 );
 
 Object.entries(PROFILS).forEach(([slug, profil], index) => {
-  fs.writeFileSync(
-    path.join(dossier, `${slug}.json`),
-    JSON.stringify(genererResultat(slug, profil, index), null, 2) + "\n"
-  );
+  const resultat = genererResultat(slug, profil, index);
+  // Le critère M10 porte le nombre de sessions de la timeline
+  resultat.criteres.find((c) => c.id === "M10").valeur = resultat.historique.indicateurs.sessions;
+  fs.writeFileSync(path.join(dossier, `${slug}.json`), JSON.stringify(resultat, null, 2) + "\n");
 });
 
 console.log(`${Object.keys(PROFILS).length} résultats et 1 promo écrits dans ${dossier}`);
