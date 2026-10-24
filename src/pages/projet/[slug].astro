@@ -5,6 +5,8 @@ import NavLaterale from "../../components/NavLaterale.astro";
 import Synthese from "../../components/Synthese.astro";
 import SectionAxe from "../../components/SectionAxe.astro";
 import SectionAVenir from "../../components/SectionAVenir.astro";
+import VueParPage from "../../components/VueParPage.astro";
+import Ressources from "../../components/Ressources.astro";
 import Verdict from "../../components/Verdict.astro";
 import { AXES } from "../../config/axes.js";
 import { badgesParAxe, compterVerdicts } from "../../lib/synthese.js";
@@ -63,9 +65,9 @@ const recommandations = resultat
               />
             ))}
 
-            <SectionAVenir id="par-page" titre="Vue par page" description="La matrice des pages et des critères vérifiés page par page arrive dans une prochaine étape de la refonte." />
+            <VueParPage pages={resultat.pages} />
             <SectionAVenir id="timeline" titre="Timeline" description="La frise des commits, les sessions et la date de rendu arrivent avec la lecture de l'historique (lot 3)." />
-            <SectionAVenir id="ressources" titre="Ressources" description="Le tableau des images et des polices arrive dans une prochaine étape de la refonte." />
+            <Ressources ressources={resultat.ressources} criteres={resultat.criteres} />
 
             <section id="recommandations" aria-labelledby="titre-recommandations" class="rounded-lg border border-bordure bg-surface">
               <h2 id="titre-recommandations" class="border-b border-bordure px-4 py-3 text-xl font-bold">

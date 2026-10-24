@@ -1,0 +1,253 @@
+---
+/**
+ * Ressources : images (tableau triable), polices et arborescence du dépôt.
+ * Les seuils viennent des critères E10, E11 et E12 du résultat, jamais du code.
+ */
+import Arborescence from "./Arborescence.astro";
+import { construireArbre } from "../lib/tableaux.js";
+import { nombre } from "../lib/format.js";
+
+interface Props {
+  ressources: any | undefined;
+  criteres: any[];
+}
+
+const { ressources, criteres } = Astro.props;
+const critere = (id: string) => criteres.find((c) => c.id === id);
+const imageMaxKo = critere("E10")?.seuil?.nombre ?? null;
+const accueilMaxKo = critere("E11")?.seuil?.nombre ?? null;
+const policesMax = critere("G5")?.seuil?.nombre ?? null;
+const FORMATS_PHOTO_ANCIENS = ["jpg", "jpeg", "png"];
+
+const arbre = ressources ? construireArbre(ressources.arborescence) : [];
+const fautifs = ressources ? ressources.arborescence.filter((f: any) => f.problemes.length > 0).length : 0;
+const poidsImages = ressources ? ressources.images.reduce((s: number, i: any) => s + i.poidsKo, 0) : 0;
+
+const colonnes = [
+  { cle: "fichier", libelle: "Fichier" },
+  { cle: "format", libelle: "Format" },
+  { cle: "poids", libelle: "Poids", nombre: true },
+  { cle: "dimensions", libelle: "Dimensions" },
+  { cle: "alt", libelle: "alt" },
+  { cle: "loading", libelle: "loading" },
+  { cle: "pages", libelle: "Pages" },
+];
+---
+
+<section id="ressources" aria-labelledby="titre-ressources" class="space-y-4 rounded-lg border border-bordure bg-surface">
+  <header class="border-b border-bordure px-4 py-3">
+    <h2 id="titre-ressources" class="text-xl font-bold">Ressources</h2>
+    <p class="text-sm text-texte-doux">Les images, les polices et les fichiers du dépôt.</p>
+  </header>
+
+  {
+    !ressources ? (
+      <p class="px-4 pb-3 text-sm text-texte-doux">Non mesurable : l'inventaire des ressources n'a pas abouti.</p>
+    ) : (
+      <>
+        <!-- Images -->
+        <div class="px-4">
+          <h3 id="titre-images" class="mb-2 font-semibold">
+            Images <span class="font-normal text-texte-doux">({ressources.images.length})</span>
+          </h3>
+          <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Tableau des images, défilable">
+            <table class="w-full text-left text-sm" data-triable>
+              <caption class="sr-only">Images du site. Cliquez sur un en-tête pour trier.</caption>
+              <thead class="border-b border-bordure text-texte-doux">
+                <tr>
+                  <th scope="col" class="px-2 py-2 font-semibold"><span class="sr-only">Vignette</span></th>
+                  {colonnes.map((col, index) => (
+                    <th scope="col" class:list={["px-2 py-2 font-semibold", col.nombre && "text-right"]} aria-sort="none">
+                      <button type="button" class="inline-flex items-center gap-1 hover:text-accent" data-colonne={index + 1} data-nombre={col.nombre ? "" : undefined}>
+                        {col.libelle}
+                        <span class="indicateur" aria-hidden="true">↕</span>
+                      </button>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-bordure">
+                {ressources.images.map((image: any) => {
+                  const tropLourde = imageMaxKo !== null && image.poidsKo > imageMaxKo;
+                  const formatAncien = FORMATS_PHOTO_ANCIENS.includes(image.format);
+                  const nom = image.fichier.split("/").pop();
+                  return (
+                    <tr>
+                      <td class="px-2 py-1.5">
+                        {image.vignette ? (
+                          <img src={image.vignette} alt="" width="40" height="40" class="size-10 rounded object-cover" loading="lazy" />
+                        ) : (
+                          <span class="flex size-10 items-center justify-center rounded bg-neutre-fond font-mono text-[0.625rem] text-texte-doux uppercase" aria-hidden="true">
+                            {image.format}
+                          </span>
+                        )}
+                      </td>
+                      <td class="px-2 py-1.5 font-mono text-xs whitespace-nowrap" data-valeur={nom}>
+                        <span class="block">{nom}</span>
+                        <span class="block text-texte-doux">{image.fichier.replace(nom, "")}</span>
+                      </td>
+                      <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={image.format}>
+                        {formatAncien ? (
+                          <span class="font-semibold text-partiel">
+                            <span aria-hidden="true">◐ </span>
+                            {image.format.toUpperCase()} <span class="font-normal">· à convertir</span>
+                          </span>
+                        ) : (
+                          image.format.toUpperCase()
+                        )}
+                      </td>
+                      <td class="px-2 py-1.5 text-right whitespace-nowrap" data-valeur={image.poidsKo}>
+                        {tropLourde ? (
+                          <span class="font-semibold text-non-respecte">
+                            <span aria-hidden="true">✕ </span>
+                            {nombre(image.poidsKo)} Ko <span class="font-normal">· &gt; {nombre(imageMaxKo)}</span>
+                          </span>
+                        ) : (
+                          <>{nombre(image.poidsKo)} Ko</>
+                        )}
+                      </td>
+                      <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={image.largeur ? image.largeur * (image.hauteur ?? 1) : ""}>
+                        {image.largeur && image.hauteur ? `${image.largeur} × ${image.hauteur}` : <span class="text-non-respecte">non dimensionnée</span>}
+                      </td>
+                      <td class="max-w-64 px-2 py-1.5" data-valeur={image.alt ?? ""}>
+                        {image.alt === null ? (
+                          <span class="font-semibold text-non-respecte">
+                            <span aria-hidden="true">✕ </span>absent
+                          </span>
+                        ) : image.alt === "" ? (
+                          <span class="text-neutre">décorative <code class="font-mono text-xs">alt=""</code></span>
+                        ) : (
+                          <span>{image.alt}</span>
+                        )}
+                      </td>
+                      <td class="px-2 py-1.5 font-mono text-xs" data-valeur={image.loading ?? ""}>
+                        {image.loading ?? <span class="font-sans text-texte-doux">—</span>}
+                      </td>
+                      <td class="px-2 py-1.5 font-mono text-xs" data-valeur={image.pages.length}>
+                        {image.pages.length > 3 ? `${image.pages.length} pages` : image.pages.join(", ")}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot class="border-t-2 border-bordure">
+                <tr>
+                  <td colspan="3" class="px-2 py-2 font-semibold">Total des images</td>
+                  <td class="px-2 py-2 text-right font-semibold whitespace-nowrap">{nombre(poidsImages)} Ko</td>
+                  <td colspan="4" class="px-2 py-2 text-sm">
+                    Page d'accueil :{" "}
+                    {ressources.poidsAccueilKo === null ? (
+                      <span class="text-texte-doux">non mesurée</span>
+                    ) : (
+                      <>
+                        <span class:list={["font-semibold", accueilMaxKo !== null && ressources.poidsAccueilKo >= accueilMaxKo && "text-non-respecte"]}>
+                          {nombre(ressources.poidsAccueilKo)} Ko transférés
+                        </span>
+                        {accueilMaxKo !== null && <span class="text-texte-doux"> · objectif &lt; {nombre(accueilMaxKo)} Ko</span>}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Polices -->
+        <div class="px-4">
+          <h3 class="mb-2 font-semibold">
+            Polices <span class="font-normal text-texte-doux">({ressources.polices.length} fichiers)</span>
+            {policesMax !== null && ressources.polices.length > policesMax && (
+              <span class="ml-2 text-sm font-normal text-neutre">
+                <span aria-hidden="true">→ </span>au-delà des {policesMax} fichiers recommandés (G5)
+              </span>
+            )}
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <caption class="sr-only">Polices chargées</caption>
+              <thead class="border-b border-bordure text-texte-doux">
+                <tr>
+                  <th scope="col" class="px-2 py-2 font-semibold">Fichier</th>
+                  <th scope="col" class="px-2 py-2 font-semibold">Famille</th>
+                  <th scope="col" class="px-2 py-2 font-semibold">Graisse</th>
+                  <th scope="col" class="px-2 py-2 font-semibold">Format</th>
+                  <th scope="col" class="px-2 py-2 text-right font-semibold">Poids</th>
+                  <th scope="col" class="px-2 py-2 font-semibold">Préchargée</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-bordure">
+                {ressources.polices.map((p: any) => (
+                  <tr>
+                    <td class="px-2 py-1.5 font-mono text-xs">{p.fichier}</td>
+                    <td class="px-2 py-1.5">{p.famille}</td>
+                    <td class="px-2 py-1.5">{p.graisse}</td>
+                    <td class="px-2 py-1.5">
+                      {p.format === "woff2" ? (
+                        "woff2"
+                      ) : (
+                        <span class="font-semibold text-non-respecte">
+                          <span aria-hidden="true">✕ </span>
+                          {p.format} <span class="font-normal">· woff2 attendu</span>
+                        </span>
+                      )}
+                    </td>
+                    <td class="px-2 py-1.5 text-right">{nombre(p.poidsKo)} Ko</td>
+                    <td class="px-2 py-1.5">{p.prechargee ? "Oui" : <span class="text-texte-doux">Non</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Arborescence -->
+        <div class="px-4 pb-4">
+          <h3 class="mb-2 font-semibold">
+            Arborescence du dépôt
+            <span class="ml-2 text-sm font-normal">
+              {fautifs > 0 ? (
+                <span class="font-semibold text-non-respecte">✕ {fautifs} nom{fautifs > 1 ? "s" : ""} fautif{fautifs > 1 ? "s" : ""}</span>
+              ) : (
+                <span class="text-respecte">✓ tous les noms sont conformes</span>
+              )}
+            </span>
+          </h3>
+          <Arborescence noeuds={arbre} />
+        </div>
+      </>
+    )
+  }
+</section>
+
+<script>
+  import { comparer } from "../lib/tableaux.js";
+
+  // Tri des tableaux marqués data-triable : un clic sur l'en-tête, puis un second pour inverser
+  for (const table of document.querySelectorAll<HTMLTableElement>("table[data-triable]")) {
+    const corps = table.tBodies[0];
+    const entetes = [...table.querySelectorAll<HTMLTableCellElement>("thead th[aria-sort]")];
+
+    table.querySelectorAll<HTMLButtonElement>("thead button[data-colonne]").forEach((bouton) => {
+      bouton.addEventListener("click", () => {
+        const th = bouton.closest("th")!;
+        const sens = th.getAttribute("aria-sort") === "ascending" ? "decroissant" : "croissant";
+        const colonne = Number(bouton.dataset.colonne);
+        const nombre = bouton.hasAttribute("data-nombre");
+        const valeur = (ligne: HTMLTableRowElement) => {
+          const brute = ligne.cells[colonne]?.dataset.valeur ?? "";
+          return nombre && brute !== "" ? Number(brute) : brute;
+        };
+        const lignes = [...corps.rows].sort((a, b) => comparer(valeur(a), valeur(b), sens));
+        corps.append(...lignes);
+
+        for (const autre of entetes) {
+          autre.setAttribute("aria-sort", "none");
+          autre.querySelector(".indicateur")!.textContent = "↕";
+        }
+        th.setAttribute("aria-sort", sens === "croissant" ? "ascending" : "descending");
+        th.querySelector(".indicateur")!.textContent = sens === "croissant" ? "↑" : "↓";
+      });
+    });
+  }
+</script>

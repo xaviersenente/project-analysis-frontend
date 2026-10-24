@@ -1430,6 +1430,671 @@
       "totalOccurrences": 0
     }
   ],
+  "pages": [
+    {
+      "fichier": "index.html",
+      "titre": "BBrands Agency — Accueil",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "works.html",
+      "titre": "Nos réalisations",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "non-respecte",
+          "valeur": "2",
+          "detail": "2 erreurs de validation"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "work.html",
+      "titre": "Brand Lab",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "about.html",
+      "titre": "À propos",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "team.html",
+      "titre": "L'équipe",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "events.html",
+      "titre": "Événements",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "event.html",
+      "titre": "Brand Day 2027",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "respecte",
+          "valeur": "0",
+          "detail": "aucune erreur"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    },
+    {
+      "fichier": "contact.html",
+      "titre": "Contact",
+      "controles": {
+        "lang": {
+          "verdict": "respecte",
+          "detail": "lang=\"fr\""
+        },
+        "titleUnique": {
+          "verdict": "respecte",
+          "detail": "title propre à la page"
+        },
+        "descriptionUnique": {
+          "verdict": "respecte",
+          "detail": "description propre à la page"
+        },
+        "reperes": {
+          "verdict": "respecte",
+          "detail": "header, nav, main, footer"
+        },
+        "h1Unique": {
+          "verdict": "respecte",
+          "detail": "1 h1"
+        },
+        "titresSansSaut": {
+          "verdict": "respecte",
+          "detail": "aucun niveau sauté"
+        },
+        "menuPopover": {
+          "verdict": "non-respecte",
+          "detail": "menu ouvert par js/menu.js"
+        },
+        "ariaCurrent": {
+          "verdict": "respecte",
+          "detail": "aria-current=\"page\""
+        },
+        "w3c": {
+          "verdict": "non-respecte",
+          "valeur": "3",
+          "detail": "3 erreurs de validation"
+        },
+        "lighthouseA11y": {
+          "verdict": "non-mesurable",
+          "detail": "Lighthouse a dépassé le délai (90 s)"
+        }
+      }
+    }
+  ],
+  "ressources": {
+    "images": [
+      {
+        "fichier": "assets/svg/logo.svg",
+        "format": "svg",
+        "poidsKo": 4,
+        "largeur": 120,
+        "hauteur": 32,
+        "alt": "",
+        "loading": "eager",
+        "pages": [
+          "index.html",
+          "works.html",
+          "work.html",
+          "about.html",
+          "team.html",
+          "events.html",
+          "event.html",
+          "contact.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/hero.avif",
+        "format": "avif",
+        "poidsKo": 86,
+        "largeur": 1080,
+        "hauteur": 1350,
+        "alt": "Affiche de la Brand Day sur fond jaune",
+        "loading": "eager",
+        "pages": [
+          "index.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/IMG_2041.webp",
+        "format": "webp",
+        "poidsKo": 64,
+        "largeur": 800,
+        "hauteur": 600,
+        "alt": "IMG_2041.webp",
+        "loading": "lazy",
+        "pages": [
+          "index.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/brand-lab.webp",
+        "format": "webp",
+        "poidsKo": 118,
+        "largeur": 900,
+        "hauteur": 1200,
+        "alt": "Affiche Brand Lab sur fond jaune",
+        "loading": "lazy",
+        "pages": [
+          "works.html",
+          "work.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/studio.webp",
+        "format": "webp",
+        "poidsKo": 97,
+        "largeur": 900,
+        "hauteur": 600,
+        "alt": "Le studio, vu depuis l'entrée",
+        "loading": "lazy",
+        "pages": [
+          "about.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/clara.webp",
+        "format": "webp",
+        "poidsKo": 41,
+        "largeur": 320,
+        "hauteur": 320,
+        "alt": "Clara, directrice artistique",
+        "loading": "lazy",
+        "pages": [
+          "team.html"
+        ]
+      },
+      {
+        "fichier": "assets/img/brand-day.webp",
+        "format": "webp",
+        "poidsKo": 132,
+        "largeur": 1200,
+        "hauteur": 800,
+        "alt": "Public de la Brand Day 2026",
+        "loading": "lazy",
+        "pages": [
+          "events.html",
+          "event.html"
+        ]
+      },
+      {
+        "fichier": "assets/svg/instagram.svg",
+        "format": "svg",
+        "poidsKo": 2,
+        "largeur": 24,
+        "hauteur": 24,
+        "alt": "Instagram",
+        "loading": "eager",
+        "pages": [
+          "index.html",
+          "works.html",
+          "work.html",
+          "about.html",
+          "team.html",
+          "events.html",
+          "event.html",
+          "contact.html"
+        ]
+      }
+    ],
+    "poidsAccueilKo": null,
+    "polices": [
+      {
+        "fichier": "assets/fonts/space-grotesk-700.woff2",
+        "famille": "Space Grotesk",
+        "graisse": "700",
+        "format": "woff2",
+        "poidsKo": 22,
+        "prechargee": true
+      },
+      {
+        "fichier": "assets/fonts/inter-400.woff2",
+        "famille": "Inter",
+        "graisse": "400",
+        "format": "woff2",
+        "poidsKo": 24,
+        "prechargee": false
+      },
+      {
+        "fichier": "assets/fonts/inter-700.woff2",
+        "famille": "Inter",
+        "graisse": "700",
+        "format": "woff2",
+        "poidsKo": 25,
+        "prechargee": false
+      },
+      {
+        "fichier": "assets/fonts/inter-300.woff2",
+        "famille": "Inter",
+        "graisse": "300",
+        "format": "woff2",
+        "poidsKo": 24,
+        "prechargee": false
+      },
+      {
+        "fichier": "assets/fonts/inter-500.woff2",
+        "famille": "Inter",
+        "graisse": "500",
+        "format": "woff2",
+        "poidsKo": 24,
+        "prechargee": false
+      },
+      {
+        "fichier": "assets/fonts/inter-600.woff2",
+        "famille": "Inter",
+        "graisse": "600",
+        "format": "woff2",
+        "poidsKo": 24,
+        "prechargee": false
+      }
+    ],
+    "arborescence": [
+      {
+        "chemin": "README.md",
+        "problemes": []
+      },
+      {
+        "chemin": "NOTES.md",
+        "problemes": []
+      },
+      {
+        "chemin": "index.html",
+        "problemes": []
+      },
+      {
+        "chemin": "works.html",
+        "problemes": []
+      },
+      {
+        "chemin": "work.html",
+        "problemes": []
+      },
+      {
+        "chemin": "about.html",
+        "problemes": []
+      },
+      {
+        "chemin": "team.html",
+        "problemes": []
+      },
+      {
+        "chemin": "events.html",
+        "problemes": []
+      },
+      {
+        "chemin": "event.html",
+        "problemes": []
+      },
+      {
+        "chemin": "contact.html",
+        "problemes": []
+      },
+      {
+        "chemin": "css/style.css",
+        "problemes": []
+      },
+      {
+        "chemin": "js/menu.js",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/svg/logo.svg",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/hero.avif",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/IMG_2041.webp",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/brand-lab.webp",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/studio.webp",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/clara.webp",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/brand-day.webp",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/svg/instagram.svg",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/space-grotesk-700.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/inter-400.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/inter-700.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/inter-300.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/inter-500.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/fonts/inter-600.woff2",
+        "problemes": []
+      },
+      {
+        "chemin": "assets/img/Photo Équipe.JPG",
+        "problemes": [
+          "majuscule",
+          "espace",
+          "accent"
+        ]
+      },
+      {
+        "chemin": "Contact.html",
+        "problemes": [
+          "majuscule"
+        ]
+      }
+    ]
+  },
   "alertes": [
     {
       "type": "site-inaccessible",

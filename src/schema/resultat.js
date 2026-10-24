@@ -70,6 +70,70 @@ export const critereSchema = z
 
 const pointsAxeSchema = z.object({ obtenus: z.number(), max: z.number() });
 
+/** Les contrôles vérifiés page par page (colonnes de la matrice) */
+export const CONTROLES_PAGE = [
+  "lang",
+  "titleUnique",
+  "descriptionUnique",
+  "reperes",
+  "h1Unique",
+  "titresSansSaut",
+  "menuPopover",
+  "ariaCurrent",
+  "w3c",
+  "lighthouseA11y",
+];
+
+/** Une cellule de la matrice : un verdict, une valeur courte et le détail au survol */
+const celluleSchema = z.object({
+  verdict: z.enum(["respecte", "non-respecte", "partiel", "non-mesurable"]),
+  valeur: z.string().optional(),
+  detail: z.string().optional(),
+});
+
+export const pageSchema = z.object({
+  fichier: z.string().min(1),
+  titre: z.string().nullable(),
+  controles: z.object(Object.fromEntries(CONTROLES_PAGE.map((c) => [c, celluleSchema]))),
+});
+
+export const ressourcesSchema = z.object({
+  images: z.array(
+    z.object({
+      fichier: z.string(),
+      // Vignette copiée par l'analyse locale, relative au site ; absente sinon
+      vignette: z.string().nullable().optional(),
+      format: z.string(),
+      poidsKo: z.number().min(0),
+      largeur: z.number().int().positive().nullable(),
+      hauteur: z.number().int().positive().nullable(),
+      // null : attribut absent ; "" : image décorative
+      alt: z.string().nullable(),
+      loading: z.enum(["lazy", "eager"]).nullable(),
+      pages: z.array(z.string()),
+    })
+  ),
+  // Poids transféré de la page d'accueil (navigateur) ; null si non mesuré
+  poidsAccueilKo: z.number().min(0).nullable(),
+  polices: z.array(
+    z.object({
+      fichier: z.string(),
+      famille: z.string(),
+      graisse: z.string(),
+      format: z.string(),
+      poidsKo: z.number().min(0),
+      prechargee: z.boolean(),
+    })
+  ),
+  // Fichiers du dépôt ; un nom fautif porte ses problèmes
+  arborescence: z.array(
+    z.object({
+      chemin: z.string(),
+      problemes: z.array(z.enum(["majuscule", "espace", "accent", "caractere"])),
+    })
+  ),
+});
+
 export const resultatSchema = z.object({
   version: z.literal(2),
   source: z.object({
@@ -110,9 +174,10 @@ export const resultatSchema = z.object({
     })
   ),
   nonMesurable: z.array(z.object({ etape: z.string(), raison: z.string() })),
-  // Précisés avec la vue par page, les ressources et la timeline
-  pages: z.array(z.looseObject({ fichier: z.string() })).optional(),
-  ressources: z.looseObject({}).optional(),
+  // Vue par page : absente si l'inventaire des pages a échoué
+  pages: z.array(pageSchema).optional(),
+  ressources: ressourcesSchema.optional(),
+  // Précisé avec la timeline (lot 3)
   historique: z.looseObject({}).optional(),
 });
 

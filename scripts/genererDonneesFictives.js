@@ -194,6 +194,137 @@ const pointsMax = Object.fromEntries(
   })
 );
 
+// --- Vue par page : chaque contrôle suit le verdict de son critère ---
+
+const PAGES = [
+  ["index.html", "BBrands Agency — Accueil"],
+  ["works.html", "Nos réalisations"],
+  ["work.html", "Brand Lab"],
+  ["about.html", "À propos"],
+  ["team.html", "L'équipe"],
+  ["events.html", "Événements"],
+  ["event.html", "Brand Day 2027"],
+  ["contact.html", "Contact"],
+];
+
+// Contrôle → [critère, pages en échec (null : toutes), détail de l'échec, détail du succès]
+const CONTROLES = {
+  lang: ["A1", ["about.html", "team.html"], "lang absent sur <html>", "lang=\"fr\""],
+  titleUnique: ["A2", ["work.html", "event.html"], "même title que la page d'accueil", "title propre à la page"],
+  descriptionUnique: ["A2", ["work.html", "event.html"], "meta description en double", "description propre à la page"],
+  reperes: ["A3", ["contact.html", "team.html"], "main absent ; nav sans aria-label", "header, nav, main, footer"],
+  h1Unique: ["A4", ["works.html"], "2 h1", "1 h1"],
+  titresSansSaut: ["A4", ["works.html"], "h2 → h4", "aucun niveau sauté"],
+  menuPopover: ["E1", null, "menu ouvert par js/menu.js", "popover et popovertarget"],
+  ariaCurrent: ["E2", ["about.html", "events.html"], "aucun lien aria-current", "aria-current=\"page\""],
+};
+
+const genererPages = (criteres, profil) => {
+  const verdictDe = (id) => criteres.find((c) => c.id === id);
+  return PAGES.map(([fichier, titre], numero) => {
+    const controles = {};
+    for (const [cle, [id, enEchec, detailEchec, detailSucces]] of Object.entries(CONTROLES)) {
+      const c = verdictDe(id);
+      if (c.verdict === "non-mesurable") {
+        controles[cle] = { verdict: "non-mesurable", detail: c.raison };
+      } else if (["non-respecte", "partiel"].includes(c.verdict) && (enEchec === null || enEchec.includes(fichier))) {
+        controles[cle] = { verdict: "non-respecte", detail: detailEchec };
+      } else {
+        controles[cle] = { verdict: "respecte", detail: detailSucces };
+      }
+    }
+    // Validation W3C : des erreurs sur deux pages quand M1 n'est pas respecté
+    const m1 = verdictDe("M1");
+    const erreurs = ["non-respecte", "partiel"].includes(m1.verdict)
+      ? { "contact.html": 3, "works.html": 2 }[fichier] ?? 0
+      : 0;
+    controles.w3c = {
+      verdict: erreurs ? "non-respecte" : "respecte",
+      valeur: String(erreurs),
+      detail: erreurs ? `${erreurs} erreurs de validation` : "aucune erreur",
+    };
+    // Lighthouse Accessibilité, page par page
+    const a13 = verdictDe("A13");
+    if (a13.verdict === "non-mesurable") {
+      controles.lighthouseA11y = { verdict: "non-mesurable", detail: a13.raison };
+    } else {
+      const score = [100, 96, 98, 100, 92, 97, 100, profil.echecs.includes("A12") ? 89 : 95][numero];
+      controles.lighthouseA11y = {
+        verdict: score >= 95 ? "respecte" : "non-respecte",
+        valeur: String(score),
+        detail: score >= 95 ? `score ${score}` : `score ${score}, objectif 95`,
+      };
+    }
+    return { fichier, titre, controles };
+  });
+};
+
+// --- Ressources : images, polices, arborescence ---
+
+const genererRessources = (criteres, profil) => {
+  const verdict = (id) => criteres.find((c) => c.id === id).verdict;
+  const echoue = (id) => ["non-respecte", "partiel"].includes(verdict(id));
+
+  const images = [
+    { fichier: "assets/svg/logo.svg", format: "svg", poidsKo: 4, largeur: 120, hauteur: 32, alt: "", loading: "eager", pages: PAGES.map(([f]) => f) },
+    { fichier: "assets/img/hero.avif", format: "avif", poidsKo: 86, largeur: 1080, hauteur: 1350, alt: "Affiche de la Brand Day sur fond jaune", loading: "eager", pages: ["index.html"] },
+    { fichier: "assets/img/IMG_2041.webp", format: "webp", poidsKo: 64, largeur: 800, hauteur: 600, alt: "IMG_2041.webp", loading: "lazy", pages: ["index.html"] },
+    { fichier: "assets/img/brand-lab.webp", format: "webp", poidsKo: 118, largeur: 900, hauteur: 1200, alt: "Affiche Brand Lab sur fond jaune", loading: "lazy", pages: ["works.html", "work.html"] },
+    { fichier: "assets/img/studio.webp", format: "webp", poidsKo: 97, largeur: 900, hauteur: 600, alt: "Le studio, vu depuis l'entrée", loading: "lazy", pages: ["about.html"] },
+    { fichier: "assets/img/clara.webp", format: "webp", poidsKo: 41, largeur: 320, hauteur: 320, alt: echoue("A5") ? null : "Clara, directrice artistique", loading: "lazy", pages: ["team.html"] },
+    { fichier: "assets/img/brand-day.webp", format: "webp", poidsKo: 132, largeur: 1200, hauteur: 800, alt: "Public de la Brand Day 2026", loading: "lazy", pages: ["events.html", "event.html"] },
+    { fichier: "assets/svg/instagram.svg", format: "svg", poidsKo: 2, largeur: 24, hauteur: 24, alt: "Instagram", loading: "eager", pages: PAGES.map(([f]) => f) },
+  ];
+  if (echoue("E10") || echoue("E12")) {
+    images.push({ fichier: "assets/img/equipe.jpg", format: "jpg", poidsKo: 312, largeur: 2400, hauteur: 1600, alt: "Photo de l'équipe", loading: null, pages: ["team.html"] });
+  }
+  if (echoue("E12")) {
+    images.push({ fichier: "assets/img/carte.png", format: "png", poidsKo: 228, largeur: 1200, hauteur: 900, alt: "Plan d'accès au studio", loading: "lazy", pages: ["contact.html"] });
+  }
+
+  const autoHeberge = !echoue("G4");
+  const polices = autoHeberge
+    ? [
+        { fichier: "assets/fonts/space-grotesk-700.woff2", famille: "Space Grotesk", graisse: "700", format: "woff2", poidsKo: 22, prechargee: !echoue("G6") },
+        { fichier: "assets/fonts/inter-400.woff2", famille: "Inter", graisse: "400", format: "woff2", poidsKo: 24, prechargee: false },
+        { fichier: "assets/fonts/inter-700.woff2", famille: "Inter", graisse: "700", format: "woff2", poidsKo: 25, prechargee: false },
+      ]
+    : [
+        { fichier: "assets/fonts/SpaceGrotesk-Bold.ttf", famille: "Space Grotesk", graisse: "700", format: "ttf", poidsKo: 86, prechargee: false },
+        { fichier: "assets/fonts/Inter-Regular.ttf", famille: "Inter", graisse: "400", format: "ttf", poidsKo: 310, prechargee: false },
+      ];
+  if (echoue("G5")) {
+    for (const graisse of ["300", "500", "600"]) {
+      polices.push({ fichier: `assets/fonts/inter-${graisse}.woff2`, famille: "Inter", graisse, format: "woff2", poidsKo: 24, prechargee: false });
+    }
+  }
+
+  const fichiers = [
+    "README.md",
+    "NOTES.md",
+    ...PAGES.map(([f]) => f),
+    "css/style.css",
+    ...(echoue("M4") || echoue("E1") ? ["js/menu.js"] : []),
+    ...images.map((i) => i.fichier),
+    ...polices.map((p) => p.fichier),
+  ];
+  const arborescence = fichiers.map((chemin) => ({ chemin, problemes: [] }));
+  if (echoue("M8")) {
+    arborescence.push(
+      { chemin: "assets/img/Photo Équipe.JPG", problemes: ["majuscule", "espace", "accent"] },
+      { chemin: "Contact.html", problemes: ["majuscule"] }
+    );
+  }
+
+  const e11 = criteres.find((c) => c.id === "E11");
+  return {
+    images,
+    poidsAccueilKo: e11.verdict === "non-mesurable" ? null : e11.valeur,
+    polices,
+    arborescence,
+  };
+};
+
 const genererResultat = (slug, profil, index) => {
   const criteres = catalogue.criteres.map((modele) => {
     const { id } = modele;
@@ -285,6 +416,8 @@ const genererResultat = (slug, profil, index) => {
       parAxe,
     },
     criteres,
+    pages: genererPages(criteres, profil),
+    ressources: genererRessources(criteres, profil),
     alertes: profil.alertes,
     nonMesurable: [...new Set(Object.values(profil.nonMesurables))].map((raison) => ({
       etape: "Lighthouse et mesures en navigateur",
