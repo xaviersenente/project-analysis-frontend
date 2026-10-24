@@ -21,10 +21,12 @@ const HAUT = 34;
 const HAUTEUR_GRILLE = 260;
 const BAS = HAUT + HAUTEUR_GRILLE;
 
-const jours = h ? graduationsJours(h.commits[0]?.dateCommit ?? h.dateRendu, h.dateRendu) : [];
+const premierCommit = h ? [...h.commits].sort((a: any, b: any) => +new Date(a.dateAuteur) - +new Date(b.dateAuteur))[0] : null;
+const jours = h ? graduationsJours(premierCommit?.dateAuteur ?? h.dateRendu, h.dateRendu) : [];
 const largeurJour = (LARGEUR - GAUCHE - DROITE) / Math.max(jours.length, 1);
 const xJour = (index: number) => GAUCHE + index * largeurJour;
 const xCentre = (dateIso: string) => xJour(indexJour(dateIso, jours)) + largeurJour / 2;
+// La frise suit la date d'auteur : le moment où le travail a été fait
 const y = (dateIso: string) => HAUT + (Math.min(minutesDuJour(dateIso), 1439) / 1440) * HAUTEUR_GRILLE;
 const lignes = (c: any) => c.ajouts + c.suppressions;
 const maxLignes = h ? Math.max(...h.commits.map(lignes), 1) : 1;
@@ -33,8 +35,8 @@ const maxLignes = h ? Math.max(...h.commits.map(lignes), 1) : 1;
 const limite48h = h ? new Date(new Date(h.dateRendu).getTime() - 48 * 3600e3).toISOString() : null;
 const debutZone = limite48h ? xJour(indexJour(limite48h, jours)) + ((minutesDuJour(limite48h) / 1440) * largeurJour) : 0;
 const xRendu = h ? xJour(indexJour(h.dateRendu, jours)) + (minutesDuJour(h.dateRendu) / 1440) * largeurJour : 0;
-// Une étiquette de jour sur deux quand la frise est longue
-const pasEtiquette = jours.length > 20 ? 2 : 1;
+// Seize étiquettes de jour au plus : au-delà, elles se chevaucheraient
+const pasEtiquette = Math.max(1, Math.ceil(jours.length / 16));
 
 const heure = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit" });
 const jourCourt = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "short" });
@@ -112,10 +114,10 @@ const colonnes = [
             viewBox={`0 0 ${LARGEUR} ${BAS + 30}`}
             class="w-full"
             role="img"
-            aria-label={`Frise des commits : ${ind.commits} commits en ${ind.sessions} sessions, du ${jourCourt.format(new Date(h.commits[0].dateCommit))} au rendu du ${jourCourt.format(new Date(h.dateRendu))}. Le détail figure dans le tableau des commits.`}>
+            aria-label={`Frise des commits : ${ind.commits} commits en ${ind.sessions} sessions, du ${jourCourt.format(new Date(premierCommit.dateAuteur))} au rendu du ${jourCourt.format(new Date(h.dateRendu))}. Le détail figure dans le tableau des commits.`}>
             <!-- Zone des 48 dernières heures -->
             <rect x={debutZone} y={HAUT} width={Math.max(xRendu - debutZone, 0)} height={HAUTEUR_GRILLE} class="fill-partiel-fond" />
-            <text x={debutZone + 4} y={HAUT + 12} class="fill-partiel text-[10px] font-semibold">48 dernières heures</text>
+            <text x={xRendu - 4} y={HAUT + 12} text-anchor="end" class="fill-partiel text-[10px] font-semibold">48 dernières heures</text>
 
             <!-- Grille : un jour par colonne, l'heure de 0 h à 24 h -->
             {jours.map((jour, i) => (
@@ -147,14 +149,14 @@ const colonnes = [
             <!-- Commits : la surface du point suit les lignes modifiées -->
             {h.commits.map((c: any) => (
               <circle
-                cx={xCentre(c.dateCommit)}
-                cy={y(c.dateCommit)}
+                cx={xCentre(c.dateAuteur)}
+                cy={y(c.dateAuteur)}
                 r={rayonCommit(lignes(c), maxLignes)}
                 class:list={[c.drapeaux.includes("autre-auteur") ? "fill-partiel" : "fill-accent", "stroke-surface"]}
                 fill-opacity="0.75"
                 stroke-width="1">
                 <title>
-                  {jourCourt.format(new Date(c.dateCommit))} à {heure.format(new Date(c.dateCommit))} · {c.message} · +{c.ajouts} −{c.suppressions}
+                  {jourCourt.format(new Date(c.dateAuteur))} à {heure.format(new Date(c.dateAuteur))} · {c.message} · +{c.ajouts} −{c.suppressions}
                   {c.drapeaux.length > 0 ? ` · ${c.drapeaux.map((d: string) => DRAPEAU[d]).join(", ")}` : ""}
                 </title>
               </circle>
@@ -209,9 +211,9 @@ const colonnes = [
               </thead>
               <tbody class="divide-y divide-bordure">
                 {h.commits.map((c: any) => (
-                  <tr class:list={[new Date(c.dateCommit) > new Date(limite48h!) && "bg-partiel-fond/50"]}>
-                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateCommit}>{jourCourt.format(new Date(c.dateCommit))}</td>
-                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateCommit}>{heure.format(new Date(c.dateCommit))}</td>
+                  <tr class:list={[new Date(c.dateAuteur) > new Date(limite48h!) && "bg-partiel-fond/50"]}>
+                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateAuteur}>{jourCourt.format(new Date(c.dateAuteur))}</td>
+                    <td class="px-2 py-1.5 whitespace-nowrap" data-valeur={c.dateAuteur}>{heure.format(new Date(c.dateAuteur))}</td>
                     <td class="px-2 py-1.5" data-valeur={c.message}>
                       <span class="block">{c.message}</span>
                       <span class="block font-mono text-xs text-texte-doux">{c.sha.slice(0, 7)}</span>
@@ -226,7 +228,7 @@ const colonnes = [
                             <span aria-hidden="true">◐ </span>
                             {DRAPEAU[d]}
                             {d === "autre-auteur" && <span class="font-normal"> : {c.auteur}</span>}
-                            {d === "dates-divergentes" && <span class="font-normal"> : écrit le {jourCourt.format(new Date(c.dateAuteur))}</span>}
+                            {d === "dates-divergentes" && <span class="font-normal"> : commité le {jourCourt.format(new Date(c.dateCommit))}</span>}
                           </li>
                         ))}
                       </ul>

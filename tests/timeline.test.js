@@ -41,6 +41,22 @@ test("colonne du jour et heure dans la journée, à l'heure de Paris", () => {
   assert.equal(minutesDuJour("2027-01-15T08:45:00+01:00"), 8 * 60 + 45);
 });
 
+test("heure d'été : minuit et heure du jour restent justes (+02:00)", () => {
+  const jours = graduationsJours("2026-10-20T18:22:47Z", "2026-10-21T06:51:18Z");
+  assert.deepEqual(jours.map((j) => j.libelle), ["20 oct.", "21 oct."]);
+  // Minuit à Paris le 21 octobre (été) : 22 h UTC la veille
+  assert.equal(new Date(jours[1].date).toISOString(), "2026-10-20T22:00:00.000Z");
+  // 18 h 22 UTC le 20 octobre = 20 h 22 à Paris
+  assert.equal(minutesDuJour("2026-10-20T18:22:47Z"), 20 * 60 + 22 + 47 / 60);
+  assert.equal(indexJour("2026-10-20T22:30:00Z", jours), 1);
+});
+
+test("le passage à l'heure d'hiver (25 octobre 2026) ne décale pas les jours suivants", () => {
+  const jours = graduationsJours("2026-10-24T20:00:00Z", "2026-10-27T10:00:00Z");
+  assert.deepEqual(jours.map((j) => j.libelle), ["24 oct.", "25 oct.", "26 oct.", "27 oct."]);
+  assert.equal(new Date(jours[2].date).toISOString(), "2026-10-25T23:00:00.000Z");
+});
+
 test("durées en heures et minutes", () => {
   assert.equal(duree(45), "45 min");
   assert.equal(duree(90), "1 h 30");

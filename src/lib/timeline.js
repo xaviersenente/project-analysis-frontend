@@ -35,10 +35,17 @@ const libelleJour = new Intl.DateTimeFormat("fr-FR", {
   month: "short",
 });
 
-/** Minuit, heure de Paris, du jour d'une date (décalage d'hiver : le rendu a lieu en janvier) */
+const decalageParis = new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Paris", timeZoneName: "longOffset" });
+
+/** Décalage de Paris à une date donnée : « +01:00 » en hiver, « +02:00 » en été */
+const decalage = (date) => decalageParis.formatToParts(date).find((p) => p.type === "timeZoneName").value.replace("GMT", "") || "+00:00";
+
+/** Minuit, heure de Paris, du jour d'une date (heure d'été comprise) */
 const minuitParis = (date) => {
   const [jour, mois, annee] = jourParis.format(new Date(date)).split("/");
-  return new Date(`${annee}-${mois}-${jour}T00:00:00+01:00`);
+  // Le décalage pris à midi : il vaut pour minuit, sauf la nuit du changement d'heure
+  const midi = new Date(`${annee}-${mois}-${jour}T12:00:00Z`);
+  return new Date(`${annee}-${mois}-${jour}T00:00:00${decalage(midi)}`);
 };
 
 /**
@@ -47,7 +54,8 @@ const minuitParis = (date) => {
  */
 export const graduationsJours = (debut, fin) => {
   const reperes = [];
-  for (let jour = minuitParis(debut); jour.getTime() <= temps(fin); jour = new Date(jour.getTime() + 864e5)) {
+  // Chaque minuit est recalculé : un jour de changement d'heure dure 23 h ou 25 h
+  for (let jour = minuitParis(debut); jour.getTime() <= temps(fin); jour = minuitParis(new Date(jour.getTime() + 36 * 3600e3))) {
     reperes.push({ date: jour.toISOString(), libelle: libelleJour.format(jour) });
   }
   return reperes;
