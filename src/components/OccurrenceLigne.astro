@@ -1,0 +1,21 @@
+---
+/** Une occurrence : position, et extrait avec la partie fautive surlignée (pas seulement en couleur) */
+import { decouperExtrait } from "../lib/criteres.js";
+
+interface Props {
+  occurrence: { fichier: string; ligne: number | null; colonne: number | null; extrait: string; surligne?: [number, number] | null };
+  // « neutre » pour un critère à juger : rien n'est encore jugé fautif
+  ton?: "fautif" | "neutre";
+}
+
+const { occurrence: o, ton = "fautif" } = Astro.props;
+const classeMarque =
+  ton === "fautif" ? "bg-non-respecte-fond text-non-respecte" : "bg-surface text-texte ring-1 ring-bordure";
+const { avant, fautif, apres } = decouperExtrait(o.extrait, o.surligne);
+const position = o.ligne ? `${o.fichier}:${o.ligne}${o.colonne ? `:${o.colonne}` : ""}` : o.fichier;
+---
+
+<li class="grid gap-1 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-3">
+  <span class="font-mono text-xs text-texte-doux break-all">{position}</span>
+  <code class="block overflow-x-auto rounded bg-neutre-fond px-2 py-1 font-mono text-xs whitespace-pre">{avant}{fautif && <mark class={`rounded-sm px-0.5 font-semibold underline decoration-wavy underline-offset-2 ${classeMarque}`}>{fautif}</mark>}{apres}</code>
+</li>

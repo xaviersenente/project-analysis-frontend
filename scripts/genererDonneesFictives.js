@@ -30,10 +30,23 @@ const occ = (fichier, ligne, colonne, extrait, fautif) => {
 
 const OCCURRENCES = {
   G1: [occ("css/style.css", 3, 3, "--jaune: #f5c518;", "--jaune")],
+  // Douze couleurs en dur : de quoi tester le repli au-delà de cinq
   G2: [
-    occ("css/style.css", 142, 3, ".carte { color: #7b7b7b; }", "#7b7b7b"),
-    occ("css/style.css", 188, 3, ".bouton { background: #222; }", "#222"),
-  ],
+    ["carte", "color", "#7b7b7b", 142],
+    ["bouton", "background", "#222", 188],
+    ["entete", "background-color", "#fff", 31],
+    ["nav__lien", "color", "#1a1a1a", 54],
+    ["pied", "background", "#f5c518", 260],
+    ["titre", "color", "#111", 70],
+    ["carte__date", "color", "#999", 151],
+    ["bouton:hover", "background", "#000", 195],
+    ["formulaire", "border-color", "#ccc", 221],
+    ["citation", "border-left-color", "#f5c518", 240],
+    ["legende", "color", "#9a9a9a", 247],
+    ["equipe__nom", "color", "#333", 172],
+  ].map(([classe, propriete, couleur, ligne]) =>
+    occ("css/style.css", ligne, 3, `.${classe} { ${propriete}: ${couleur}; }`, couleur)
+  ),
   G3: [occ("css/style.css", 97, 3, ".entete { padding: 18px 24px; }", "18px 24px")],
   G7: [occ("css/style.css", 61, 3, "h2 { font-size: 22px; line-height: 28px; }", "22px")],
   E1: [occ("js/menu.js", 4, 3, "bouton.addEventListener(\"click\", () => menu.classList.toggle(\"ouvert\"));", "classList.toggle")],
@@ -68,6 +81,22 @@ const OCCURRENCES = {
   M5: [occ("css/style.css", 301, 1, ".ancienne-carte { … }", ".ancienne-carte")],
   M8: [occ("assets/img/Photo Équipe.JPG", null, null, "assets/img/Photo Équipe.JPG", "Photo Équipe.JPG")],
   M12: [occ("README.md", 6, 1, "- URL Figma : ", "URL Figma : ")],
+};
+
+// --- Ce que l'outil relève pour aider à juger les critères manuels ---
+
+const ELEMENTS_A_JUGER = {
+  A6: [
+    occ("index.html", 34, 9, "<img src=\"assets/img/IMG_2041.webp\" alt=\"IMG_2041.webp\">", "alt=\"IMG_2041.webp\""),
+    occ("team.html", 22, 9, "<img src=\"assets/img/equipe.webp\" alt=\"Photo de l'équipe\">", "alt=\"Photo de l'équipe\""),
+    occ("works.html", 18, 11, "<img src=\"assets/img/brand-lab.webp\" alt=\"Affiche Brand Lab sur fond jaune\">", null),
+    occ("index.html", 12, 7, "<img src=\"assets/svg/logo.svg\" alt=\"\">", null),
+  ],
+  A16: [
+    occ("events.html", 27, 11, "<p class=\"evenement__date\">12 mars 2027</p>", "<p class=\"evenement__date\">"),
+    occ("about.html", 40, 7, "<div class=\"chiffre\"><span>12</span> projets</div>", null),
+    occ("team.html", 31, 7, "<figure><img src=\"…\" alt=\"…\"><figcaption>Clara, directrice artistique</figcaption></figure>", null),
+  ],
 };
 
 // --- Profils : quels critères échouent, et comment ---
@@ -149,7 +178,9 @@ const valeurPour = (c, verdict) => {
   const partiel = verdict === "partiel";
   if (c.id === "M7") return null; // fixé à part
   if (operateur === "=") return ok ? nombre : nombre === 100 ? (partiel ? 86 : 71) : partiel ? 1 : 3;
-  if (operateur === "≥" || operateur === ">") return ok ? Math.round(nombre * 1.05 * 10) / 10 : partiel ? Math.round(nombre * 0.9) : Math.round(nombre * 0.6);
+  // Un compte reste entier ; seul un score Lighthouse peut avoir une décimale
+  const arrondi = (v) => (c.seuil.unite === "" ? Math.round(v * 10) / 10 : Math.round(v));
+  if (operateur === "≥" || operateur === ">") return ok ? arrondi(Math.max(nombre * 1.05, nombre + 1)) : partiel ? Math.round(nombre * 0.9) : Math.round(nombre * 0.6);
   return ok ? Math.round(nombre * 0.7) : partiel ? Math.round(nombre * 1.2) : Math.round(nombre * 2);
 };
 
@@ -189,7 +220,11 @@ const genererResultat = (slug, profil, index) => {
     if (id === "E15") valeur = verdict === "non-mesurable" ? null : 82;
 
     const occurrences =
-      verdict === "non-respecte" || verdict === "partiel" ? OCCURRENCES[id] ?? [] : [];
+      verdict === "non-respecte" || verdict === "partiel"
+        ? OCCURRENCES[id] ?? []
+        : verdict === "a-juger"
+          ? ELEMENTS_A_JUGER[id] ?? []
+          : [];
     const { _commentaire, ...reste } = modele;
     return {
       ...reste,
@@ -199,8 +234,7 @@ const genererResultat = (slug, profil, index) => {
       points,
       ...(verdict === "non-mesurable" ? { raison: profil.nonMesurables[id] } : {}),
       occurrences,
-      // Plus d'occurrences que d'extraits fournis, pour tester « Voir les 12 »
-      totalOccurrences: id === "G2" && occurrences.length ? 12 : occurrences.length,
+      totalOccurrences: occurrences.length,
     };
   });
 

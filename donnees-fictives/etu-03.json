@@ -58,7 +58,7 @@
       "piste": "Nommez les couleurs par leur rôle (--surface, --texte, --accent) plutôt que par leur teinte.",
       "sourceCours": "CM 9 · TP 5",
       "verdict": "respecte",
-      "valeur": 4.2,
+      "valeur": 5,
       "points": {
         "obtenus": 4,
         "max": 4
@@ -80,7 +80,7 @@
       "piste": "Remplacez les couleurs écrites en dur par var(--…) en dehors de :root.",
       "sourceCours": "CM 9",
       "verdict": "respecte",
-      "valeur": 94.5,
+      "valeur": 95,
       "points": {
         "obtenus": 4,
         "max": 4
@@ -189,7 +189,7 @@
       "piste": "Passez les tailles de texte en rem et les interlignes sans unité.",
       "sourceCours": "CM 9 · TP 4",
       "verdict": "respecte",
-      "valeur": 94.5,
+      "valeur": 95,
       "points": {
         "obtenus": 3,
         "max": 3
@@ -322,7 +322,7 @@
       "piste": "Agrandissez la zone cliquable avec du padding, pas la police.",
       "sourceCours": "CM 6 · TP 4",
       "verdict": "respecte",
-      "valeur": 46.2,
+      "valeur": 46,
       "points": {
         "obtenus": 3,
         "max": 3
@@ -501,7 +501,7 @@
       "piste": "Convertissez les photos en AVIF ou WebP.",
       "sourceCours": "CM 2 · TP 1",
       "verdict": "respecte",
-      "valeur": 94.5,
+      "valeur": 95,
       "points": {
         "obtenus": 2,
         "max": 2
@@ -676,8 +676,43 @@
       "verdict": "a-juger",
       "valeur": null,
       "points": null,
-      "occurrences": [],
-      "totalOccurrences": 0
+      "occurrences": [
+        {
+          "fichier": "index.html",
+          "ligne": 34,
+          "colonne": 9,
+          "extrait": "<img src=\"assets/img/IMG_2041.webp\" alt=\"IMG_2041.webp\">",
+          "surligne": [
+            36,
+            55
+          ]
+        },
+        {
+          "fichier": "team.html",
+          "ligne": 22,
+          "colonne": 9,
+          "extrait": "<img src=\"assets/img/equipe.webp\" alt=\"Photo de l'équipe\">",
+          "surligne": [
+            34,
+            57
+          ]
+        },
+        {
+          "fichier": "works.html",
+          "ligne": 18,
+          "colonne": 11,
+          "extrait": "<img src=\"assets/img/brand-lab.webp\" alt=\"Affiche Brand Lab sur fond jaune\">",
+          "surligne": null
+        },
+        {
+          "fichier": "index.html",
+          "ligne": 12,
+          "colonne": 7,
+          "extrait": "<img src=\"assets/svg/logo.svg\" alt=\"\">",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 4
     },
     {
       "id": "A7",
@@ -878,8 +913,33 @@
       "verdict": "a-juger",
       "valeur": null,
       "points": null,
-      "occurrences": [],
-      "totalOccurrences": 0
+      "occurrences": [
+        {
+          "fichier": "events.html",
+          "ligne": 27,
+          "colonne": 11,
+          "extrait": "<p class=\"evenement__date\">12 mars 2027</p>",
+          "surligne": [
+            0,
+            27
+          ]
+        },
+        {
+          "fichier": "about.html",
+          "ligne": 40,
+          "colonne": 7,
+          "extrait": "<div class=\"chiffre\"><span>12</span> projets</div>",
+          "surligne": null
+        },
+        {
+          "fichier": "team.html",
+          "ligne": 31,
+          "colonne": 7,
+          "extrait": "<figure><img src=\"…\" alt=\"…\"><figcaption>Clara, directrice artistique</figcaption></figure>",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 3
     },
     {
       "id": "M1",
@@ -934,7 +994,7 @@
       "seuil": {
         "operateur": "=",
         "nombre": 0,
-        "unite": ""
+        "unite": "occurrence"
       },
       "piste": "Visez des classes, et réglez la spécificité sans !important.",
       "sourceCours": "TP 4",
@@ -1016,7 +1076,7 @@
       "piste": "Ordonnez la feuille : Variables, Bases, Blocs, Utilitaires.",
       "sourceCours": "CM 10 · TP 4",
       "verdict": "respecte",
-      "valeur": 3.2,
+      "valeur": 4,
       "points": null,
       "occurrences": [],
       "totalOccurrences": 0
@@ -1101,7 +1161,7 @@
       "piste": "Travaillez et commitez régulièrement, pas la veille du rendu.",
       "sourceCours": "Rendu GitHub",
       "verdict": "respecte",
-      "valeur": 6.3,
+      "valeur": 7,
       "points": {
         "obtenus": 2,
         "max": 2

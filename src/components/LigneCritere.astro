@@ -1,0 +1,144 @@
+---
+/**
+ * Une ligne de critère, dépliable au clic ou au clavier (<details> natif).
+ * Recommandations calmes, jamais en rouge ; bonus valorisé quand il est obtenu, neutre sinon.
+ */
+import Verdict from "./Verdict.astro";
+import IconeMethode from "./IconeMethode.astro";
+import Occurrences from "./Occurrences.astro";
+import { valeurCritere, seuilCritere, nombre, points } from "../lib/format.js";
+
+interface Props {
+  critere: any;
+}
+
+const { critere: c } = Astro.props;
+
+const STATUT: Record<string, { libelle: string; classe: string }> = {
+  C: { libelle: "Contrainte", classe: "text-texte" },
+  R: { libelle: "Recommandation", classe: "text-texte-doux" },
+  I: { libelle: "Information", classe: "text-texte-doux" },
+  B: { libelle: "Bonus", classe: "text-bonus font-semibold" },
+};
+
+const METHODE: Record<string, string> = {
+  auto: "analyse du code",
+  depot: "lecture du dépôt",
+  navigateur: "navigateur automatisé",
+  manuel: "jugement manuel",
+};
+
+const valeurTexte =
+  c.verdict === "non-mesurable"
+    ? null
+    : c.valeur === null && !c.detailValeur
+      ? null
+      : valeurCritere(c);
+const bonusObtenu = c.statut === "B" && c.points?.obtenus > 0;
+const texteRecherche = `${c.id} ${c.libelle}`;
+---
+
+<li
+  id={`critere-${c.id}`}
+  data-critere
+  data-verdict={c.verdict}
+  data-statut={c.statut}
+  data-texte={texteRecherche}
+  class:list={["scroll-mt-20", c.statut === "R" && "bg-page/40"]}>
+  <details class="ligne-critere group">
+    <summary
+      class="grid min-h-11 cursor-pointer list-none grid-cols-[1rem_3rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 px-4 py-2 hover:bg-neutre-fond md:grid-cols-[1rem_3rem_minmax(0,1fr)_7.5rem_8.5rem_12rem_4.5rem_1.25rem]">
+      <svg viewBox="0 0 16 16" class="size-3 text-texte-doux transition-transform group-open:rotate-90" aria-hidden="true"
+        ><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg
+      >
+      <span class="font-mono text-sm font-semibold">{c.id}</span>
+      <span class="min-w-0">{c.libelle}</span>
+      <span class={`hidden text-xs md:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
+      <Verdict verdict={c.verdict} statut={c.statut} />
+      <span class="col-span-2 col-start-3 text-sm md:col-span-1 md:col-start-auto">
+        {
+          c.verdict === "non-mesurable" ? (
+            <span class="text-texte-doux">Non mesurable</span>
+          ) : valeurTexte ? (
+            <>
+              {valeurTexte} <span class="text-texte-doux">· {seuilCritere(c)}</span>
+            </>
+          ) : (
+            <span class="text-texte-doux">{seuilCritere(c)}</span>
+          )
+        }
+      </span>
+      <span class="hidden text-right text-sm md:block">
+        {
+          c.statut === "C" && c.points ? (
+            c.points.obtenus === null ? (
+              <span class="text-texte-doux">— / {nombre(c.points.max)}</span>
+            ) : (
+              <>
+                <span class="font-semibold">{nombre(c.points.obtenus)}</span>
+                <span class="text-texte-doux"> / {nombre(c.points.max)}</span>
+              </>
+            )
+          ) : bonusObtenu ? (
+            <span class="font-semibold text-bonus">+ {nombre(c.points.obtenus)}</span>
+          ) : null
+        }
+      </span>
+      <span class="hidden md:inline-flex"><IconeMethode methode={c.methode} /></span>
+    </summary>
+
+    <div class="space-y-3 border-t border-bordure bg-page px-4 py-3 md:pl-[5.5rem]">
+      <p class="text-sm">
+        <span class="font-semibold">{c.verdict === "a-juger" ? "Ce qu'il faut juger" : "Piste"} :</span>
+        {c.piste}
+      </p>
+      <p class="text-sm text-texte-doux">
+        Vu au {c.sourceCours} · mesure : {METHODE[c.methode]}
+      </p>
+
+      {
+        c.verdict === "non-mesurable" && (
+          <p class="rounded-md border border-bordure bg-surface px-3 py-2 text-sm">
+            <span class="font-semibold">Non mesurable :</span> {c.raison}. Ce critère ne compte pas dans la note.
+          </p>
+        )
+      }
+
+      {
+        c.statut === "B" && (
+          <p class:list={["rounded-md px-3 py-2 text-sm", bonusObtenu ? "bg-bonus-fond text-bonus" : "bg-surface text-texte-doux border border-bordure"]}>
+            {bonusObtenu
+              ? `Bonus obtenu : ${points(c.points.obtenus)} ajoutés à la note (${nombre(c.valeur)} % des classes en BEM).`
+              : `Bonus non obtenu (${nombre(c.valeur)} % des classes en BEM) : il ne retire aucun point.`}
+          </p>
+        )
+      }
+
+      {
+        c.verdict === "a-juger" && (
+          <div class="rounded-md border border-dashed border-bordure bg-surface px-3 py-2 text-sm text-texte-doux">
+            <p class="font-semibold text-texte">Note et commentaire de l'enseignant</p>
+            <p>À saisir avec le mode local, prévu dans une prochaine étape.{c.points && ` Ce critère vaut ${points(c.points.max)}.`}</p>
+          </div>
+        )
+      }
+
+      {
+        c.occurrences.length > 0 && (
+          <Occurrences
+            occurrences={c.occurrences}
+            total={c.totalOccurrences}
+            titre={c.verdict === "a-juger" ? "Éléments relevés pour juger" : "Occurrences"}
+            ton={c.verdict === "a-juger" ? "neutre" : "fautif"}
+          />
+        )
+      }
+    </div>
+  </details>
+</li>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

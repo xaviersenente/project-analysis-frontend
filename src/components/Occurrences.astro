@@ -1,0 +1,43 @@
+---
+/**
+ * Les occurrences d'un critère, au-delà de cinq repliées derrière « Voir les … »
+ */
+import OccurrenceLigne from "./OccurrenceLigne.astro";
+import { OCCURRENCES_VISIBLES } from "../lib/criteres.js";
+
+interface Props {
+  occurrences: Array<{ fichier: string; ligne: number | null; colonne: number | null; extrait: string; surligne?: [number, number] | null }>;
+  total: number;
+  titre: string;
+  ton?: "fautif" | "neutre";
+}
+
+const { occurrences, total, titre, ton = "fautif" } = Astro.props;
+const visibles = occurrences.slice(0, OCCURRENCES_VISIBLES);
+const repliees = occurrences.slice(OCCURRENCES_VISIBLES);
+const nonDetaillees = total - occurrences.length;
+---
+
+<div>
+  <p class="mb-2 text-sm font-semibold">{titre} <span class="font-normal text-texte-doux">({total})</span></p>
+  <ul class="space-y-1.5">
+    {visibles.map((o) => <OccurrenceLigne occurrence={o} ton={ton} />)}
+  </ul>
+  {
+    repliees.length > 0 && (
+      <details class="mt-1.5">
+        <summary class="cursor-pointer text-sm font-semibold text-accent">Voir les {occurrences.length}</summary>
+        <ul class="mt-1.5 space-y-1.5">
+          {repliees.map((o) => <OccurrenceLigne occurrence={o} ton={ton} />)}
+        </ul>
+      </details>
+    )
+  }
+  {
+    nonDetaillees > 0 && (
+      <p class="mt-1.5 text-sm text-texte-doux">
+        Et {nonDetaillees} autre{nonDetaillees > 1 ? "s" : ""}, non détaillée{nonDetaillees > 1 ? "s" : ""}.
+      </p>
+    )
+  }
+</div>

@@ -116,6 +116,106 @@
             22,
             26
           ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 31,
+          "colonne": 3,
+          "extrait": ".entete { background-color: #fff; }",
+          "surligne": [
+            28,
+            32
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 54,
+          "colonne": 3,
+          "extrait": ".nav__lien { color: #1a1a1a; }",
+          "surligne": [
+            20,
+            27
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 260,
+          "colonne": 3,
+          "extrait": ".pied { background: #f5c518; }",
+          "surligne": [
+            20,
+            27
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 70,
+          "colonne": 3,
+          "extrait": ".titre { color: #111; }",
+          "surligne": [
+            16,
+            20
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 151,
+          "colonne": 3,
+          "extrait": ".carte__date { color: #999; }",
+          "surligne": [
+            22,
+            26
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 195,
+          "colonne": 3,
+          "extrait": ".bouton:hover { background: #000; }",
+          "surligne": [
+            28,
+            32
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 221,
+          "colonne": 3,
+          "extrait": ".formulaire { border-color: #ccc; }",
+          "surligne": [
+            28,
+            32
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 240,
+          "colonne": 3,
+          "extrait": ".citation { border-left-color: #f5c518; }",
+          "surligne": [
+            31,
+            38
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 247,
+          "colonne": 3,
+          "extrait": ".legende { color: #9a9a9a; }",
+          "surligne": [
+            18,
+            25
+          ]
+        },
+        {
+          "fichier": "css/style.css",
+          "ligne": 172,
+          "colonne": 3,
+          "extrait": ".equipe__nom { color: #333; }",
+          "surligne": [
+            22,
+            26
+          ]
         }
       ],
       "totalOccurrences": 12
@@ -376,7 +476,7 @@
       "piste": "Agrandissez la zone cliquable avec du padding, pas la police.",
       "sourceCours": "CM 6 · TP 4",
       "verdict": "respecte",
-      "valeur": 46.2,
+      "valeur": 46,
       "points": {
         "obtenus": 3,
         "max": 3
@@ -567,7 +667,7 @@
       "piste": "Ajoutez width et height à chaque image.",
       "sourceCours": "TP 1",
       "verdict": "respecte",
-      "valeur": 94.5,
+      "valeur": 95,
       "points": null,
       "occurrences": [],
       "totalOccurrences": 0
@@ -763,8 +863,43 @@
       "verdict": "a-juger",
       "valeur": null,
       "points": null,
-      "occurrences": [],
-      "totalOccurrences": 0
+      "occurrences": [
+        {
+          "fichier": "index.html",
+          "ligne": 34,
+          "colonne": 9,
+          "extrait": "<img src=\"assets/img/IMG_2041.webp\" alt=\"IMG_2041.webp\">",
+          "surligne": [
+            36,
+            55
+          ]
+        },
+        {
+          "fichier": "team.html",
+          "ligne": 22,
+          "colonne": 9,
+          "extrait": "<img src=\"assets/img/equipe.webp\" alt=\"Photo de l'équipe\">",
+          "surligne": [
+            34,
+            57
+          ]
+        },
+        {
+          "fichier": "works.html",
+          "ligne": 18,
+          "colonne": 11,
+          "extrait": "<img src=\"assets/img/brand-lab.webp\" alt=\"Affiche Brand Lab sur fond jaune\">",
+          "surligne": null
+        },
+        {
+          "fichier": "index.html",
+          "ligne": 12,
+          "colonne": 7,
+          "extrait": "<img src=\"assets/svg/logo.svg\" alt=\"\">",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 4
     },
     {
       "id": "A7",
@@ -987,8 +1122,33 @@
       "verdict": "a-juger",
       "valeur": null,
       "points": null,
-      "occurrences": [],
-      "totalOccurrences": 0
+      "occurrences": [
+        {
+          "fichier": "events.html",
+          "ligne": 27,
+          "colonne": 11,
+          "extrait": "<p class=\"evenement__date\">12 mars 2027</p>",
+          "surligne": [
+            0,
+            27
+          ]
+        },
+        {
+          "fichier": "about.html",
+          "ligne": 40,
+          "colonne": 7,
+          "extrait": "<div class=\"chiffre\"><span>12</span> projets</div>",
+          "surligne": null
+        },
+        {
+          "fichier": "team.html",
+          "ligne": 31,
+          "colonne": 7,
+          "extrait": "<figure><img src=\"…\" alt=\"…\"><figcaption>Clara, directrice artistique</figcaption></figure>",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 3
     },
     {
       "id": "M1",
@@ -1064,7 +1224,7 @@
       "seuil": {
         "operateur": "=",
         "nombre": 0,
-        "unite": ""
+        "unite": "occurrence"
       },
       "piste": "Visez des classes, et réglez la spécificité sans !important.",
       "sourceCours": "TP 4",
