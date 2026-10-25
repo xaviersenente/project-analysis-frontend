@@ -2,7 +2,8 @@
  * Images d'un projet : elles vivent avec les données, hors de Git, et sont publiées sous la page
  * de chaque projet, donc derrière la même règle d'accès que le reste du projet :
  * - les vignettes d'images (<données>/vignettes/<slug>/ → /projet/<slug>/vignettes/) ;
- * - les captures maquette / site de G11 (<données>/captures/<slug>/ → /projet/<slug>/captures/).
+ * - les captures maquette / site de G11 (<données>/captures/<slug>/ → /projet/<slug>/captures/) ;
+ * - les polices du site, pour les montrer dans leur vraie police (<données>/polices/<slug>/ → /projet/<slug>/polices/).
  *
  * En développement, elles sont servies directement depuis le dossier des données ;
  * au build, copiées dans dist/projet/<slug>/<dossier>/.
@@ -12,9 +13,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SLUG = /^[a-z0-9-]+$/;
-const FICHIER = /^[a-z0-9-]+\.(webp|svg)$/;
-const TYPES = { webp: "image/webp", svg: "image/svg+xml" };
-const DOSSIERS = ["vignettes", "captures"];
+const FICHIER = /^[a-z0-9-]+\.(webp|svg|woff2|woff|ttf|otf)$/;
+const TYPES = { webp: "image/webp", svg: "image/svg+xml", woff2: "font/woff2", woff: "font/woff", ttf: "font/ttf", otf: "font/otf" };
+const DOSSIERS = ["vignettes", "captures", "polices"];
+const LIBELLES = { vignettes: "vignette(s)", captures: "capture(s)", polices: "police(s)" };
 
 const dossierDonnees = (dossier) => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives", dossier);
 
@@ -24,7 +26,7 @@ export default function vignettes() {
     hooks: {
       "astro:server:setup": ({ server }) => {
         server.middlewares.use((req, res, next) => {
-          const correspondance = req.url?.match(/^\/projet\/([^/]+)\/(vignettes|captures)\/([^/?#]+)/);
+          const correspondance = req.url?.match(/^\/projet\/([^/]+)\/(vignettes|captures|polices)\/([^/?#]+)/);
           if (!correspondance) return next();
           const [, slug, dossier, fichier] = correspondance;
           const source = path.join(dossierDonnees(dossier), slug, fichier);
@@ -49,7 +51,7 @@ export default function vignettes() {
               total++;
             }
           }
-          logger.info(`${total} ${dossier === "vignettes" ? "vignette(s)" : "capture(s)"} copiée(s)`);
+          logger.info(`${total} ${LIBELLES[dossier]} copiée(s)`);
         }
       },
     },

@@ -3,7 +3,7 @@
  * Graphique : palette par rôle, échelle d'espacement, échelle typographique, polices chargées,
  * et la comparaison avec la maquette Figma (G11)
  */
-import { grouperPalette, estClaire, largeurRelative } from "../lib/blocs.js";
+import { grouperPalette, estClaire, largeurRelative, famillesPolices, cssPolices, nomPolice } from "../lib/blocs.js";
 import { nombre } from "../lib/format.js";
 import BlocMaquette from "./BlocMaquette.astro";
 
@@ -23,7 +23,11 @@ const ROLE: Record<string, string> = {
 const groupes = bloc?.palette ? grouperPalette(bloc.palette) : [];
 const maxEspace = bloc?.espacements ? Math.max(...bloc.espacements.map((e: any) => e.px), 1) : 1;
 const famille = bloc?.typographie?.famille;
-const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : [];
+// Polices de l'étudiant, chargées depuis leur copie publiée avec le projet
+const familles = polices ? famillesPolices(polices) : [];
+const css = polices ? cssPolices(polices) : "";
+const familleCopiee = famille && polices?.some((p: any) => p.famille === famille && p.copie);
+const policeEchelle = familleCopiee ? `"${nomPolice(famille)}", var(--font-sans)` : `"${famille ?? ""}", var(--font-sans)`;
 ---
 
 <div class="grid gap-4 border-b border-bordure p-4 lg:grid-cols-2">
@@ -97,7 +101,7 @@ const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : []
       {
         bloc?.typographie && (
           <span class="font-normal text-texte-doux">
-            · {bloc.typographie.tailles.length} tailles{famille && <>, en {famille} si la police est installée sur ce poste</>}
+            · {bloc.typographie.tailles.length} tailles{famille && (familleCopiee ? <>, en {famille}</> : <>, en {famille} si la police est installée sur ce poste</>)}
           </span>
         )
       }
@@ -113,7 +117,7 @@ const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : []
               <span class="text-xs text-texte-doux">
                 {t.valeur.endsWith("px") ? `${nombre(t.px)} px` : `${t.valeur} · ${nombre(t.px)} px`}
               </span>
-              <span class="truncate leading-tight" style={`font-size: ${t.px}px; font-family: "${famille ?? ""}", var(--font-sans)`} aria-hidden="true">
+              <span class="truncate leading-tight" style={`font-size: ${t.px}px; font-family: ${policeEchelle}`} aria-hidden="true">
                 Le studio BBrands
               </span>
             </li>
@@ -125,21 +129,41 @@ const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : []
 
   {bloc?.maquette && <BlocMaquette maquette={bloc.maquette} />}
 
-  <!-- Polices chargées : le détail est dans Ressources -->
+  <!-- Polices du site : chaque famille dans sa vraie police, une ligne par graisse -->
+  {css && <style is:inline set:html={css} />}
   {
-    polices && (
-      <p class="text-sm lg:col-span-2">
-        <span class="font-semibold">Polices chargées :</span>{" "}
-        {familles.map((f, i) => (
-          <>
-            {i > 0 && ", "}
-            {f} ({polices.filter((p: any) => p.famille === f).map((p: any) => p.graisse).join(", ")})
-          </>
-        ))}
-        {" "}·{" "}
-        {nombre(polices.reduce((s: number, p: any) => s + p.poidsKo, 0))} Ko ·{" "}
-        <a href="#ressources" class="text-accent underline underline-offset-2">détail dans Ressources</a>
-      </p>
+    familles.length > 0 && (
+      <div class="rounded-md border border-bordure p-3 lg:col-span-2">
+        <h3 class="mb-2 text-sm font-semibold">
+          Polices du site
+          <span class="font-normal text-texte-doux">
+            · {familles.length} famille{familles.length > 1 ? "s" : ""}, {nombre(polices!.length)} fichier{polices!.length > 1 ? "s" : ""},{" "}
+            {nombre(polices!.reduce((s: number, p: any) => s + p.poidsKo, 0))} Ko ·{" "}
+            <a href="#ressources" class="text-accent underline underline-offset-2">détail dans Ressources</a>
+          </span>
+        </h3>
+        <div class="space-y-3">
+          {familles.map((f) => (
+            <div>
+              <p class="text-xs font-semibold text-texte-doux">{f.famille}</p>
+              <ul class="mt-1 space-y-1">
+                {f.graisses.map((g: any) => (
+                  <li class="grid grid-cols-[4.5rem_minmax(0,1fr)] items-baseline gap-2">
+                    <span class="font-mono text-xs text-texte-doux">{g.graisse}</span>
+                    {g.copie ? (
+                      <span class="truncate text-2xl leading-tight" style={`font-family: "${f.nom}", var(--font-sans); font-weight: ${g.valeur}`}>
+                        Portez ce vieux whisky au juge blond · 0123 « éàç »
+                      </span>
+                    ) : (
+                      <span class="text-sm text-texte-doux">fichier absent de la version évaluée : pas d'aperçu</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     )
   }
 </div>

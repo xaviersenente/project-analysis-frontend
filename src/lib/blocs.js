@@ -46,3 +46,31 @@ export const estClaire = (valeur) => {
 /** Largeur d'une barre proportionnelle : « 25% » */
 export const largeurRelative = (valeur, max) =>
   max > 0 ? `${Math.round((valeur / max) * 100)}%` : "0%";
+
+/** Nom CSS d'une famille de l'étudiant dans WebScope : préfixé, pour ne jamais croiser nos polices */
+export const nomPolice = (famille) => `WebScope ${famille.replace(/["\\]/g, "")}`;
+
+/** Première graisse d'une valeur font-weight (« 400 », « 100 900 », « bold ») */
+const graisseNumerique = (graisse) => (graisse === "bold" ? 700 : Number.parseInt(graisse, 10) || 400);
+
+/**
+ * Les polices du site, par famille, chaque graisse avec sa copie publiée
+ * @param {Array<{ famille: string, graisse: string, fichier: string, copie?: string|null }>} polices
+ * @returns {Array<{ famille: string, nom: string, graisses: Array<object> }>}
+ */
+export const famillesPolices = (polices) => {
+  const familles = new Map();
+  for (const p of polices.filter((x) => x.famille !== "inconnue")) {
+    if (!familles.has(p.famille)) familles.set(p.famille, { famille: p.famille, nom: nomPolice(p.famille), graisses: [] });
+    familles.get(p.famille).graisses.push({ graisse: p.graisse, valeur: graisseNumerique(p.graisse), fichier: p.fichier, copie: p.copie ?? null });
+  }
+  for (const f of familles.values()) f.graisses.sort((a, b) => a.valeur - b.valeur);
+  return [...familles.values()];
+};
+
+/** Les @font-face qui chargent les copies des polices de l'étudiant dans la page du projet */
+export const cssPolices = (polices) =>
+  polices
+    .filter((p) => p.copie && p.famille !== "inconnue")
+    .map((p) => `@font-face { font-family: "${nomPolice(p.famille)}"; src: url("${encodeURI(p.copie)}"); font-weight: ${/^\d+( \d+)?$/.test(p.graisse) ? p.graisse : graisseNumerique(p.graisse)}; font-display: swap; }`)
+    .join("\n");

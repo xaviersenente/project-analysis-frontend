@@ -4,7 +4,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { grouperPalette, estClaire, largeurRelative, resoudreCouleur } from "../src/lib/blocs.js";
+import { grouperPalette, estClaire, largeurRelative, resoudreCouleur, famillesPolices, cssPolices } from "../src/lib/blocs.js";
 import { rapport } from "../src/lib/format.js";
 
 test("palette regroupée par rôle, dans l'ordre surface, texte, accent, bordure, autre", () => {
@@ -63,4 +63,22 @@ test("variables de variables : la couleur est retrouvée en suivant la chaîne",
   // Chaque entrée groupée porte sa couleur résolue
   const [surface] = grouperPalette(palette).filter((g) => g.role === "surface");
   assert.deepEqual(surface.couleurs.map((c) => c.couleur), ["#fff", "#fff"]);
+});
+
+test("polices : regroupées par famille, graisses dans l'ordre, chargées depuis leur copie", () => {
+  const polices = [
+    { fichier: "fonts/inter-600.woff2", famille: "Inter", graisse: "600", copie: "polices/b.woff2" },
+    { fichier: "fonts/playfair.woff2", famille: "Playfair Display", graisse: "700", copie: "polices/c.woff2" },
+    { fichier: "fonts/inter-200.woff2", famille: "Inter", graisse: "200", copie: "polices/a.woff2" },
+    { fichier: "fonts/variable.woff2", famille: "Variable", graisse: "100 900", copie: null },
+    { fichier: "fonts/orpheline.woff2", famille: "inconnue", graisse: "400", copie: "polices/d.woff2" },
+  ];
+  const familles = famillesPolices(polices);
+  assert.deepEqual(familles.map((f) => f.famille), ["Inter", "Playfair Display", "Variable"]);
+  assert.deepEqual(familles[0].graisses.map((g) => g.graisse), ["200", "600"]);
+  assert.equal(familles[0].nom, "WebScope Inter");
+  const css = cssPolices(polices);
+  assert.match(css, /font-family: "WebScope Inter"; src: url\("polices\/a\.woff2"\); font-weight: 200;/);
+  assert.equal(css.split("@font-face").length - 1, 3);
+  assert.doesNotMatch(css, /Variable|inconnue/);
 });
