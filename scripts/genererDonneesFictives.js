@@ -50,6 +50,13 @@ const OCCURRENCES = {
   ),
   G3: [occ("css/style.css", 97, 3, ".entete { padding: 18px 24px; }", "18px 24px")],
   G7: [occ("css/style.css", 61, 3, "h2 { font-size: 22px; line-height: 28px; }", "22px")],
+  G11: [
+    occ("index.html", 41, 9, "<h2 class=\"section__titre\">  ← « Upcoming events » : taille 36 px → 28 px, graisse 600 → 700", "taille 36 px → 28 px"),
+    occ("index.html", 58, 11, "<p class=\"carte__date\">  ← « 23 FEB » : police Inter → Arial", "police Inter → Arial"),
+    occ("index.html", null, null, "« Growing all around the globe. »  ← absent de la page (écran « Home Mobile »)", "absent de la page"),
+    occ("team.html", 72, 11, "<p class=\"membre__poste\">  ← « UX Designer @Google » : couleur #000000 → #d4145a", "couleur #000000 → #d4145a"),
+    occ("css/style.css", 12, 3, "<a class=\"bouton\">  ← #d4145a absente de la maquette", "#d4145a"),
+  ],
   E1: [occ("js/menu.js", 4, 3, "bouton.addEventListener(\"click\", () => menu.classList.toggle(\"ouvert\"));", "classList.toggle")],
   E2: [occ("about.html", 14, 9, "<a href=\"about.html\" class=\"nav__lien\">À propos</a>", "<a href=\"about.html\"")],
   E4: [occ("index.html", 22, 7, "<a class=\"pied__icone\" href=\"…\">", "pied__icone")],
@@ -106,7 +113,7 @@ const PROFILS = {
   "etu-01": {
     nom: "Lemoine Clara",
     groupe: "TP B2",
-    echecs: ["G2", "G3", "E2", "E7", "E10", "A3", "A5", "A10", "A12", "M1", "M3", "M4", "M5"],
+    echecs: ["G2", "G3", "G11", "E2", "E7", "E10", "A3", "A5", "A10", "A12", "M1", "M3", "M4", "M5"],
     partiels: ["G7", "A4", "E12"],
     recommandations: ["G6", "G9", "E6", "E13", "A9", "M11"],
     nonMesurables: {},
@@ -132,6 +139,7 @@ const PROFILS = {
       E11: "Lighthouse a dépassé le délai (90 s)",
       E15: "Lighthouse a dépassé le délai (90 s)",
       M9: "Lighthouse a dépassé le délai (90 s)",
+      G11: "Pas de lien vers la maquette Figma (fichier de promo ou README)",
     },
     bem: 38,
     alertes: [
@@ -439,13 +447,54 @@ const genererBlocs = (criteres, profil) => {
   };
 
   return {
-    graphique: { palette, espacements, typographie: { famille: "Space Grotesk", tailles } },
+    graphique: { palette, espacements, typographie: { famille: "Space Grotesk", tailles }, maquette: genererMaquette(critere("G11")) },
     accessibilite: {
       lighthouse,
       ...(critere("A12").verdict === "non-mesurable" ? {} : { contrastes }),
       contenusAttendus,
     },
     methodologie: { javascript, classesInutilisees, bem },
+  };
+};
+
+// --- Maquette Figma (G11) : un écran par page, et l'écran du menu ouvert sans page ---
+
+const ECRANS = {
+  "index.html": "Home Mobile",
+  "works.html": "Works Mobile",
+  "work.html": "Works Single Mobile",
+  "about.html": "About Mobile",
+  "team.html": "Team Mobile",
+  "events.html": "Event List Mobile",
+  "event.html": "Event Single Mobile",
+  "contact.html": "Contact Mobile",
+};
+
+const genererMaquette = (g11) => {
+  if (g11.verdict === "non-mesurable") return undefined;
+  const fidele = g11.verdict === "respecte";
+  const nomCapture = (fichier, cote) => `captures/${createHash("sha1").update(fichier).digest("hex").slice(0, 12)}-${cote}.svg`;
+  return {
+    url: "https://www.figma.com/design/exemple",
+    version: { id: "2412836743985412581", date: "2027-01-06T16:42:00Z" },
+    ecrans: [
+      ...PAGES.map(([fichier], i) => {
+        const total = 18 + ((i * 7) % 23);
+        const absents = Math.round(total * (fidele ? 0.1 : 0.25));
+        const ecarts = Math.round((total - absents) * (fidele ? 0.08 : 0.35));
+        const justifies = fidele && i % 3 === 0 ? 2 : 0;
+        return {
+          nom: ECRANS[fichier],
+          fichier,
+          largeur: 393,
+          textes: { total, conformes: total - absents - ecarts, justifies, ecarts, absents },
+          captures: { maquette: nomCapture(fichier, "maquette"), site: nomCapture(fichier, "site") },
+        };
+      }),
+      { nom: "Hamburger Mobile", fichier: null, largeur: null, textes: null, captures: { maquette: null, site: null } },
+    ],
+    pagesSansEcran: [],
+    couleursHorsMaquette: fidele ? [] : ["#d4145a", "#3a3a3a", "#f0f0f0"],
   };
 };
 
@@ -727,9 +776,39 @@ const ecrireVignettes = (slug, resultat) => {
   });
 };
 
+// --- Captures fictives de G11 : un écran schématique, le site légèrement décalé s'il s'écarte ---
+
+const ecrireCaptures = (slug, resultat) => {
+  const dossierCaptures = path.join(dossier, "captures", slug);
+  fs.rmSync(dossierCaptures, { recursive: true, force: true });
+  const maquette = resultat.blocs.graphique.maquette;
+  if (!maquette) return;
+  fs.mkdirSync(dossierCaptures, { recursive: true });
+  const fidele = maquette.couleursHorsMaquette.length === 0;
+  for (const ecran of maquette.ecrans.filter((e) => e.fichier)) {
+    for (const cote of ["maquette", "site"]) {
+      const ecart = cote === "site" && !fidele;
+      const accent = ecart ? "#d4145a" : "#1a1a1a";
+      fs.writeFileSync(
+        path.join(dossier, path.dirname(ecran.captures[cote]), slug, path.basename(ecran.captures[cote])),
+        `<svg xmlns="http://www.w3.org/2000/svg" width="393" height="900" viewBox="0 0 393 900">` +
+          `<rect width="393" height="900" fill="#fffdf7"/>` +
+          `<rect width="393" height="64" fill="${accent}"/>` +
+          `<rect x="24" y="${ecart ? 104 : 96}" width="${ecart ? 300 : 260}" height="${ecart ? 28 : 36}" rx="4" fill="#1a1a1a"/>` +
+          `<rect x="24" y="160" width="345" height="220" rx="8" fill="#f5c518"/>` +
+          [0, 1, 2, 3, 4].map((l) => `<rect x="24" y="${410 + l * 24}" width="${345 - (l % 2) * 80}" height="10" rx="5" fill="#5c5c5c"/>`).join("") +
+          `<rect x="24" y="560" width="160" height="48" rx="24" fill="${accent}"/>` +
+          `<text x="24" y="860" font-family="monospace" font-size="14" fill="#5c5c5c">${ecran.nom} · ${cote}</text>` +
+          `</svg>\n`
+      );
+    }
+  }
+};
+
 Object.entries(PROFILS).forEach(([slug, profil], index) => {
   const resultat = genererResultat(slug, profil, index);
   ecrireVignettes(slug, resultat);
+  ecrireCaptures(slug, resultat);
   // Le critère M10 porte le nombre de sessions de la timeline
   resultat.criteres.find((c) => c.id === "M10").valeur = resultat.historique.indicateurs.sessions;
   fs.writeFileSync(path.join(dossier, `${slug}.json`), JSON.stringify(resultat, null, 2) + "\n");

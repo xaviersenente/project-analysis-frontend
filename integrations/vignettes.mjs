@@ -1,10 +1,11 @@
 /**
- * Vignettes d'images : elles vivent avec les données (<données>/vignettes/<slug>/),
- * hors de Git, et sont publiées sous la page de chaque projet (/projet/<slug>/vignettes/),
- * donc derrière la même règle d'accès que le reste du projet.
+ * Images d'un projet : elles vivent avec les données, hors de Git, et sont publiées sous la page
+ * de chaque projet, donc derrière la même règle d'accès que le reste du projet :
+ * - les vignettes d'images (<données>/vignettes/<slug>/ → /projet/<slug>/vignettes/) ;
+ * - les captures maquette / site de G11 (<données>/captures/<slug>/ → /projet/<slug>/captures/).
  *
- * - en développement : servies directement depuis le dossier des données ;
- * - au build : copiées dans dist/projet/<slug>/vignettes/.
+ * En développement, elles sont servies directement depuis le dossier des données ;
+ * au build, copiées dans dist/projet/<slug>/<dossier>/.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -13,9 +14,9 @@ import { fileURLToPath } from "node:url";
 const SLUG = /^[a-z0-9-]+$/;
 const FICHIER = /^[a-z0-9-]+\.(webp|svg)$/;
 const TYPES = { webp: "image/webp", svg: "image/svg+xml" };
+const DOSSIERS = ["vignettes", "captures"];
 
-const dossierVignettes = () =>
-  path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives", "vignettes");
+const dossierDonnees = (dossier) => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives", dossier);
 
 export default function vignettes() {
   return {
@@ -23,10 +24,10 @@ export default function vignettes() {
     hooks: {
       "astro:server:setup": ({ server }) => {
         server.middlewares.use((req, res, next) => {
-          const correspondance = req.url?.match(/^\/projet\/([^/]+)\/vignettes\/([^/?#]+)/);
+          const correspondance = req.url?.match(/^\/projet\/([^/]+)\/(vignettes|captures)\/([^/?#]+)/);
           if (!correspondance) return next();
-          const [, slug, fichier] = correspondance;
-          const source = path.join(dossierVignettes(), slug, fichier);
+          const [, slug, dossier, fichier] = correspondance;
+          const source = path.join(dossierDonnees(dossier), slug, fichier);
           if (!SLUG.test(slug) || !FICHIER.test(fichier) || !fs.existsSync(source)) return next();
           res.setHeader("Content-Type", TYPES[fichier.split(".").pop()]);
           fs.createReadStream(source).pipe(res);
@@ -34,20 +35,22 @@ export default function vignettes() {
       },
 
       "astro:build:done": ({ dir, logger }) => {
-        const racine = dossierVignettes();
-        if (!fs.existsSync(racine)) return;
-        let total = 0;
-        for (const slug of fs.readdirSync(racine).filter((s) => SLUG.test(s))) {
-          const cible = path.join(fileURLToPath(dir), "projet", slug, "vignettes");
-          // Seulement pour un projet dont la page existe
-          if (!fs.existsSync(path.dirname(cible))) continue;
-          fs.mkdirSync(cible, { recursive: true });
-          for (const fichier of fs.readdirSync(path.join(racine, slug)).filter((f) => FICHIER.test(f))) {
-            fs.copyFileSync(path.join(racine, slug, fichier), path.join(cible, fichier));
-            total++;
+        for (const dossier of DOSSIERS) {
+          const racine = dossierDonnees(dossier);
+          if (!fs.existsSync(racine)) continue;
+          let total = 0;
+          for (const slug of fs.readdirSync(racine).filter((s) => SLUG.test(s))) {
+            const cible = path.join(fileURLToPath(dir), "projet", slug, dossier);
+            // Seulement pour un projet dont la page existe
+            if (!fs.existsSync(path.dirname(cible))) continue;
+            fs.mkdirSync(cible, { recursive: true });
+            for (const fichier of fs.readdirSync(path.join(racine, slug)).filter((f) => FICHIER.test(f))) {
+              fs.copyFileSync(path.join(racine, slug, fichier), path.join(cible, fichier));
+              total++;
+            }
           }
+          logger.info(`${total} ${dossier === "vignettes" ? "vignette(s)" : "capture(s)"} copiée(s)`);
         }
-        logger.info(`${total} vignette(s) copiée(s)`);
       },
     },
   };

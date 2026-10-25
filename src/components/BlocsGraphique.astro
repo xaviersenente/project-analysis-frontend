@@ -1,9 +1,11 @@
 ---
 /**
- * Graphique : palette par rôle, échelle d'espacement, échelle typographique, polices chargées
+ * Graphique : palette par rôle, échelle d'espacement, échelle typographique, polices chargées,
+ * et la comparaison avec la maquette Figma (G11)
  */
 import { grouperPalette, estClaire, largeurRelative } from "../lib/blocs.js";
 import { nombre } from "../lib/format.js";
+import BlocMaquette from "./BlocMaquette.astro";
 
 interface Props {
   bloc: any | undefined;
@@ -113,6 +115,8 @@ const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : []
       )
     }
   </div>
+
+  {bloc?.maquette && <BlocMaquette maquette={bloc.maquette} />}
 
   <!-- Polices chargées : le détail est dans Ressources -->
   {

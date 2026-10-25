@@ -1,0 +1,118 @@
+---
+/**
+ * G11 : chaque écran de la maquette Figma face à la page du site, à la même largeur.
+ * Un écran par ligne dépliable ; les deux captures défilent ensemble.
+ */
+import { date, nombre } from "../lib/format.js";
+import { estClaire } from "../lib/blocs.js";
+
+interface Props {
+  maquette: any;
+}
+
+const { maquette } = Astro.props;
+const avecPage = maquette.ecrans.filter((e: any) => e.fichier);
+const sansPage = maquette.ecrans.filter((e: any) => !e.fichier);
+const part = (e: any) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.textes.conformes / (e.textes.total - e.textes.absents) : null);
+---
+
+<div class="rounded-md border border-bordure p-3 lg:col-span-2">
+  <h3 class="mb-1 text-sm font-semibold">
+    Maquette Figma et site{" "}
+    <span class="font-normal text-texte-doux">
+      · version du {date(maquette.version.date)}{" "}
+      {maquette.url && <>· <a href={maquette.url} class="text-accent underline underline-offset-2">ouvrir dans Figma</a></>}
+    </span>
+  </h3>
+  <p class="mb-3 text-xs text-texte-doux">
+    Chaque écran est comparé à sa page affichée à la même largeur. Les captures défilent ensemble.
+  </p>
+
+  <ul class="divide-y divide-bordure rounded border border-bordure">
+    {
+      avecPage.map((e: any) => (
+        <li>
+          <details class="group">
+            <summary class="grid min-h-11 cursor-pointer list-none grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-3 px-3 py-2 text-sm hover:bg-neutre-fond">
+              <svg viewBox="0 0 16 16" class="size-3 text-texte-doux transition-transform group-open:rotate-90" aria-hidden="true">
+                <path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span class="min-w-0">
+                {e.nom} <span class="text-texte-doux">→</span> <span class="font-mono text-xs">{e.fichier}</span>
+              </span>
+              {e.textes ? (
+                <span class="text-right text-xs">
+                  <span class:list={["font-semibold", part(e) !== null && part(e)! >= 0.8 ? "text-respecte" : "text-non-respecte"]}>
+                    {nombre(e.textes.conformes)} / {nombre(e.textes.total - e.textes.absents)}
+                  </span>
+                  <span class="text-texte-doux"> au style</span>
+                  {e.textes.justifies > 0 && <span class="text-texte-doux"> (dont {nombre(e.textes.justifies)} pour l'accessibilité)</span>}
+                  <span class="text-texte-doux"> · {nombre(e.textes.ecarts)} écart{e.textes.ecarts > 1 ? "s" : ""} · {nombre(e.textes.absents)} absent{e.textes.absents > 1 ? "s" : ""}</span>
+                </span>
+              ) : (
+                <span class="text-xs text-texte-doux">page non relevée</span>
+              )}
+            </summary>
+            <div class="grid grid-cols-2 gap-3 border-t border-bordure bg-page p-3" data-captures>
+              {["maquette", "site"].map((cote) => (
+                <figure class="min-w-0">
+                  <figcaption class="mb-1 text-xs font-semibold text-texte-doux">{cote === "maquette" ? "Maquette" : "Site"}</figcaption>
+                  <div class="max-h-[70vh] overflow-y-auto rounded border border-bordure bg-surface" data-defilement>
+                    {e.captures[cote] ? (
+                      <img src={e.captures[cote]} alt="" loading="lazy" class="block w-full" />
+                    ) : (
+                      <p class="p-3 text-xs text-texte-doux">Pas de capture.</p>
+                    )}
+                  </div>
+                </figure>
+              ))}
+            </div>
+          </details>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    (sansPage.length > 0 || maquette.pagesSansEcran.length > 0) && (
+      <p class="mt-2 text-xs text-texte-doux">
+        {sansPage.length > 0 && <>Écrans sans page : {sansPage.map((e: any) => e.nom).join(", ")}. </>}
+        {maquette.pagesSansEcran.length > 0 && <>Pages sans écran : {maquette.pagesSansEcran.join(", ")}. </>}
+        L'association se corrige dans le fichier de promo (champ <code class="font-mono">ecrans</code>).
+      </p>
+    )
+  }
+
+  {
+    maquette.couleursHorsMaquette.length > 0 && (
+      <div class="mt-3">
+        <p class="text-xs font-semibold text-texte-doux">Couleurs du site absentes de la maquette</p>
+        <ul class="mt-1 flex flex-wrap gap-2">
+          {maquette.couleursHorsMaquette.map((c: string) => (
+            <li class="flex items-center gap-2 rounded border border-bordure py-1 pr-2 pl-1">
+              <span class:list={["size-5 rounded", estClaire(c) && "ring-1 ring-texte-doux/40"]} style={`background: ${c}`} aria-hidden="true" />
+              <span class="font-mono text-xs">{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  // Les deux captures d'un écran défilent ensemble, en proportion de leur hauteur
+  for (const paire of document.querySelectorAll<HTMLElement>("[data-captures]")) {
+    const zones = [...paire.querySelectorAll<HTMLElement>("[data-defilement]")];
+    let source: HTMLElement | null = null;
+    for (const zone of zones) {
+      zone.addEventListener("scroll", () => {
+        if (source && source !== zone) return;
+        source = zone;
+        const ratio = zone.scrollTop / Math.max(zone.scrollHeight - zone.clientHeight, 1);
+        for (const autre of zones) if (autre !== zone) autre.scrollTop = ratio * (autre.scrollHeight - autre.clientHeight);
+        requestAnimationFrame(() => (source = null));
+      });
+    }
+  }
+</script>

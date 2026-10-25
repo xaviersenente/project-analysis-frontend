@@ -19,7 +19,7 @@
   },
   "note": {
     "base": 65,
-    "max": 88,
+    "max": 86,
     "bonus": 0,
     "totale": 65,
     "lettre": "C",
@@ -27,7 +27,7 @@
     "parAxe": {
       "graphique": {
         "obtenus": 11,
-        "max": 20
+        "max": 18
       },
       "ergonomie": {
         "obtenus": 16,
@@ -61,7 +61,7 @@
       "valeur": 2,
       "points": {
         "obtenus": 0,
-        "max": 4
+        "max": 3
       },
       "occurrences": [
         {
@@ -94,7 +94,7 @@
       "valeur": 81,
       "points": {
         "obtenus": 2,
-        "max": 4
+        "max": 3
       },
       "occurrences": [
         {
@@ -369,6 +369,30 @@
         "obtenus": null,
         "max": 3
       },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G11",
+      "axe": "graphique",
+      "libelle": "Fidélité à la maquette Figma",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 80,
+        "unite": "%"
+      },
+      "detailSeuil": "des textes retrouvés au style de la maquette, la moitié retrouvée, 2 couleurs hors maquette au plus",
+      "piste": "Reprenez les polices, tailles, graisses et couleurs de la maquette corrigée après la soutenance.",
+      "sourceCours": "Soutenance maquette · SAÉ 105",
+      "verdict": "non-mesurable",
+      "valeur": null,
+      "points": {
+        "obtenus": null,
+        "max": 2
+      },
+      "raison": "Pas de lien vers la maquette Figma (fichier de promo ou README)",
       "occurrences": [],
       "totalOccurrences": 0
     },
@@ -2657,6 +2681,10 @@
     {
       "etape": "Lighthouse et mesures en navigateur",
       "raison": "Lighthouse a dépassé le délai (90 s)"
+    },
+    {
+      "etape": "Lighthouse et mesures en navigateur",
+      "raison": "Pas de lien vers la maquette Figma (fichier de promo ou README)"
     }
   ]
 }

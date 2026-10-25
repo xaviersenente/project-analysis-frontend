@@ -18,15 +18,15 @@
     "figma": "https://www.figma.com/design/exemple-etu-04"
   },
   "note": {
-    "base": 43,
+    "base": 45,
     "max": 100,
     "bonus": 0,
-    "totale": 43,
+    "totale": 45,
     "lettre": "F",
     "aJuger": 3,
     "parAxe": {
       "graphique": {
-        "obtenus": 5,
+        "obtenus": 7,
         "max": 20
       },
       "ergonomie": {
@@ -61,7 +61,7 @@
       "valeur": 2,
       "points": {
         "obtenus": 0,
-        "max": 4
+        "max": 3
       },
       "occurrences": [
         {
@@ -94,7 +94,7 @@
       "valeur": 54,
       "points": {
         "obtenus": 0,
-        "max": 4
+        "max": 3
       },
       "occurrences": [
         {
@@ -379,6 +379,29 @@
       "points": {
         "obtenus": null,
         "max": 3
+      },
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "G11",
+      "axe": "graphique",
+      "libelle": "Fidélité à la maquette Figma",
+      "statut": "C",
+      "methode": "navigateur",
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 80,
+        "unite": "%"
+      },
+      "detailSeuil": "des textes retrouvés au style de la maquette, la moitié retrouvée, 2 couleurs hors maquette au plus",
+      "piste": "Reprenez les polices, tailles, graisses et couleurs de la maquette corrigée après la soutenance.",
+      "sourceCours": "Soutenance maquette · SAÉ 105",
+      "verdict": "respecte",
+      "valeur": 84,
+      "points": {
+        "obtenus": 2,
+        "max": 2
       },
       "occurrences": [],
       "totalOccurrences": 0
@@ -2281,6 +2304,155 @@
             "px": 36
           }
         ]
+      },
+      "maquette": {
+        "url": "https://www.figma.com/design/exemple",
+        "version": {
+          "id": "2412836743985412581",
+          "date": "2027-01-06T16:42:00Z"
+        },
+        "ecrans": [
+          {
+            "nom": "Home Mobile",
+            "fichier": "index.html",
+            "largeur": 393,
+            "textes": {
+              "total": 18,
+              "conformes": 15,
+              "justifies": 2,
+              "ecarts": 1,
+              "absents": 2
+            },
+            "captures": {
+              "maquette": "captures/f6013a00b362-maquette.svg",
+              "site": "captures/f6013a00b362-site.svg"
+            }
+          },
+          {
+            "nom": "Works Mobile",
+            "fichier": "works.html",
+            "largeur": 393,
+            "textes": {
+              "total": 25,
+              "conformes": 20,
+              "justifies": 0,
+              "ecarts": 2,
+              "absents": 3
+            },
+            "captures": {
+              "maquette": "captures/aea5ae28d41c-maquette.svg",
+              "site": "captures/aea5ae28d41c-site.svg"
+            }
+          },
+          {
+            "nom": "Works Single Mobile",
+            "fichier": "work.html",
+            "largeur": 393,
+            "textes": {
+              "total": 32,
+              "conformes": 27,
+              "justifies": 0,
+              "ecarts": 2,
+              "absents": 3
+            },
+            "captures": {
+              "maquette": "captures/ef13a0b95cef-maquette.svg",
+              "site": "captures/ef13a0b95cef-site.svg"
+            }
+          },
+          {
+            "nom": "About Mobile",
+            "fichier": "about.html",
+            "largeur": 393,
+            "textes": {
+              "total": 39,
+              "conformes": 32,
+              "justifies": 2,
+              "ecarts": 3,
+              "absents": 4
+            },
+            "captures": {
+              "maquette": "captures/8143af03f594-maquette.svg",
+              "site": "captures/8143af03f594-site.svg"
+            }
+          },
+          {
+            "nom": "Team Mobile",
+            "fichier": "team.html",
+            "largeur": 393,
+            "textes": {
+              "total": 23,
+              "conformes": 19,
+              "justifies": 0,
+              "ecarts": 2,
+              "absents": 2
+            },
+            "captures": {
+              "maquette": "captures/8ab28fcffa78-maquette.svg",
+              "site": "captures/8ab28fcffa78-site.svg"
+            }
+          },
+          {
+            "nom": "Event List Mobile",
+            "fichier": "events.html",
+            "largeur": 393,
+            "textes": {
+              "total": 30,
+              "conformes": 25,
+              "justifies": 0,
+              "ecarts": 2,
+              "absents": 3
+            },
+            "captures": {
+              "maquette": "captures/d64d227c1068-maquette.svg",
+              "site": "captures/d64d227c1068-site.svg"
+            }
+          },
+          {
+            "nom": "Event Single Mobile",
+            "fichier": "event.html",
+            "largeur": 393,
+            "textes": {
+              "total": 37,
+              "conformes": 30,
+              "justifies": 2,
+              "ecarts": 3,
+              "absents": 4
+            },
+            "captures": {
+              "maquette": "captures/9eb380f1a118-maquette.svg",
+              "site": "captures/9eb380f1a118-site.svg"
+            }
+          },
+          {
+            "nom": "Contact Mobile",
+            "fichier": "contact.html",
+            "largeur": 393,
+            "textes": {
+              "total": 21,
+              "conformes": 17,
+              "justifies": 0,
+              "ecarts": 2,
+              "absents": 2
+            },
+            "captures": {
+              "maquette": "captures/143617604351-maquette.svg",
+              "site": "captures/143617604351-site.svg"
+            }
+          },
+          {
+            "nom": "Hamburger Mobile",
+            "fichier": null,
+            "largeur": null,
+            "textes": null,
+            "captures": {
+              "maquette": null,
+              "site": null
+            }
+          }
+        ],
+        "pagesSansEcran": [],
+        "couleursHorsMaquette": []
       }
     },
     "accessibilite": {
