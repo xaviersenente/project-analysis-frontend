@@ -4,13 +4,29 @@
 import { ROLES_COULEUR } from "../schema/resultat.js";
 
 /**
- * Regroupe les variables de couleur par rôle, dans l'ordre de ROLES_COULEUR
+ * La couleur réelle d'une valeur de la palette : « var(--surface) » suit la chaîne des variables
+ * (--surface → --white → #fff), sans quoi la pastille resterait vide dans l'interface.
+ * @returns {string|null} - null si une variable de la chaîne est introuvable
+ */
+export const resoudreCouleur = (valeur, palette, profondeur = 0) => {
+  if (profondeur > 10) return null;
+  const appel = valeur.trim().match(/^var\(\s*(--[\w-]+)\s*(?:,\s*(.+))?\)$/);
+  if (!appel) return valeur.trim();
+  const [, nom, repli] = appel;
+  const cible = palette.find((c) => c.variable === nom);
+  if (cible) return resoudreCouleur(cible.valeur, palette, profondeur + 1);
+  return repli ? resoudreCouleur(repli, palette, profondeur + 1) : null;
+};
+
+/**
+ * Regroupe les variables de couleur par rôle, dans l'ordre de ROLES_COULEUR,
+ * chacune avec sa couleur résolue
  * @param {Array<{ variable: string, valeur: string, role: string }>} palette
  */
 export const grouperPalette = (palette) =>
   ROLES_COULEUR.map((role) => ({
     role,
-    couleurs: palette.filter((c) => c.role === role),
+    couleurs: palette.filter((c) => c.role === role).map((c) => ({ ...c, couleur: resoudreCouleur(c.valeur, palette) })),
   })).filter((g) => g.couleurs.length > 0);
 
 /**

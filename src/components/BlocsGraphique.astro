@@ -44,14 +44,21 @@ const familles = polices ? [...new Set(polices.map((p: any) => p.famille))] : []
               <ul class="mt-1 flex flex-wrap gap-2">
                 {g.couleurs.map((c: any) => (
                   <li class="flex items-center gap-2 rounded border border-bordure py-1 pr-2 pl-1">
-                    <span
-                      class:list={["size-6 rounded", estClaire(c.valeur) && "ring-1 ring-texte-doux/40"]}
-                      style={`background: ${c.valeur}`}
-                      aria-hidden="true"
-                    />
+                    {c.couleur ? (
+                      <span
+                        class:list={["size-6 rounded", estClaire(c.couleur) && "ring-1 ring-texte-doux/40"]}
+                        style={`background: ${c.couleur}`}
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <span class="grid size-6 place-items-center rounded border border-dashed border-texte-doux/60 text-xs text-texte-doux" title="Variable introuvable dans la palette">?</span>
+                    )}
                     <span class="font-mono text-xs">
                       <span class="block">{c.variable}</span>
-                      <span class="block text-texte-doux">{c.valeur}</span>
+                      <span class="block text-texte-doux">
+                        {c.valeur}
+                        {c.couleur && c.couleur !== c.valeur && <> → {c.couleur}</>}
+                      </span>
                     </span>
                   </li>
                 ))}
