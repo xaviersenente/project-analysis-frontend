@@ -1,11 +1,14 @@
 /**
- * Lecture des données au build : un fichier de promo et un JSON par étudiant.
+ * Lecture des données au build : un fichier de promo, un JSON par étudiant,
+ * et les notes de l'enseignant (notes/<slug>.json, mode local) appliquées par-dessus.
  * Le dossier vient de WEBSCOPE_DONNEES (le data/ local, hors de Git),
  * sinon des données fictives du dépôt.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { promoSchema, resultatSchema, SLUG_REGEX } from "../schema/resultat.js";
+import { notesSchema, NOTES_VIDES } from "../schema/notes.js";
+import { appliquerNotes, verifierNotes } from "./notes.js";
 
 export const dossierDonnees = () =>
   path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives");
@@ -38,6 +41,22 @@ export const chargerPromo = (dossier = dossierDonnees()) => {
   return promo;
 };
 
+/** Chemin des notes de l'enseignant pour un projet */
+export const cheminNotes = (dossier, slug) => path.join(dossier, "notes", `${slug}.json`);
+
+/**
+ * Les notes de l'enseignant pour un résultat ; vides s'il n'y en a pas encore
+ * @throws {Error} - Notes invalides : le build s'arrête avec le fichier et le problème
+ */
+export const lireNotes = (dossier, slug, resultat) => {
+  const fichier = cheminNotes(dossier, slug);
+  if (!fs.existsSync(fichier)) return NOTES_VIDES;
+  const notes = valider(notesSchema, lireJson(fichier), fichier);
+  const problemes = verifierNotes(notes, resultat);
+  if (problemes.length) throw new Error(`Notes invalides dans ${fichier} :\n  ${problemes.join("\n  ")}`);
+  return notes;
+};
+
 /**
  * Les résultats des projets analysés ; un projet sans fichier n'est pas encore analysé
  * @param {string} dossier
@@ -52,7 +71,8 @@ export const chargerResultats = (dossier = dossierDonnees(), promo = chargerProm
     }
     const fichier = path.join(dossier, `${slug}.json`);
     if (!fs.existsSync(fichier)) continue;
-    resultats.set(slug, valider(resultatSchema, lireJson(fichier), fichier));
+    const resultat = valider(resultatSchema, lireJson(fichier), fichier);
+    resultats.set(slug, appliquerNotes(resultat, lireNotes(dossier, slug, resultat)));
   }
   return resultats;
 };

@@ -748,6 +748,7 @@ const genererResultat = (slug, profil, index) => {
       bonus,
       totale,
       lettre: lettre((base / Math.max(max - aJuger, 1)) * 100),
+      lettres: Object.fromEntries(GRADES),
       aJuger,
       parAxe,
     },

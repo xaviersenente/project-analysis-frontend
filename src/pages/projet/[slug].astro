@@ -68,7 +68,8 @@ const recommandations = resultat
                 criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
                 pointsAxe={resultat.note.parAxe[axe.id]}
                 moyenne={moyennes?.parAxe[axe.id] ?? null}
-                images={resultat.ressources?.images}>
+                images={resultat.ressources?.images}
+                slug={resultat.projet.slug}>
                 {axe.id === "graphique" && <BlocsGraphique bloc={resultat.blocs?.graphique} polices={resultat.ressources?.polices} />}
                 {axe.id === "accessibilite" && <BlocsAccessibilite bloc={resultat.blocs?.accessibilite} objectifLighthouse={seuilDe("A13")} />}
                 {axe.id === "methodologie" && <BlocsMethodologie bloc={resultat.blocs?.methodologie} seuilBem={seuilDe("M7")} />}
@@ -112,4 +113,20 @@ const recommandations = resultat
       }
     </main>
   </div>
+  {
+    import.meta.env.DEV && (
+      <script is:inline>
+        // Mode local : après un enregistrement, la page revient sur le critère noté
+        try {
+          const id = sessionStorage.getItem("webscope-retour");
+          sessionStorage.removeItem("webscope-retour");
+          const ligne = id && document.getElementById(`critere-${id}`);
+          if (ligne) {
+            ligne.querySelector("details").open = true;
+            ligne.scrollIntoView({ block: "center" });
+          }
+        } catch {}
+      </script>
+    )
+  }
 </Base>

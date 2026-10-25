@@ -23,6 +23,15 @@
     "bonus": 0,
     "totale": 65,
     "lettre": "C",
+    "lettres": {
+      "A+": 95,
+      "A": 90,
+      "B": 80,
+      "C": 70,
+      "D": 60,
+      "E": 50,
+      "F": 0
+    },
     "aJuger": 3,
     "parAxe": {
       "graphique": {

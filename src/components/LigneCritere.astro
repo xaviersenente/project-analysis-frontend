@@ -7,15 +7,29 @@ import Verdict from "./Verdict.astro";
 import IconeMethode from "./IconeMethode.astro";
 import Occurrences from "./Occurrences.astro";
 import ListeAlt from "./ListeAlt.astro";
+import NoteEnseignant from "./NoteEnseignant.vue";
 import { valeurCritere, seuilCritere, nombre, points } from "../lib/format.js";
 
 interface Props {
   critere: any;
   // Images du site, pour juger la qualité des alt (A6)
   images?: any[];
+  // Projet : pour enregistrer les notes en mode local
+  slug?: string;
 }
 
-const { critere: c, images } = Astro.props;
+const { critere: c, images, slug } = Astro.props;
+// Mode local : formulaires de notation en développement seulement ; le site construit est en lecture seule
+const modeLocal = import.meta.env.DEV && Boolean(slug);
+const ens = c.enseignant;
+const verdictCorrige = ens && ens.verdictOutil !== "a-juger" && ens.verdictOutil !== c.verdict;
+const LIBELLE_VERDICT: Record<string, string> = {
+  respecte: "respecté",
+  partiel: "partiel",
+  "non-respecte": "non respecté",
+  "non-mesurable": "non mesurable",
+  "a-juger": "à juger",
+};
 
 const STATUT: Record<string, { libelle: string; classe: string }> = {
   C: { libelle: "Contrainte", classe: "text-texte" },
@@ -57,7 +71,10 @@ const texteRecherche = `${c.id} ${c.libelle}`;
       <span class="font-mono text-sm font-semibold">{c.id}</span>
       <span class="min-w-0">{c.libelle}</span>
       <span class={`hidden text-xs xl:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
-      <Verdict verdict={c.verdict} statut={c.statut} />
+      <span class="inline-flex items-center gap-1">
+        <Verdict verdict={c.verdict} statut={c.statut} />
+        {verdictCorrige && <span class="text-xs text-accent" title={`Corrigé par l'enseignant ; l'outil indiquait « ${LIBELLE_VERDICT[ens.verdictOutil]} »`}>✎<span class="sr-only"> corrigé par l'enseignant</span></span>}
+      </span>
       <span class="col-span-2 col-start-3 text-sm xl:col-span-1 xl:col-start-auto">
         {
           c.verdict === "non-mesurable" ? (
@@ -92,7 +109,7 @@ const texteRecherche = `${c.id} ${c.libelle}`;
 
     <div class="space-y-3 border-t border-bordure bg-page px-4 py-3 md:pl-[5.5rem]">
       <p class="text-sm">
-        <span class="font-semibold">{c.verdict === "a-juger" ? "Ce qu'il faut juger" : "Piste"} :</span>
+        <span class="font-semibold">{c.methode === "manuel" ? "Ce qu'il faut juger" : "Piste"} :</span>
         {c.piste}
       </p>
       <p class="text-sm text-texte-doux">
@@ -118,13 +135,26 @@ const texteRecherche = `${c.id} ${c.libelle}`;
       }
 
       {
-        c.verdict === "a-juger" && (
-          <div class="rounded-md border border-dashed border-bordure bg-surface px-3 py-2 text-sm text-texte-doux">
-            <p class="font-semibold text-texte">Note et commentaire de l'enseignant</p>
-            <p>À saisir avec le mode local, prévu dans une prochaine étape.{c.points && ` Ce critère vaut ${points(c.points.max)}.`}</p>
+        ens ? (
+          <div class="rounded-md border border-bordure bg-surface px-3 py-2 text-sm">
+            <p class="font-semibold">
+              Évaluation de l'enseignant
+              {ens.points !== null && c.points && <span class="font-normal"> · {nombre(ens.points)} / {points(c.points.max)}</span>}
+            </p>
+            {verdictCorrige && <p class="text-texte-doux">Verdict corrigé : l'outil indiquait « {LIBELLE_VERDICT[ens.verdictOutil]} ».</p>}
+            {ens.commentaire && <p class="mt-1 whitespace-pre-line">{ens.commentaire}</p>}
           </div>
+        ) : (
+          c.verdict === "a-juger" && (
+            <div class="rounded-md border border-dashed border-bordure bg-surface px-3 py-2 text-sm text-texte-doux">
+              <p class="font-semibold text-texte">Note et commentaire de l'enseignant</p>
+              <p>Pas encore évalué.{c.points && ` Ce critère vaut ${points(c.points.max)}.`}</p>
+            </div>
+          )
         )
       }
+
+      {modeLocal && c.statut !== "B" && <NoteEnseignant client:visible slug={slug} critere={c} />}
 
       {c.id === "A6" && images && images.length > 0 && <ListeAlt images={images} />}
 
