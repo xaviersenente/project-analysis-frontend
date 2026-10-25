@@ -2717,6 +2717,32 @@
       }
     ]
   },
-  "alertes": [],
+  "enLigne": {
+    "url": "https://mmi-montbeliard.github.io/sae105-2026-etu-03/",
+    "verifieLe": "2027-01-16T09:05:00+01:00",
+    "pages": {
+      "total": 8,
+      "enErreur": 0
+    },
+    "ressources": {
+      "total": 41,
+      "enErreur": 0,
+      "nonVerifiees": 0
+    },
+    "erreurs": [],
+    "repond": true,
+    "deploiement": {
+      "sha": "4c1d2e9b7a0f3e5d6c8b9a1f2e3d4c5b6a7f8e9d",
+      "date": "2027-01-17T09:12:00Z",
+      "versionEvaluee": false
+    }
+  },
+  "alertes": [
+    {
+      "type": "site-non-a-jour",
+      "message": "Le site en ligne n'est pas la version évaluée",
+      "details": "déployé : 4c1d2e9 le 17/01/2027 10:12"
+    }
+  ],
   "nonMesurable": []
 }

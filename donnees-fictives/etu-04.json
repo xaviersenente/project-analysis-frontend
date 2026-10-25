@@ -2909,11 +2909,62 @@
     ],
     "tags": []
   },
+  "enLigne": {
+    "url": "https://mmi-montbeliard.github.io/sae105-2026-etu-04/",
+    "verifieLe": "2027-01-16T09:05:00+01:00",
+    "pages": {
+      "total": 8,
+      "enErreur": 1
+    },
+    "ressources": {
+      "total": 41,
+      "enErreur": 1,
+      "nonVerifiees": 0
+    },
+    "erreurs": [
+      {
+        "type": "page",
+        "chemin": "Contact.html",
+        "url": "https://mmi-montbeliard.github.io/sae105-2026-etu-04/Contact.html",
+        "statut": 404,
+        "cause": "casse",
+        "citePar": [
+          {
+            "page": "index.html",
+            "ligne": 18
+          },
+          {
+            "page": "about.html",
+            "ligne": 18
+          }
+        ]
+      },
+      {
+        "type": "ressource",
+        "chemin": "/assets/fonts/titre.woff2",
+        "url": "https://mmi-montbeliard.github.io/assets/fonts/titre.woff2",
+        "statut": 404,
+        "cause": "chemin-racine",
+        "citePar": [
+          {
+            "page": "css/style.css",
+            "ligne": 4
+          }
+        ]
+      }
+    ],
+    "repond": true,
+    "deploiement": {
+      "sha": "e1b07d3e8d1c2b",
+      "date": "2027-01-15T18:40:00Z",
+      "versionEvaluee": true
+    }
+  },
   "alertes": [
     {
       "type": "pages-404",
-      "message": "Pages en erreur 404",
-      "details": "/Contact.html (casse), /assets/fonts/titre.woff2"
+      "message": "Adresses en erreur sur le site en ligne",
+      "details": "Contact.html (404, casse), /assets/fonts/titre.woff2 (404, chemin en /)"
     },
     {
       "type": "historique-reecrit",

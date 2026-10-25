@@ -77,7 +77,7 @@ const recommandations = resultat
 
             <VueParPage pages={resultat.pages} />
             <Timeline historique={resultat.historique} />
-            <Ressources ressources={resultat.ressources} criteres={resultat.criteres} />
+            <Ressources ressources={resultat.ressources} criteres={resultat.criteres} enLigne={resultat.enLigne} sha={resultat.source.sha} />
 
             <section id="recommandations" aria-labelledby="titre-recommandations" class="rounded-lg border border-bordure bg-surface">
               <h2 id="titre-recommandations" class="border-b border-bordure px-4 py-3 text-xl font-bold">

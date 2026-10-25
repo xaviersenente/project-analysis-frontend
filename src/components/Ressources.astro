@@ -1,18 +1,21 @@
 ---
 /**
- * Ressources : images (tableau triable), polices et arborescence du dépôt.
+ * Ressources : images (tableau triable), polices, site en ligne et arborescence du dépôt.
  * Les seuils viennent des critères E10, E11 et E12 du résultat, jamais du code.
  */
 import Arborescence from "./Arborescence.astro";
+import SiteEnLigne from "./SiteEnLigne.astro";
 import { construireArbre } from "../lib/tableaux.js";
 import { nombre } from "../lib/format.js";
 
 interface Props {
   ressources: any | undefined;
   criteres: any[];
+  enLigne?: any;
+  sha?: string;
 }
 
-const { ressources, criteres } = Astro.props;
+const { ressources, criteres, enLigne, sha = "" } = Astro.props;
 const critere = (id: string) => criteres.find((c) => c.id === id);
 const imageMaxKo = critere("E10")?.seuil?.nombre ?? null;
 const accueilMaxKo = critere("E11")?.seuil?.nombre ?? null;
@@ -200,6 +203,8 @@ const colonnes = [
             </table>
           </div>
         </div>
+
+        {enLigne && <SiteEnLigne enLigne={enLigne} sha={sha} />}
 
         <!-- Arborescence -->
         <div class="px-4 pb-4">

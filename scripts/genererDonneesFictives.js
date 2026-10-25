@@ -154,7 +154,9 @@ const PROFILS = {
     recommandations: ["G9", "E13"],
     nonMesurables: {},
     bem: 92,
-    alertes: [],
+    alertes: [
+      { type: "site-non-a-jour", message: "Le site en ligne n'est pas la version évaluée", details: "déployé : 4c1d2e9 le 17/01/2027 10:12" },
+    ],
   },
   "etu-04": {
     nom: "Benali Yanis",
@@ -165,7 +167,7 @@ const PROFILS = {
     nonMesurables: {},
     bem: 12,
     alertes: [
-      { type: "pages-404", message: "Pages en erreur 404", details: "/Contact.html (casse), /assets/fonts/titre.woff2" },
+      { type: "pages-404", message: "Adresses en erreur sur le site en ligne", details: "Contact.html (404, casse), /assets/fonts/titre.woff2 (404, chemin en /)" },
       { type: "historique-reecrit", message: "Historique Git réécrit", details: "push --force le 14/01/2027" },
     ],
   },
@@ -498,6 +500,32 @@ const genererMaquette = (g11) => {
   };
 };
 
+// --- Site en ligne (lot 4) : accord avec les alertes de chaque profil ---
+
+const genererEnLigne = (slug, sha) => {
+  const url = `https://mmi-montbeliard.github.io/sae105-2026-${slug}/`;
+  const base = { url, verifieLe: "2027-01-16T09:05:00+01:00", pages: { total: 8, enErreur: 0 }, ressources: { total: 41, enErreur: 0, nonVerifiees: 0 }, erreurs: [] };
+  if (slug === "etu-02") {
+    return { ...base, repond: false, raison: "L'accueil répond 404", pages: { total: 0, enErreur: 0 }, ressources: { total: 0, enErreur: 0, nonVerifiees: 0 }, deploiement: null };
+  }
+  const deploiement =
+    slug === "etu-03"
+      ? { sha: "4c1d2e9b7a0f3e5d6c8b9a1f2e3d4c5b6a7f8e9d", date: "2027-01-17T09:12:00Z", versionEvaluee: false }
+      : { sha, date: "2027-01-15T18:40:00Z", versionEvaluee: true };
+  if (slug !== "etu-04") return { ...base, repond: true, deploiement };
+  return {
+    ...base,
+    repond: true,
+    pages: { total: 8, enErreur: 1 },
+    ressources: { total: 41, enErreur: 1, nonVerifiees: 0 },
+    erreurs: [
+      { type: "page", chemin: "Contact.html", url: `${url}Contact.html`, statut: 404, cause: "casse", citePar: [{ page: "index.html", ligne: 18 }, { page: "about.html", ligne: 18 }] },
+      { type: "ressource", chemin: "/assets/fonts/titre.woff2", url: "https://mmi-montbeliard.github.io/assets/fonts/titre.woff2", statut: 404, cause: "chemin-racine", citePar: [{ page: "css/style.css", ligne: 4 }] },
+    ],
+    deploiement,
+  };
+};
+
 // --- Historique Git : sessions de travail et commits ---
 
 const DATE_RENDU = "2027-01-15T23:59:00+01:00";
@@ -728,6 +756,7 @@ const genererResultat = (slug, profil, index) => {
     ressources: genererRessources(criteres, profil),
     blocs: genererBlocs(criteres, profil),
     historique: genererHistorique(slug, profil),
+    enLigne: genererEnLigne(slug, (slug + "a4f9c2e1b07d3").slice(-7).padEnd(7, "0") + "e8d1c2b"),
     alertes: profil.alertes,
     nonMesurable: [...new Set(Object.values(profil.nonMesurables))].map((raison) => ({
       etape: "Lighthouse et mesures en navigateur",

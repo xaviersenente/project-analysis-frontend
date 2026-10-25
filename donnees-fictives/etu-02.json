@@ -2670,6 +2670,23 @@
       }
     ]
   },
+  "enLigne": {
+    "url": "https://mmi-montbeliard.github.io/sae105-2026-etu-02/",
+    "verifieLe": "2027-01-16T09:05:00+01:00",
+    "pages": {
+      "total": 0,
+      "enErreur": 0
+    },
+    "ressources": {
+      "total": 0,
+      "enErreur": 0,
+      "nonVerifiees": 0
+    },
+    "erreurs": [],
+    "repond": false,
+    "raison": "L'accueil répond 404",
+    "deploiement": null
+  },
   "alertes": [
     {
       "type": "site-inaccessible",
