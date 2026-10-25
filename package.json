@@ -4,10 +4,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev:promo": "WEBSCOPE_DONNEES=../project-analysis-backend/data astro dev",
     "build": "astro build",
+    "build:promo": "WEBSCOPE_DONNEES=../project-analysis-backend/data astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "donnees-fictives": "node scripts/genererDonneesFictives.js"
   },
   "dependencies": {
     "@astrojs/vue": "^7.1.2",
