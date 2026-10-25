@@ -8,9 +8,11 @@ import { COLONNES_PAGE } from "../config/controlesPage.js";
 
 interface Props {
   pages: any[] | undefined;
+  // Site bilingue : seule la langue analysée figure dans la matrice
+  langues?: any;
 }
 
-const { pages } = Astro.props;
+const { pages, langues } = Astro.props;
 
 const SYMBOLE: Record<string, { icone: string; mot: string; classe: string }> = {
   respecte: { icone: "✓", mot: "respecté", classe: "text-respecte" },
@@ -28,6 +30,21 @@ const echecsParColonne = Object.fromEntries(
   <header class="border-b border-bordure px-4 py-3">
     <h2 id="titre-par-page" class="text-xl font-bold">Vue par page</h2>
     <p class="text-sm text-texte-doux">Les critères vérifiés page par page. Survolez ou parcourez une cellule pour son détail ; un clic ouvre le critère.</p>
+    {
+      langues && (
+        <p class="mt-1 text-sm">
+          <span class="font-semibold">Site bilingue :</span> seule la version <code class="font-mono">{langues.analysee}/</code> est analysée (même structure HTML).{" "}
+          {langues.versions.map((v: any) => `${v.langue}/ : ${v.pages.length} page${v.pages.length > 1 ? "s" : ""}`).join(", ")}
+          {langues.complet ? (
+            <span class="text-respecte"> ✓ versions complètes</span>
+          ) : (
+            <span class="font-semibold text-partiel">
+              {" "}◐ versions incomplètes{langues.manquantes.length > 0 && <> : sans traduction {langues.manquantes.join(", ")}</>}
+            </span>
+          )}
+        </p>
+      )
+    }
   </header>
 
   {

@@ -76,7 +76,7 @@ const recommandations = resultat
               </SectionAxe>
             ))}
 
-            <VueParPage pages={resultat.pages} />
+            <VueParPage pages={resultat.pages} langues={resultat.langues} />
             <Timeline historique={resultat.historique} />
             <Ressources ressources={resultat.ressources} criteres={resultat.criteres} enLigne={resultat.enLigne} sha={resultat.source.sha} />
 
