@@ -94,41 +94,6 @@ const policeEchelle = familleCopiee ? `"${nomPolice(famille)}", var(--font-sans)
     }
   </div>
 
-  <!-- Échelle typographique -->
-  <div class="rounded-md border border-bordure p-3 lg:col-span-2">
-    <h3 class="mb-2 text-sm font-semibold">
-      Échelle typographique
-      {
-        bloc?.typographie && (
-          <span class="font-normal text-texte-doux">
-            · {bloc.typographie.tailles.length} tailles{famille && (familleCopiee ? <>, en {famille}</> : <>, en {famille} si la police est installée sur ce poste</>)}
-          </span>
-        )
-      }
-    </h3>
-    {
-      !bloc?.typographie ? (
-        <p class="text-sm text-texte-doux">Non mesurable.</p>
-      ) : (
-        <ul class="space-y-1">
-          {bloc.typographie.tailles.map((t: any) => (
-            <li class="grid grid-cols-[8rem_6rem_minmax(0,1fr)] items-baseline gap-2">
-              <span class="font-mono text-xs">{t.variable ?? "en dur"}</span>
-              <span class="text-xs text-texte-doux">
-                {t.valeur.endsWith("px") ? `${nombre(t.px)} px` : `${t.valeur} · ${nombre(t.px)} px`}
-              </span>
-              <span class="truncate leading-tight" style={`font-size: ${t.px}px; font-family: ${policeEchelle}`} aria-hidden="true">
-                Le studio BBrands
-              </span>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </div>
-
-  {bloc?.maquette && <BlocMaquette maquette={bloc.maquette} />}
-
   <!-- Polices du site : chaque famille dans sa vraie police, une ligne par graisse -->
   {css && <style is:inline set:html={css} />}
   {
@@ -166,4 +131,39 @@ const policeEchelle = familleCopiee ? `"${nomPolice(famille)}", var(--font-sans)
       </div>
     )
   }
+
+  <!-- Échelle typographique -->
+  <div class="rounded-md border border-bordure p-3 lg:col-span-2">
+    <h3 class="mb-2 text-sm font-semibold">
+      Échelle typographique
+      {
+        bloc?.typographie && (
+          <span class="font-normal text-texte-doux">
+            · {bloc.typographie.tailles.length} tailles{famille && (familleCopiee ? <>, en {famille}</> : <>, en {famille} si la police est installée sur ce poste</>)}
+          </span>
+        )
+      }
+    </h3>
+    {
+      !bloc?.typographie ? (
+        <p class="text-sm text-texte-doux">Non mesurable.</p>
+      ) : (
+        <ul class="space-y-1">
+          {bloc.typographie.tailles.map((t: any) => (
+            <li class="grid grid-cols-[8rem_6rem_minmax(0,1fr)] items-baseline gap-2">
+              <span class="font-mono text-xs">{t.variable ?? "en dur"}</span>
+              <span class="text-xs text-texte-doux">
+                {t.valeur.endsWith("px") ? `${nombre(t.px)} px` : `${t.valeur} · ${nombre(t.px)} px`}
+              </span>
+              <span class="truncate leading-tight" style={`font-size: ${t.px}px; font-family: ${policeEchelle}`} aria-hidden="true">
+                Le studio BBrands
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  {bloc?.maquette && <BlocMaquette maquette={bloc.maquette} />}
 </div>
