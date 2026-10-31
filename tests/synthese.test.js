@@ -38,6 +38,7 @@ test("compteurs : contraintes non respectées, recommandations à suivre, critè
   assert.deepEqual(compterVerdicts(criteres), {
     contraintesNonRespectees: 4, // A3, A5 (partiel), G1, M4
     recommandations: 1, // A6
+    informations: 0,
     aJuger: 1, // G10
   });
 });
@@ -67,13 +68,39 @@ test("priorités : un critère non mesurable ou à juger n'y figure pas", () => 
   assert.ok(!ids.includes("G10"));
 });
 
+test("compteurs : une mesure donnée pour information (statut I) a son compteur", () => {
+  const mesures = [
+    { id: "Q3", statut: "I", verdict: "non-respecte" },
+    { id: "Q4", statut: "I", verdict: "respecte" },
+    { id: "Q9", statut: "I", verdict: "partiel" },
+  ];
+  assert.equal(compterVerdicts(mesures).informations, 2);
+  assert.equal(compterVerdicts(mesures).recommandations, 0);
+});
+
 test("badges : nombre de contraintes non respectées par axe", () => {
-  assert.deepEqual(badgesParAxe(criteres), {
+  const axes = ["graphique", "ergonomie", "accessibilite", "methodologie"].map((id) => ({ id }));
+  assert.deepEqual(badgesParAxe(criteres, axes), {
     graphique: 1,
     ergonomie: 0,
     accessibilite: 2,
     methodologie: 1,
   });
+});
+
+test("badges : les axes viennent de la grille du résultat, quels qu'ils soient", () => {
+  const autres = [
+    { id: "Q1", axe: "qualite", statut: "C", verdict: "non-respecte" },
+    { id: "Q2", axe: "qualite", statut: "R", verdict: "non-respecte" },
+    { id: "P1", axe: "processus", statut: "C", verdict: "respecte" },
+  ];
+  assert.deepEqual(badgesParAxe(autres, [{ id: "qualite" }, { id: "processus" }]), { qualite: 1, processus: 0 });
+});
+
+test("moyennes de la promo : un axe absent d'un résultat ne compte que pour ceux qui l'ont", () => {
+  const r = (parAxe) => ({ note: { totale: 10, max: 20, parAxe } });
+  const moyennes = moyennesPromo([r({ qualite: { obtenus: 3, max: 3 } }), r({ qualite: { obtenus: 0, max: 3 }, processus: { obtenus: 1, max: 2 } })]);
+  assert.deepEqual(moyennes.parAxe, { qualite: 0.5, processus: 0.5 });
 });
 
 test("moyennes de la promo : par axe et note totale, sur les projets analysés", () => {

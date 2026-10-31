@@ -1,5 +1,36 @@
 {
-  "version": 2,
+  "version": 3,
+  "grille": {
+    "id": "sae105-2026",
+    "nom": "SAÉ 105 · site mobile (2026-2027)",
+    "profil": "sae105",
+    "axes": [
+      {
+        "id": "graphique",
+        "nom": "Graphique",
+        "points": 20,
+        "description": "Le système graphique mesurable : palette, échelles, polices et unités."
+      },
+      {
+        "id": "ergonomie",
+        "nom": "Ergonomie",
+        "points": 25,
+        "description": "L'usage, le poids des pages et la navigation sur mobile."
+      },
+      {
+        "id": "accessibilite",
+        "nom": "Accessibilité",
+        "points": 30,
+        "description": "La structure, les alternatives textuelles, le focus et le contraste."
+      },
+      {
+        "id": "methodologie",
+        "nom": "Méthodologie",
+        "points": 25,
+        "description": "La qualité du code et du dépôt, dont la régularité du travail."
+      }
+    ]
+  },
   "source": {
     "depot": "mmi-montbeliard/sae105-2026-etu-04",
     "ref": "v1",
@@ -20,6 +51,7 @@
   "note": {
     "base": 45,
     "max": 100,
+    "total": 100,
     "bonus": 0,
     "totale": 45,
     "lettre": "F",

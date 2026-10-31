@@ -35,6 +35,9 @@
   --color-axe-ergonomie: #0d9488;
   --color-axe-accessibilite: #4f46e5;
   --color-axe-methodologie: #a16207;
+  /* Axes des autres grilles, au-delà des quatre de la SAÉ 105 */
+  --color-axe-5: #0369a1;
+  --color-axe-6: #4d7c0f;
 }
 
 @layer base {

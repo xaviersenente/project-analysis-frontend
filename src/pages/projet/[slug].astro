@@ -11,8 +11,10 @@ import BlocsGraphique from "../../components/BlocsGraphique.astro";
 import BlocsAccessibilite from "../../components/BlocsAccessibilite.astro";
 import BlocsMethodologie from "../../components/BlocsMethodologie.astro";
 import Verdict from "../../components/Verdict.astro";
-import { AXES } from "../../config/axes.js";
-import { badgesParAxe, compterVerdicts } from "../../lib/synthese.js";
+import SiteParcouru from "../../components/SiteParcouru.astro";
+import CapturesSite from "../../components/CapturesSite.astro";
+import { sectionsAnalyse } from "../../config/sections.js";
+import { badgesParAxe } from "../../lib/synthese.js";
 import { donneesSite } from "../../lib/site.js";
 
 export function getStaticPaths() {
@@ -33,13 +35,17 @@ const resultat = resultats.get(projet.slug) ?? null;
 // Seuils lus dans les critères du résultat
 const seuilDe = (id: string) => resultat?.criteres.find((c: any) => c.id === id)?.seuil?.nombre ?? null;
 
+const sections = resultat ? sectionsAnalyse(resultat.grille.profil) : [];
+const avecSection = (id: string) => sections.some((s) => s.id === id);
+
 const recommandations = resultat
-  ? resultat.criteres.filter((c: any) => c.statut === "R" && ["non-respecte", "partiel"].includes(c.verdict))
+  ? resultat.criteres.filter((c: any) => ["R", "I"].includes(c.statut) && ["non-respecte", "partiel"].includes(c.verdict))
   : [];
 ---
 
 <Base titre={`${projet.nom} · ${projet.groupe}`}>
   <BarreSuperieure
+    sae={resultat?.grille.nom}
     options={options}
     courantSlug={projet.slug}
     precedent={precedent}
@@ -50,8 +56,10 @@ const recommandations = resultat
 
   <div class="lg:flex">
     <NavLaterale
-      badges={resultat ? badgesParAxe(resultat.criteres) : null}
-      recommandations={resultat ? compterVerdicts(resultat.criteres).recommandations : 0}
+      badges={resultat ? badgesParAxe(resultat.criteres, resultat.grille.axes) : null}
+      axes={resultat?.grille.axes}
+      sections={sections}
+      recommandations={recommandations.length}
     />
 
     <main id="contenu" class="mx-auto w-full max-w-[100rem] min-w-0 space-y-8 p-4 lg:p-8">
@@ -62,9 +70,10 @@ const recommandations = resultat
           <>
             <Synthese resultat={resultat} moyennes={moyennes} />
 
-            {AXES.map((axe) => (
+            {resultat.grille.axes.map((axe: any, rang: number) => (
               <SectionAxe
                 axe={axe}
+                rang={rang}
                 criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
                 pointsAxe={resultat.note.parAxe[axe.id]}
                 moyenne={moyennes?.parAxe[axe.id] ?? null}
@@ -73,17 +82,19 @@ const recommandations = resultat
                 {axe.id === "graphique" && <BlocsGraphique bloc={resultat.blocs?.graphique} polices={resultat.ressources?.polices} />}
                 {axe.id === "accessibilite" && <BlocsAccessibilite bloc={resultat.blocs?.accessibilite} objectifLighthouse={seuilDe("A13")} />}
                 {axe.id === "methodologie" && <BlocsMethodologie bloc={resultat.blocs?.methodologie} seuilBem={seuilDe("M7")} />}
+                {axe.id === "direction-artistique" && <CapturesSite parcours={resultat.parcours} />}
               </SectionAxe>
             ))}
 
-            <VueParPage pages={resultat.pages} langues={resultat.langues} />
-            <Timeline historique={resultat.historique} />
-            <Ressources ressources={resultat.ressources} criteres={resultat.criteres} enLigne={resultat.enLigne} sha={resultat.source.sha} />
+            {avecSection("par-page") && <VueParPage pages={resultat.pages} langues={resultat.langues} />}
+            {avecSection("site") && <SiteParcouru parcours={resultat.parcours} />}
+            {avecSection("timeline") && <Timeline historique={resultat.historique} />}
+            {avecSection("ressources") && <Ressources ressources={resultat.ressources} criteres={resultat.criteres} enLigne={resultat.enLigne} sha={resultat.source.sha} />}
 
             <section id="recommandations" aria-labelledby="titre-recommandations" class="rounded-lg border border-bordure bg-surface">
               <h2 id="titre-recommandations" class="border-b border-bordure px-4 py-3 text-xl font-bold">
                 Recommandations
-                <span class="ml-2 text-sm font-normal text-texte-doux">sans point : des pistes pour aller plus loin</span>
+                <span class="ml-2 text-sm font-normal text-texte-doux">sans point : des pistes pour aller plus loin, et les mesures données pour information</span>
               </h2>
               {recommandations.length === 0 ? (
                 <p class="px-4 py-3 text-sm text-texte-doux">Toutes les recommandations sont suivies.</p>

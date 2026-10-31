@@ -7,6 +7,8 @@
     "dev:promo": "WEBSCOPE_DONNEES=../project-analysis-backend/data astro dev",
     "build": "astro build",
     "build:promo": "WEBSCOPE_DONNEES=../project-analysis-backend/data astro build",
+    "dev:s3": "WEBSCOPE_DONNEES=../project-analysis-backend/data/s3 astro dev",
+    "build:s3": "WEBSCOPE_DONNEES=../project-analysis-backend/data/s3 astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --test tests/*.test.js",

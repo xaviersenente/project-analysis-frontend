@@ -1,6 +1,6 @@
 # WebScope : interface
 
-Interface de lecture des analyses de la SAÉ 105. C'est un **site statique** : il lit, au build, un fichier de promo et un JSON par étudiant (résultat d'analyse au format v2), puis génère une page par projet.
+Interface de lecture des analyses de la SAÉ 105. C'est un **site statique** : il lit, au build, un fichier de promo et un JSON par étudiant (résultat d'analyse au format v3, qui porte les axes de sa grille), puis génère une page par projet.
 
 Les analyses se lancent en local avec le backend ; ce site ne fait que les afficher.
 
@@ -32,7 +32,7 @@ Les données fictives se régénèrent avec `node scripts/genererDonneesFictives
 
 ```text
 src/
-├── schema/resultat.js     # schéma v2 (Zod) : le contrat avec le backend
+├── schema/resultat.js     # schéma v3 (Zod) : le contrat avec le backend
 ├── lib/                   # lecture des données, synthèse, formats français
 ├── config/axes.js         # les quatre axes et leurs couleurs
 ├── components/            # barre supérieure, sélecteur, navigation, synthèse, axes

@@ -1,31 +1,33 @@
 ---
-import { AXES, COULEUR_AXE } from "../config/axes.js";
+import { couleurAxe } from "../config/axes.js";
 
 interface Props {
   // Contraintes non respectées par axe ; null si le projet n'est pas analysé
   badges: Record<string, number> | null;
+  // Axes de la grille du projet (resultat.grille.axes)
+  axes?: { id: string; nom: string }[];
+  // Sections d'analyse du profil (config/sections.js)
+  sections?: { id: string; libelle: string }[];
   recommandations?: number;
 }
 
-const { badges, recommandations = 0 } = Astro.props;
+const { badges, axes = [], sections = [], recommandations = 0 } = Astro.props;
 
 const tousLesGroupes = [
   { titre: "Projet", entrees: [{ id: "synthese", libelle: "Synthèse" }] },
   {
     titre: "Axes",
-    entrees: AXES.map((axe) => ({
+    entrees: axes.map((axe, rang) => ({
       id: `axe-${axe.id}`,
       libelle: axe.nom,
-      pastille: COULEUR_AXE[axe.id].pastille,
+      pastille: couleurAxe(axe.id, rang).pastille,
       badge: badges?.[axe.id] ?? null,
     })),
   },
   {
     titre: "Analyse",
     entrees: [
-      { id: "par-page", libelle: "Vue par page" },
-      { id: "timeline", libelle: "Timeline" },
-      { id: "ressources", libelle: "Ressources" },
+      ...sections,
       { id: "recommandations", libelle: "Recommandations", badge: badges ? recommandations : null, calme: true },
     ],
   },

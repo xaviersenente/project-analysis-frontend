@@ -1,7 +1,6 @@
 ---
 import CommentaireGeneral from "./CommentaireGeneral.vue";
 import JaugeAxe from "./JaugeAxe.astro";
-import { AXES } from "../config/axes.js";
 import { compterVerdicts, priorites } from "../lib/synthese.js";
 import { nombre, points } from "../lib/format.js";
 
@@ -14,7 +13,8 @@ const { resultat, moyennes } = Astro.props;
 const { projet, note, liens, alertes, criteres } = resultat;
 const compteurs = compterVerdicts(criteres);
 const lesPriorites = priorites(criteres);
-const pointsNonMesurables = 100 - note.max;
+// Total de la grille (100 pour la SAÉ 105) ; absent des résultats v2
+const pointsNonMesurables = (note.total ?? 100) - note.max;
 
 const ICONE_ALERTE: Record<string, string> = {
   "site-inaccessible": "Site",
@@ -92,9 +92,10 @@ const ICONE_ALERTE: Record<string, string> = {
       </p>
       <div class="space-y-1">
         {
-          AXES.map((axe) => (
+          resultat.grille.axes.map((axe: any, rang: number) => (
             <JaugeAxe
               axe={axe}
+              rang={rang}
               obtenus={note.parAxe[axe.id].obtenus}
               max={note.parAxe[axe.id].max}
               moyenne={moyennes?.parAxe[axe.id] ?? null}
@@ -115,8 +116,8 @@ const ICONE_ALERTE: Record<string, string> = {
     </li>
     <li class="rounded-lg border border-bordure bg-surface p-4">
       <a href="#recommandations" class="block">
-        <span class="block text-3xl font-bold text-neutre">{compteurs.recommandations}</span>
-        <span class="text-sm">recommandations à suivre</span>
+        <span class="block text-3xl font-bold text-neutre">{compteurs.recommandations + compteurs.informations}</span>
+        <span class="text-sm">{compteurs.informations > 0 ? "recommandations et mesures à regarder" : "recommandations à suivre"}</span>
       </a>
     </li>
     <li class="rounded-lg border border-bordure bg-surface p-4">

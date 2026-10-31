@@ -47,10 +47,11 @@ const renoter = (criteres, ancienne) => {
   const max = Object.values(parAxe).reduce((s, a) => s + a.max, 0);
   const aJuger = criteres.filter((c) => c.verdict === "a-juger" && c.points).reduce((s, c) => s + c.points.max, 0);
   const pourcentage = (base / Math.max(max - aJuger, 1)) * 100;
-  const lettre = ancienne.lettres
+  // Rien n'est encore jugé : pas de lettre
+  const lettre = max - aJuger <= 0 ? "—" : ancienne.lettres
     ? Object.entries(ancienne.lettres).sort((a, b) => b[1] - a[1]).find(([, seuil]) => pourcentage >= seuil)?.[0] ?? ancienne.lettre
     : ancienne.lettre;
-  return { ...ancienne, base, max, totale: Math.min(100, base + ancienne.bonus), lettre, aJuger, parAxe };
+  return { ...ancienne, base, max, totale: Math.min(ancienne.total ?? 100, base + ancienne.bonus), lettre, aJuger, parAxe };
 };
 
 /**

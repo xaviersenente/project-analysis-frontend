@@ -1,14 +1,13 @@
 /**
- * Calculs de la synthèse d'un projet, à partir de ses critères (format v2)
+ * Calculs de la synthèse d'un projet, à partir de ses critères (format v3)
  */
-import { AXES } from "../schema/resultat.js";
 
 const NON_RESPECTE = ["non-respecte", "partiel"];
 
 /**
  * Les trois compteurs de l'en-tête
  * @param {Array} criteres
- * @returns {{ contraintesNonRespectees: number, recommandations: number, aJuger: number }}
+ * @returns {{ contraintesNonRespectees: number, recommandations: number, informations: number, aJuger: number }}
  */
 export const compterVerdicts = (criteres) => ({
   contraintesNonRespectees: criteres.filter(
@@ -16,6 +15,10 @@ export const compterVerdicts = (criteres) => ({
   ).length,
   recommandations: criteres.filter(
     (c) => c.statut === "R" && NON_RESPECTE.includes(c.verdict)
+  ).length,
+  // Mesures données pour information (portfolio : là où le jury regardera)
+  informations: criteres.filter(
+    (c) => c.statut === "I" && NON_RESPECTE.includes(c.verdict)
   ).length,
   aJuger: criteres.filter((c) => c.verdict === "a-juger").length,
 });
@@ -42,11 +45,12 @@ export const priorites = (criteres, nombre = 5) =>
 /**
  * Nombre de contraintes non respectées par axe (badges de la navigation)
  * @param {Array} criteres
+ * @param {{ id: string }[]} axes - Axes de la grille
  * @returns {Record<string, number>}
  */
-export const badgesParAxe = (criteres) =>
+export const badgesParAxe = (criteres, axes) =>
   Object.fromEntries(
-    AXES.map((axe) => [
+    axes.map(({ id: axe }) => [
       axe,
       criteres.filter(
         (c) => c.axe === axe && c.statut === "C" && NON_RESPECTE.includes(c.verdict)
@@ -62,20 +66,22 @@ const moyenne = (valeurs) =>
  * (un projet dont rien n'a pu être mesuré n'y compte pas).
  * Par axe, la moyenne est une proportion (0 à 1) : le maximum d'un axe varie
  * d'un projet à l'autre quand des critères ne sont pas mesurables.
- * @param {Array} resultats - Résultats v2
+ * Les axes sont ceux des résultats (une promo, une grille).
+ * @param {Array} resultats - Résultats v3
  * @returns {{ totale: number, parAxe: Record<string, number> } | null}
  */
 export const moyennesPromo = (tousLesResultats) => {
   const resultats = tousLesResultats.filter((r) => r.note.max > 0);
   if (resultats.length === 0) return null;
   const ratio = (r, axe) => r.note.parAxe[axe].obtenus / Math.max(r.note.parAxe[axe].max, 1);
+  const axes = [...new Set(resultats.flatMap((r) => Object.keys(r.note.parAxe)))];
   return {
     totale: moyenne(resultats.map((r) => r.note.totale)),
     parAxe: Object.fromEntries(
-      AXES.map((axe) => [
-        axe,
-        Math.round((resultats.reduce((s, r) => s + ratio(r, axe), 0) / resultats.length) * 1000) / 1000,
-      ])
+      axes.map((axe) => {
+        const avecAxe = resultats.filter((r) => r.note.parAxe[axe]);
+        return [axe, Math.round((avecAxe.reduce((s, r) => s + ratio(r, axe), 0) / avecAxe.length) * 1000) / 1000];
+      })
     ),
   };
 };

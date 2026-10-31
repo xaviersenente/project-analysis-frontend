@@ -4,10 +4,12 @@
  */
 import JaugeAxe from "./JaugeAxe.astro";
 import LigneCritere from "./LigneCritere.astro";
-import { COULEUR_AXE } from "../config/axes.js";
+import { couleurAxe } from "../config/axes.js";
 
 interface Props {
   axe: { id: string; nom: string; description: string };
+  // Place de l'axe dans la grille (sa couleur)
+  rang: number;
   criteres: any[];
   pointsAxe: { obtenus: number; max: number };
   moyenne: number | null;
@@ -15,21 +17,21 @@ interface Props {
   slug?: string;
 }
 
-const { axe, criteres, pointsAxe, moyenne, images, slug } = Astro.props;
+const { axe, rang, criteres, pointsAxe, moyenne, images, slug } = Astro.props;
 const id = (suffixe: string) => `${axe.id}-${suffixe}`;
 ---
 
 <section
   id={`axe-${axe.id}`}
   aria-labelledby={id("titre")}
-  class={`rounded-lg border border-bordure border-l-4 bg-surface ${COULEUR_AXE[axe.id].lisere}`}
+  class={`rounded-lg border border-bordure border-l-4 bg-surface ${couleurAxe(axe.id, rang).lisere}`}
   data-section-axe>
   <header class="grid gap-3 border-b border-bordure p-4 md:grid-cols-[minmax(0,1fr)_18rem] md:items-center">
     <div>
       <h2 id={id("titre")} class="text-xl font-bold">{axe.nom}</h2>
       <p class="text-sm text-texte-doux">{axe.description}</p>
     </div>
-    <JaugeAxe axe={axe} obtenus={pointsAxe.obtenus} max={pointsAxe.max} moyenne={moyenne} lien={false} />
+    <JaugeAxe axe={axe} rang={rang} obtenus={pointsAxe.obtenus} max={pointsAxe.max} moyenne={moyenne} lien={false} />
   </header>
 
   <!-- Blocs propres à l'axe (palette, scores, JavaScript…) -->

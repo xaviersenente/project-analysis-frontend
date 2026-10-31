@@ -725,10 +725,12 @@ const genererResultat = (slug, profil, index) => {
     .filter((c) => c.verdict === "a-juger" && c.points)
     .reduce((s, c) => s + c.points.max, 0);
   const bonus = criteres.find((c) => c.id === "M7").points.obtenus;
-  const totale = Math.min(100, base + bonus);
+  const total = catalogue.axes.reduce((s, a) => s + a.points, 0);
+  const totale = Math.min(total, base + bonus);
 
   return {
-    version: 2,
+    version: 3,
+    grille: { id: catalogue.id, nom: catalogue.nom, profil: catalogue.profil, axes: catalogue.axes },
     source: {
       depot: `mmi-montbeliard/sae105-2026-${slug}`,
       ref: index % 2 ? "v1" : "main",
@@ -745,6 +747,7 @@ const genererResultat = (slug, profil, index) => {
     note: {
       base,
       max,
+      total,
       bonus,
       totale,
       lettre: lettre((base / Math.max(max - aJuger, 1)) * 100),
