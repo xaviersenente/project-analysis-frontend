@@ -10,7 +10,10 @@ const SECTIONS = {
     { id: "ressources", libelle: "Ressources" },
   ],
   // Site en ligne parcouru (portfolio S3)
-  portfolio: [{ id: "site", libelle: "Site parcouru" }],
+  portfolio: [
+    { id: "site", libelle: "Site parcouru" },
+    { id: "timeline", libelle: "Timeline" },
+  ],
 };
 
 /** Un résultat sans profil (antérieur aux grilles par SAÉ) est de la SAÉ 105 */

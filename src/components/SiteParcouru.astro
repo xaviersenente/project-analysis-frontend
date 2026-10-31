@@ -66,7 +66,7 @@ const NOTE_ECO: Record<string, string> = { A: "text-respecte", B: "text-respecte
                     <td class="px-2 py-1.5 text-right">{nombre(p.requetes)}</td>
                     <td class="px-2 py-1.5 text-right">{nombre(p.dom)}</td>
                     <td class:list={["px-2 py-1.5 text-right", p.violations > 0 && "font-semibold text-non-respecte"]}>{p.violations > 0 ? `${nombre(p.violations)} erreur${p.violations > 1 ? "s" : ""}` : "—"}</td>
-                    <td class="px-2 py-1.5 text-center">{p.debordement ? <span class="text-non-respecte">✕<span class="sr-only"> défile horizontalement</span></span> : <span class="text-respecte">✓<span class="sr-only"> tient dans l'écran</span></span>}</td>
+                    <td class="px-2 py-1.5 text-center">{p.debordement ? <span class="text-non-respecte">✕<span class="sr-only"> dépasse la largeur de l'écran</span></span> : <span class="text-respecte">✓<span class="sr-only"> tient dans l'écran</span></span>}</td>
                     <td class:list={["px-2 py-1.5 text-right", p.tiers > 0 && "text-partiel"]}>{p.tiers > 0 ? nombre(p.tiers) : "—"}</td>
                   </tr>
                 ) : (
