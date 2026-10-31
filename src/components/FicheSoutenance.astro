@@ -1,0 +1,90 @@
+---
+/**
+ * Portfolio : la fiche de soutenance. Les portions de code tirées au sort (sujet §7), avec la graine
+ * qui permet de refaire le tirage, et les questions proposées par l'IA quand la promo l'autorise.
+ * L'IA propose ; le jury choisit et pose ses propres questions.
+ */
+import { nombre } from "../lib/format.js";
+
+interface Props {
+  soutenance: any | undefined;
+  depot: string | null;
+  sha: string;
+}
+
+const { soutenance, depot, sha } = Astro.props;
+const lienGithub = (t: any) => (depot ? `${depot}/blob/${sha}/${t.fichier}#L${t.debut}-L${t.fin}` : null);
+const STATUT_IA: Record<string, string> = {
+  proposees: "Questions proposées par l'IA : à reformuler ou écarter, le jury choisit.",
+  desactivees: "Pas de questions proposées : l'IA n'est pas activée pour cette promo.",
+  echec: "Les questions n'ont pas pu être proposées.",
+};
+---
+
+<section id="soutenance" aria-labelledby="titre-soutenance" class="rounded-lg border border-bordure bg-surface">
+  <header class="border-b border-bordure px-4 py-3">
+    <h2 id="titre-soutenance" class="text-xl font-bold">Fiche de soutenance</h2>
+    {
+      soutenance && (
+        <p class="text-sm text-texte-doux">
+          {nombre(soutenance.tirages.length)} portion{soutenance.tirages.length > 1 ? "s" : ""} tirée{soutenance.tirages.length > 1 ? "s" : ""} au sort parmi{" "}
+          {nombre(soutenance.candidats)} blocs du code de l'étudiant · graine <span class="font-mono">{soutenance.graine}</span> (même graine, même tirage ;
+          <span class="font-mono">--graine 2</span> pour un autre).
+        </p>
+      )
+    }
+  </header>
+  {
+    !soutenance ? (
+      <p class="px-4 py-3 text-sm text-texte-doux">Non mesurable : le dépôt n'a pas pu être lu.</p>
+    ) : soutenance.tirages.length === 0 ? (
+      <p class="px-4 py-3 text-sm text-texte-doux">Aucun bloc de code assez fourni à tirer dans le dépôt.</p>
+    ) : (
+      <div class="space-y-4 p-4">
+        <p class:list={["text-sm", soutenance.ia.statut === "echec" ? "font-semibold text-partiel" : "text-texte-doux"]}>
+          {STATUT_IA[soutenance.ia.statut]}
+          {soutenance.ia.raison && soutenance.ia.statut === "echec" && <> {soutenance.ia.raison}</>}
+          {soutenance.ia.modele && <span class="font-mono text-xs"> · {soutenance.ia.modele}, prompt {soutenance.ia.prompt}</span>}
+          {soutenance.ia.ecartees > 0 && <> · {nombre(soutenance.ia.ecartees)} question(s) écartée(s) : elles ne citaient pas le passage.</>}
+        </p>
+        <ol class="space-y-6">
+          {soutenance.tirages.map((t: any, i: number) => (
+            <li>
+              <h3 class="mb-1 text-sm font-semibold">
+                Portion {i + 1} ·{" "}
+                {lienGithub(t) ? (
+                  <a href={lienGithub(t)!} class="font-mono font-normal text-accent underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                    {t.fichier}:{t.debut}-{t.fin}
+                    <span class="sr-only"> (sur GitHub, nouvel onglet)</span>
+                  </a>
+                ) : (
+                  <span class="font-mono font-normal">{t.fichier}:{t.debut}-{t.fin}</span>
+                )}
+              </h3>
+              <div class="overflow-x-auto rounded-md border border-bordure bg-page" tabindex="0" role="region" aria-label={`Code de ${t.fichier}, défilable`}>
+                <pre class="py-2 font-mono text-xs leading-relaxed"><code>{t.code.split("\n").map((ligne: string, n: number) => (
+                  <span class="block px-3"><span class="mr-3 inline-block w-8 select-none text-right text-texte-doux" aria-hidden="true">{t.debut + n}</span>{ligne || " "}</span>
+                ))}</code></pre>
+              </div>
+              {t.questions?.length > 0 && (
+                <ol class="mt-2 space-y-2 text-sm">
+                  {t.questions.map((q: any) => (
+                    <li class="rounded-md border border-bordure p-2">
+                      <p>
+                        <span class="font-mono text-xs text-texte-doux">l. {q.lignes.debut === q.lignes.fin ? q.lignes.debut : `${q.lignes.debut}-${q.lignes.fin}`}</span> {q.question}
+                      </p>
+                      <details class="mt-1 text-texte-doux">
+                        <summary class="cursor-pointer text-xs font-semibold">Éléments attendus</summary>
+                        <p class="mt-1 whitespace-pre-line">{q.attendu}</p>
+                      </details>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    )
+  }
+</section>

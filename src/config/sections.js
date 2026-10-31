@@ -13,6 +13,7 @@ const SECTIONS = {
   portfolio: [
     { id: "site", libelle: "Site parcouru" },
     { id: "timeline", libelle: "Timeline" },
+    { id: "soutenance", libelle: "Fiche de soutenance" },
   ],
 };
 

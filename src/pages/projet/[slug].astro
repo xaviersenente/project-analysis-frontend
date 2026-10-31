@@ -13,6 +13,7 @@ import BlocsMethodologie from "../../components/BlocsMethodologie.astro";
 import Verdict from "../../components/Verdict.astro";
 import SiteParcouru from "../../components/SiteParcouru.astro";
 import CapturesSite from "../../components/CapturesSite.astro";
+import FicheSoutenance from "../../components/FicheSoutenance.astro";
 import { sectionsAnalyse } from "../../config/sections.js";
 import { badgesParAxe } from "../../lib/synthese.js";
 import { donneesSite } from "../../lib/site.js";
@@ -89,6 +90,7 @@ const recommandations = resultat
             {avecSection("par-page") && <VueParPage pages={resultat.pages} langues={resultat.langues} />}
             {avecSection("site") && <SiteParcouru parcours={resultat.parcours} />}
             {avecSection("timeline") && <Timeline historique={resultat.historique} />}
+            {avecSection("soutenance") && <FicheSoutenance soutenance={resultat.soutenance} depot={resultat.liens.depot} sha={resultat.source.sha} />}
             {avecSection("ressources") && <Ressources ressources={resultat.ressources} criteres={resultat.criteres} enLigne={resultat.enLigne} sha={resultat.source.sha} />}
 
             <section id="recommandations" aria-labelledby="titre-recommandations" class="rounded-lg border border-bordure bg-surface">
