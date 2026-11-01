@@ -29,12 +29,17 @@ export const normaliser = (texte) =>
 
 const NON_RESPECTE = ["non-respecte", "partiel"];
 
+/** Badge d'un critère repris d'une SAÉ précédente : « s1-sae » → « Acquis S1 » ; null sinon */
+export const libelleOrigine = (origine) => (origine ? `Acquis ${origine.split("-")[0].toUpperCase()}` : null);
+
 /**
  * Une ligne de critère correspond-elle aux filtres ?
- * @param {{ verdict: string, statut: string, texte: string }} ligne
- * @param {{ vue: "tous" | "non-respectes" | "a-juger", masquerRecommandations: boolean, recherche: string }} filtres
+ * @param {{ verdict: string, statut: string, texte: string, origine?: string }} ligne - origine : vide pour un critère du sujet
+ * @param {{ vue: "tous" | "non-respectes" | "a-juger", masquerRecommandations: boolean, recherche: string, origine?: "toutes" | "sujet" | "acquis" }} filtres
  */
 export const correspondAuFiltre = (ligne, filtres) => {
+  if (filtres.origine === "sujet" && ligne.origine) return false;
+  if (filtres.origine === "acquis" && !ligne.origine) return false;
   if (filtres.masquerRecommandations && ligne.statut === "R") return false;
   if (filtres.vue === "non-respectes") {
     // Un bonus non obtenu n'est jamais un échec

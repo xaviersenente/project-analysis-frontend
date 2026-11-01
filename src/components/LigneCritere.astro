@@ -9,6 +9,7 @@ import Occurrences from "./Occurrences.astro";
 import ListeAlt from "./ListeAlt.astro";
 import NoteEnseignant from "./NoteEnseignant.vue";
 import { valeurCritere, seuilCritere, nombre, points } from "../lib/format.js";
+import { libelleOrigine } from "../lib/criteres.js";
 
 interface Props {
   critere: any;
@@ -53,7 +54,8 @@ const valeurTexte =
       ? null
       : valeurCritere(c);
 const bonusObtenu = c.statut === "B" && c.points?.obtenus > 0;
-const texteRecherche = `${c.id} ${c.libelle}`;
+const origine = libelleOrigine(c.origine);
+const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
 ---
 
 <li
@@ -61,6 +63,7 @@ const texteRecherche = `${c.id} ${c.libelle}`;
   data-critere
   data-verdict={c.verdict}
   data-statut={c.statut}
+  data-origine={c.origine}
   data-texte={texteRecherche}
   class:list={["scroll-mt-20", c.statut === "R" && "bg-page/40"]}>
   <details class="ligne-critere group">
@@ -70,7 +73,14 @@ const texteRecherche = `${c.id} ${c.libelle}`;
         ><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg
       >
       <span class="font-mono text-sm font-semibold">{c.id}</span>
-      <span class="min-w-0">{c.libelle}</span>
+      <span class="min-w-0">
+        {c.libelle}
+        {origine && (
+          <span class="ml-1.5 inline-block rounded border border-bordure bg-page px-1.5 align-middle text-xs font-semibold whitespace-nowrap text-texte-doux" title="Exigence d'une SAÉ précédente, reprise pour information : elle ne compte pas dans la note">
+            {origine}
+          </span>
+        )}
+      </span>
       <span class={`hidden text-xs xl:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
       <span class="inline-flex items-center gap-1">
         <Verdict verdict={c.verdict} statut={c.statut} />
@@ -116,6 +126,13 @@ const texteRecherche = `${c.id} ${c.libelle}`;
       <p class="text-sm text-texte-doux">
         Vu au {c.sourceCours} · mesure : {METHODE[c.methode]}
       </p>
+      {
+        origine && (
+          <p class="text-sm text-texte-doux">
+            {origine} : une exigence d'une SAÉ précédente, que le sujet ne redemande pas. Elle est mesurée sur le site publié et donnée pour information, sans points. Les lignes citées sont celles de la page reçue par le navigateur, pas celles du dépôt.
+          </p>
+        )
+      }
 
       {
         c.verdict === "non-mesurable" && (

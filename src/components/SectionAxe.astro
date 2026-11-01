@@ -5,6 +5,7 @@
 import JaugeAxe from "./JaugeAxe.astro";
 import LigneCritere from "./LigneCritere.astro";
 import { couleurAxe } from "../config/axes.js";
+import { libelleOrigine } from "../lib/criteres.js";
 
 interface Props {
   axe: { id: string; nom: string; description: string };
@@ -19,6 +20,8 @@ interface Props {
 
 const { axe, rang, criteres, pointsAxe, moyenne, images, slug } = Astro.props;
 const id = (suffixe: string) => `${axe.id}-${suffixe}`;
+// Critères repris d'une SAÉ précédente : le filtre n'apparaît que s'il y en a
+const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
 ---
 
 <section
@@ -54,6 +57,19 @@ const id = (suffixe: string) => `${axe.id}-${suffixe}`;
         ))
       }
     </fieldset>
+
+    {
+      origines.length > 0 && (
+        <label class="flex items-center gap-2 text-sm">
+          Critères
+          <select name="origine" class="h-9 rounded-md border border-bordure bg-surface px-2">
+            <option value="toutes">tous</option>
+            <option value="sujet">du sujet</option>
+            <option value="acquis">{origines.map((o) => libelleOrigine(o).replace(/^A/, "a")).join(", ")} seulement</option>
+          </select>
+        </label>
+      )
+    }
 
     <label class="flex cursor-pointer items-center gap-2 text-sm">
       <input type="checkbox" name="masquerRecommandations" role="switch" class="interrupteur" />
@@ -135,11 +151,12 @@ const id = (suffixe: string) => `${axe.id}-${suffixe}`;
         vue: String(donnees.get("vue")) as "tous" | "non-respectes" | "a-juger",
         masquerRecommandations: donnees.has("masquerRecommandations"),
         recherche: String(donnees.get("recherche") ?? ""),
+        origine: String(donnees.get("origine") ?? "toutes") as "toutes" | "sujet" | "acquis",
       };
       let visibles = 0;
       for (const ligne of lignes) {
         const visible = correspondAuFiltre(
-          { verdict: ligne.dataset.verdict!, statut: ligne.dataset.statut!, texte: ligne.dataset.texte! },
+          { verdict: ligne.dataset.verdict!, statut: ligne.dataset.statut!, texte: ligne.dataset.texte!, origine: ligne.dataset.origine },
           filtres
         );
         ligne.hidden = !visible;

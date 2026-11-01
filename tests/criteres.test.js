@@ -66,3 +66,17 @@ test("recherche : identifiant ou libellé, sans accents ni casse", () => {
   assert.ok(correspondAuFiltre(ligne("respecte", "C", "A13 Lighthouse Accessibilité"), filtres("accessibilite")));
   assert.ok(!correspondAuFiltre(ligne("respecte", "C"), filtres("contraste")));
 });
+
+test("filtre par origine : les critères du sujet, ou les acquis d'une SAÉ précédente", async () => {
+  const { libelleOrigine } = await import("../src/lib/criteres.js");
+  assert.equal(libelleOrigine("s1-sae"), "Acquis S1");
+  assert.equal(libelleOrigine(undefined), null);
+  const acquis = { ...ligne("non-respecte", "I"), origine: "s1-sae" };
+  const sujet = ligne("non-respecte", "I");
+  const avec = (origine) => ({ vue: "tous", masquerRecommandations: false, recherche: "", origine });
+  assert.ok(correspondAuFiltre(acquis, avec("toutes")) && correspondAuFiltre(sujet, avec("toutes")));
+  assert.ok(!correspondAuFiltre(acquis, avec("sujet")) && correspondAuFiltre(sujet, avec("sujet")));
+  assert.ok(correspondAuFiltre(acquis, avec("acquis")) && !correspondAuFiltre(sujet, avec("acquis")));
+  // Sans filtre d'origine (axe sans acquis), rien ne change
+  assert.ok(correspondAuFiltre(acquis, { vue: "tous", masquerRecommandations: false, recherche: "" }));
+});
