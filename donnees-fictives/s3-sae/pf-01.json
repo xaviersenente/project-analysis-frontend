@@ -176,6 +176,47 @@
       "totalOccurrences": 0
     },
     {
+      "id": "G8",
+      "axe": "direction-artistique",
+      "libelle": "Échelle typographique resserrée",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 6,
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 7,
+        "unite": "tailles"
+      },
+      "points": null,
+      "piste": "Regroupez les tailles proches sur une échelle de six ou sept pas.",
+      "sourceCours": "SAÉ 105 (S1) · CM 9",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "14 px, 16 px, 20 px, 24 px, 32 px, 48 px"
+    },
+    {
+      "id": "G9",
+      "axe": "direction-artistique",
+      "libelle": "Longueur de ligne bornée",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 68,
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 80,
+        "unite": "caractères"
+      },
+      "points": null,
+      "piste": "Bornez la largeur des paragraphes (max-width: 65ch, par exemple) : au-delà de 80 caractères, une ligne se lit mal.",
+      "sourceCours": "SAÉ 105 (S1) · CM 9 · TP 5",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
       "id": "ED1",
       "axe": "editorialisation",
       "libelle": "Éditorialisation",
@@ -384,8 +425,7 @@
       "sourceCours": "SAÉ 105 (S1) · CM 1",
       "origine": "s1-sae",
       "occurrences": [],
-      "totalOccurrences": 0,
-      "detailValeur": "0 erreur(s) sur 6 page(s)"
+      "totalOccurrences": 0
     },
     {
       "id": "Q1",
@@ -789,6 +829,64 @@
       "totalOccurrences": 0
     },
     {
+      "id": "A10",
+      "axe": "qualite-web",
+      "libelle": "Focus visible : pas d'outline: none sans remplacement",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "suppression"
+      },
+      "points": null,
+      "piste": "Gardez un contour visible au focus (:focus-visible) : on l'a vérifié au clavier, touche Tab.",
+      "sourceCours": "SAÉ 105 (S1) · CM 9 · TP 5",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "18 commande(s) sur 18 atteintes au clavier"
+    },
+    {
+      "id": "A11",
+      "axe": "qualite-web",
+      "libelle": "prefers-reduced-motion dès qu'il y a du mouvement",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Coupez les animations dans @media (prefers-reduced-motion: reduce).",
+      "sourceCours": "SAÉ 105 (S1) · CM 9",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "présent (CSS)"
+    },
+    {
+      "id": "A14",
+      "axe": "qualite-web",
+      "libelle": "Reflow au zoom 200 %",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "≤",
+        "nombre": 180,
+        "unite": "px"
+      },
+      "points": null,
+      "piste": "Vérifiez la page à 180 px de large.",
+      "sourceCours": "SAÉ 105 (S1) · CM 6 · TP 3",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
       "id": "E2",
       "axe": "qualite-web",
       "libelle": "Page courante signalée (aria-current)",
@@ -815,6 +913,54 @@
       ],
       "totalOccurrences": 1,
       "detailValeur": "5 pages sur 6"
+    },
+    {
+      "id": "E3",
+      "axe": "qualite-web",
+      "libelle": "États :hover, :focus-visible et :active",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 3,
+      "seuil": null,
+      "points": null,
+      "piste": "Déclarez les trois états sur les liens et les boutons.",
+      "sourceCours": "SAÉ 105 (S1) · CM 9 · TP 5",
+      "origine": "s1-sae",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "les trois"
+    },
+    {
+      "id": "E4",
+      "axe": "qualite-web",
+      "libelle": "Cibles tactiles de 44 × 44 px (boutons, liens sans texte)",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "non-respecte",
+      "valeur": 32,
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 44,
+        "unite": "px"
+      },
+      "points": null,
+      "piste": "Agrandissez la zone cliquable avec du padding, pas la police.",
+      "sourceCours": "SAÉ 105 (S1) · CM 6 · TP 4",
+      "origine": "s1-sae",
+      "occurrences": [
+        {
+          "fichier": "/",
+          "ligne": null,
+          "colonne": null,
+          "extrait": "<button class=\"menu__bouton\" aria-label=\"Menu\">  ← 32 × 32 px",
+          "surligne": [
+            51,
+            61
+          ]
+        }
+      ],
+      "totalOccurrences": 1
     },
     {
       "id": "E7",
