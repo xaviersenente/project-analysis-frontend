@@ -29,7 +29,11 @@ export const normaliser = (texte) =>
 
 const NON_RESPECTE = ["non-respecte", "partiel"];
 
-/** Badge d'un critère repris d'une SAÉ précédente : « s1-sae » → « Acquis S1 » ; null sinon */
+/**
+ * Badge d'un critère repris d'une SAÉ précédente : « s1-sae » → « Acquis S1 » ; null sinon
+ * @param {string | undefined} origine
+ * @returns {string | null}
+ */
 export const libelleOrigine = (origine) => (origine ? `Acquis ${origine.split("-")[0].toUpperCase()}` : null);
 
 /**

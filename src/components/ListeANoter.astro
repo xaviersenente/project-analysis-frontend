@@ -4,22 +4,23 @@
  * à juger (points, niveau proposé par l'IA, verdict), chacun avec ce qui aide à décider et son
  * formulaire ; les critères déjà notés sont repliés en fin de liste. Le site construit ne l'a pas.
  */
+import type { Critere, Image } from "../types";
 import LigneCritere from "./LigneCritere.astro";
 import { couleurAxe } from "../config/axes.js";
 import { criteresANoter } from "../lib/synthese.js";
 
 interface Props {
-  criteres: any[];
+  criteres: Critere[];
   axes: { id: string; nom: string }[];
-  images?: any[];
+  images?: Image[];
   slug: string;
 }
 
 const { criteres, axes, images, slug } = Astro.props;
 const { restants, notes } = criteresANoter(criteres);
 const total = restants.length + notes.length;
-const axeDe = (c: any) => axes.find((a) => a.id === c.axe)!;
-const pastille = (c: any) => couleurAxe(c.axe, axes.findIndex((a) => a.id === c.axe)).pastille;
+const axeDe = (c: Critere) => axes.find((a) => a.id === c.axe)!;
+const pastille = (c: Critere) => couleurAxe(c.axe, axes.findIndex((a) => a.id === c.axe)).pastille;
 ---
 
 {
@@ -40,7 +41,7 @@ const pastille = (c: any) => couleurAxe(c.axe, axes.findIndex((a) => a.id === c.
           <p class="px-4 py-3 text-sm">Tout est noté. Pensez au commentaire général, dans la synthèse.</p>
         ) : (
           <ul class="divide-y divide-bordure">
-            {restants.map((c: any, i: number) => (
+            {restants.map((c, i) => (
               <>
                 {(i === 0 || restants[i - 1].axe !== c.axe) && (
                   <li class="flex items-center gap-2 bg-page px-4 py-1.5 text-xs font-semibold tracking-wide text-texte-doux uppercase">
@@ -60,7 +61,7 @@ const pastille = (c: any) => couleurAxe(c.axe, axes.findIndex((a) => a.id === c.
           <details class="groupe-criteres border-t border-bordure">
             <summary class="cursor-pointer px-4 py-2.5 text-sm font-semibold text-texte-doux hover:bg-neutre-fond">Déjà notés ({notes.length})</summary>
             <ul class="divide-y divide-bordure border-t border-bordure">
-              {notes.map((c: any) => (
+              {notes.map((c) => (
                 <LigneCritere critere={c} images={images} slug={slug} dansListe={{ axe: axeDe(c) }} />
               ))}
             </ul>

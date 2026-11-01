@@ -4,16 +4,17 @@
  * qui permet de refaire le tirage, et les questions proposées par l'IA quand la promo l'autorise.
  * L'IA propose ; le jury choisit et pose ses propres questions.
  */
+import type { Soutenance } from "../types";
 import { nombre } from "../lib/format.js";
 
 interface Props {
-  soutenance: any | undefined;
+  soutenance: Soutenance | undefined;
   depot: string | null;
   sha: string;
 }
 
 const { soutenance, depot, sha } = Astro.props;
-const lienGithub = (t: any) => (depot ? `${depot}/blob/${sha}/${t.fichier}#L${t.debut}-L${t.fin}` : null);
+const lienGithub = (t: Soutenance["tirages"][number]) => (depot ? `${depot}/blob/${sha}/${t.fichier}#L${t.debut}-L${t.fin}` : null);
 const STATUT_IA: Record<string, string> = {
   proposees: "Questions proposées par l'IA : à reformuler ou écarter, le jury choisit.",
   desactivees: "Pas de questions proposées : l'IA n'est pas activée pour cette promo.",
@@ -46,10 +47,10 @@ const STATUT_IA: Record<string, string> = {
           {STATUT_IA[soutenance.ia.statut]}
           {soutenance.ia.raison && soutenance.ia.statut === "echec" && <> {soutenance.ia.raison}</>}
           {soutenance.ia.modele && <span class="font-mono text-xs"> · {soutenance.ia.modele}, prompt {soutenance.ia.prompt}</span>}
-          {soutenance.ia.ecartees > 0 && <> · {nombre(soutenance.ia.ecartees)} question(s) écartée(s) : elles ne citaient pas le passage.</>}
+          {(soutenance.ia.ecartees ?? 0) > 0 && <> · {nombre(soutenance.ia.ecartees)} question(s) écartée(s) : elles ne citaient pas le passage.</>}
         </p>
         <ol class="space-y-6">
-          {soutenance.tirages.map((t: any, i: number) => (
+          {soutenance.tirages.map((t, i) => (
             <li>
               <h3 class="mb-1 text-sm font-semibold">
                 Portion {i + 1} ·{" "}
@@ -67,9 +68,9 @@ const STATUT_IA: Record<string, string> = {
                   <span class="block px-3"><span class="mr-3 inline-block w-8 select-none text-right text-texte-doux" aria-hidden="true">{t.debut + n}</span>{ligne || " "}</span>
                 ))}</code></pre>
               </div>
-              {t.questions?.length > 0 && (
+              {t.questions && t.questions.length > 0 && (
                 <ol class="mt-2 space-y-2 text-sm">
-                  {t.questions.map((q: any) => (
+                  {t.questions.map((q) => (
                     <li class="rounded-md border border-bordure p-2">
                       <p>
                         <span class="font-mono text-xs text-texte-doux">l. {q.lignes.debut === q.lignes.fin ? q.lignes.debut : `${q.lignes.debut}-${q.lignes.fin}`}</span> {q.question}

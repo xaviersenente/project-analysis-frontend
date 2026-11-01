@@ -3,17 +3,19 @@
  * G11 : chaque écran de la maquette Figma face à la page du site, à la même largeur.
  * Un écran par ligne dépliable ; les deux captures défilent ensemble.
  */
+import type { Maquette } from "../types";
 import { date, nombre } from "../lib/format.js";
 import { estClaire } from "../lib/blocs.js";
 
 interface Props {
-  maquette: any;
+  maquette: Maquette;
 }
 
 const { maquette } = Astro.props;
-const avecPage = maquette.ecrans.filter((e: any) => e.fichier);
-const sansPage = maquette.ecrans.filter((e: any) => !e.fichier);
-const part = (e: any) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.textes.conformes / (e.textes.total - e.textes.absents) : null);
+type Ecran = Props["maquette"]["ecrans"][number];
+const avecPage = maquette.ecrans.filter((e) => e.fichier);
+const sansPage = maquette.ecrans.filter((e) => !e.fichier);
+const part = (e: Ecran) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.textes.conformes / (e.textes.total - e.textes.absents) : null);
 ---
 
 <div class="rounded-md border border-bordure p-3 lg:col-span-2">
@@ -30,7 +32,7 @@ const part = (e: any) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.
 
   <ul class="divide-y divide-bordure rounded border border-bordure">
     {
-      avecPage.map((e: any) => (
+      avecPage.map((e) => (
         <li>
           <details class="group">
             <summary class="grid min-h-11 cursor-pointer list-none grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-3 px-3 py-2 text-sm hover:bg-neutre-fond">
@@ -54,7 +56,7 @@ const part = (e: any) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.
               )}
             </summary>
             <div class="grid grid-cols-2 gap-3 border-t border-bordure bg-page p-3" data-captures>
-              {["maquette", "site"].map((cote) => (
+              {(["maquette", "site"] as const).map((cote) => (
                 <figure class="min-w-0">
                   <figcaption class="mb-1 text-xs font-semibold text-texte-doux">{cote === "maquette" ? "Maquette" : "Site"}</figcaption>
                   <div class="max-h-[70vh] overflow-y-auto rounded border border-bordure bg-surface" data-defilement>
@@ -76,7 +78,7 @@ const part = (e: any) => (e.textes && e.textes.total - e.textes.absents > 0 ? e.
   {
     (sansPage.length > 0 || maquette.pagesSansEcran.length > 0) && (
       <p class="mt-2 text-xs text-texte-doux">
-        {sansPage.length > 0 && <>Écrans sans page : {sansPage.map((e: any) => e.nom).join(", ")}. </>}
+        {sansPage.length > 0 && <>Écrans sans page : {sansPage.map((e) => e.nom).join(", ")}. </>}
         {maquette.pagesSansEcran.length > 0 && <>Pages sans écran : {maquette.pagesSansEcran.join(", ")}. </>}
         L'association se corrige dans le fichier de promo (champ <code class="font-mono">ecrans</code>).
       </p>

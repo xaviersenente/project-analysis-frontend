@@ -79,7 +79,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 const props = defineProps({
   // [{ slug, nom, groupe, note: number|null, lettre: string|null }]
   options: { type: Array, required: true },
-  courantSlug: { type: String, default: null },
+  courantSlug: { type: [String, null], default: null },
 });
 
 const idChamp = "selecteur-projet";

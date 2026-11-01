@@ -88,7 +88,9 @@ export const moyennesPromo = (tousLesResultats) => {
 
 /**
  * Mode local : les critères que l'enseignant doit noter (à juger par l'outil), restants puis déjà notés
- * @returns {{ restants: object[], notes: object[] }}
+ * @template {{ verdict: string, enseignant?: { verdictOutil: string } }} T
+ * @param {T[]} criteres
+ * @returns {{ restants: T[], notes: T[] }}
  */
 export const criteresANoter = (criteres) => {
   const aJuger = criteres.filter((c) => c.verdict === "a-juger" || c.enseignant?.verdictOutil === "a-juger");

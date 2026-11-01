@@ -32,7 +32,7 @@ const valider = (schema, donnees, fichier) => {
 
 /**
  * @param {string} dossier
- * @returns {object} - La promo, projets triés par nom
+ * @returns {import("../types").Promo} - La promo, projets triés par nom
  */
 export const chargerPromo = (dossier = dossierDonnees()) => {
   const fichier = path.join(dossier, "promo.json");
@@ -60,8 +60,8 @@ const lireNotes = (dossier, slug, resultat) => {
 /**
  * Les résultats des projets analysés ; un projet sans fichier n'est pas encore analysé
  * @param {string} dossier
- * @param {object} promo
- * @returns {Map<string, object>} - slug → résultat
+ * @param {import("../types").Promo} promo
+ * @returns {Map<string, import("../types").Resultat>} - slug → résultat
  */
 export const chargerResultats = (dossier = dossierDonnees(), promo = chargerPromo(dossier)) => {
   const resultats = new Map();

@@ -3,8 +3,10 @@
  * Un niveau de l'arborescence du dépôt ; les dossiers se replient (<details>),
  * les noms fautifs sont signalés par une icône et le problème en toutes lettres.
  */
+import type { construireArbre } from "../lib/tableaux.js";
+
 interface Props {
-  noeuds: any[];
+  noeuds: ReturnType<typeof construireArbre>;
 }
 
 const { noeuds } = Astro.props;

@@ -3,6 +3,7 @@
  * Une ligne de critère, dépliable au clic ou au clavier (<details> natif).
  * Recommandations calmes, jamais en rouge ; bonus valorisé quand il est obtenu, neutre sinon.
  */
+import type { Critere, Image } from "../types";
 import Verdict from "./Verdict.astro";
 import IconeMethode from "./IconeMethode.astro";
 import Occurrences from "./Occurrences.astro";
@@ -13,9 +14,9 @@ import { libelleOrigine } from "../lib/criteres.js";
 import { motVerdict } from "../config/verdicts.js";
 
 interface Props {
-  critere: any;
+  critere: Critere;
   // Images du site, pour juger la qualité des alt (A6)
-  images?: any[];
+  images?: Image[];
   // Projet : pour enregistrer les notes en mode local
   slug?: string;
   // Liste « À noter » : la même ligne, sous un autre identifiant, avec un lien vers son axe
@@ -50,7 +51,7 @@ const valeurTexte =
     : c.valeur === null && !c.detailValeur
       ? null
       : valeurCritere(c);
-const bonusObtenu = c.statut === "B" && c.points?.obtenus > 0;
+const bonusObtenu = c.statut === "B" && (c.points?.obtenus ?? 0) > 0;
 const origine = libelleOrigine(c.origine);
 const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
 ---
@@ -108,7 +109,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
               </>
             )
           ) : bonusObtenu ? (
-            <span class="font-semibold text-bonus">+ {nombre(c.points.obtenus)}</span>
+            <span class="font-semibold text-bonus">+ {nombre(c.points!.obtenus)}</span>
           ) : null
         }
       </span>
@@ -145,11 +146,11 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
             <p class="font-semibold">
               Points proposés : {nombre(c.pointsProposes.valeur)} / {nombre(c.pointsProposes.max)}
               <span class="font-normal text-texte-doux">
-                {" "}· d'après {c.pointsProposes.mesures.filter((m: any) => m.verdict === "respecte").length} mesure(s) respectée(s) sur {c.pointsProposes.mesures.length}
+                {" "}· d'après {c.pointsProposes.mesures.filter((m) => m.verdict === "respecte").length} mesure(s) respectée(s) sur {c.pointsProposes.mesures.length}
               </span>
             </p>
             <ul class="mt-1 flex flex-wrap gap-1.5" aria-label="Les mesures prises en compte">
-              {c.pointsProposes.mesures.map((m: any) => (
+              {c.pointsProposes.mesures.map((m) => (
                 <li>
                   <a href={`#critere-${m.id}`} class="inline-flex items-center gap-1 rounded border border-bordure bg-surface px-1.5 font-mono text-xs underline-offset-2 hover:underline">
                     {m.id} <Verdict verdict={m.verdict} statut="I" />
@@ -187,7 +188,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
         c.statut === "B" && (
           <p class:list={["rounded-md px-3 py-2 text-sm", bonusObtenu ? "bg-bonus-fond text-bonus" : "bg-surface text-texte-doux border border-bordure"]}>
             {bonusObtenu
-              ? `Bonus obtenu : ${points(c.points.obtenus)} ajoutés à la note (${nombre(c.valeur)} % des classes en BEM).`
+              ? `Bonus obtenu : ${points(c.points!.obtenus)} ajoutés à la note (${nombre(c.valeur)} % des classes en BEM).`
               : `Bonus non obtenu (${nombre(c.valeur)} % des classes en BEM) : il ne retire aucun point.`}
           </p>
         )
@@ -233,7 +234,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
         )
       }
 
-      {modeLocal && c.statut !== "B" && <NoteEnseignant client:visible slug={slug} critere={c} ligne={idLigne} />}
+      {modeLocal && slug && c.statut !== "B" && <NoteEnseignant client:visible slug={slug} critere={c} ligne={idLigne} />}
 
       {c.id === "A6" && images && images.length > 0 && <ListeAlt images={images} />}
 

@@ -1,12 +1,13 @@
 ---
 /** Méthode de mesure d'un critère : une icône, et son nom pour les lecteurs d'écran */
 interface Props {
-  methode: "auto" | "depot" | "navigateur" | "ia" | "manuel";
+  // auto, depot, navigateur, ia ou manuel (le schéma les énumère)
+  methode: string;
 }
 
 const { methode } = Astro.props;
 
-const LIBELLES = {
+const LIBELLES: Record<string, string> = {
   auto: "Analyse du code",
   depot: "Lecture du dépôt",
   navigateur: "Navigateur automatisé",

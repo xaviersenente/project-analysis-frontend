@@ -4,10 +4,11 @@
  * puis les services tiers et les cookies déposés sans aucune action du visiteur.
  * Information pour le jury : la note reste la sienne.
  */
+import type { Parcours } from "../types";
 import { date, nombre } from "../lib/format.js";
 
 interface Props {
-  parcours: any | undefined;
+  parcours: Parcours | undefined;
 }
 
 const { parcours } = Astro.props;
@@ -51,7 +52,7 @@ const NOTE_ECO: Record<string, string> = { A: "text-respecte", B: "text-respecte
               </tr>
             </thead>
             <tbody class="divide-y divide-bordure">
-              {parcours.pages.map((p: any) =>
+              {parcours.pages.map((p) =>
                 p.ecoindex ? (
                   <tr>
                     <th scope="row" class="px-2 py-1.5 font-normal">
@@ -65,9 +66,9 @@ const NOTE_ECO: Record<string, string> = { A: "text-respecte", B: "text-respecte
                     <td class="px-2 py-1.5 text-right">{nombre(p.poidsKo)} Ko</td>
                     <td class="px-2 py-1.5 text-right">{nombre(p.requetes)}</td>
                     <td class="px-2 py-1.5 text-right">{nombre(p.dom)}</td>
-                    <td class:list={["px-2 py-1.5 text-right", p.violations > 0 && "font-semibold text-non-respecte"]}>{p.violations > 0 ? `${nombre(p.violations)} erreur${p.violations > 1 ? "s" : ""}` : "—"}</td>
+                    <td class:list={["px-2 py-1.5 text-right", (p.violations ?? 0) > 0 && "font-semibold text-non-respecte"]}>{(p.violations ?? 0) > 0 ? `${nombre(p.violations)} erreur${(p.violations ?? 0) > 1 ? "s" : ""}` : "—"}</td>
                     <td class="px-2 py-1.5 text-center">{p.debordement ? <span class="text-non-respecte">✕<span class="sr-only"> dépasse la largeur de l'écran</span></span> : <span class="text-respecte">✓<span class="sr-only"> tient dans l'écran</span></span>}</td>
-                    <td class:list={["px-2 py-1.5 text-right", p.tiers > 0 && "text-partiel"]}>{p.tiers > 0 ? nombre(p.tiers) : "—"}</td>
+                    <td class:list={["px-2 py-1.5 text-right", (p.tiers ?? 0) > 0 && "text-partiel"]}>{(p.tiers ?? 0) > 0 ? nombre(p.tiers) : "—"}</td>
                   </tr>
                 ) : (
                   <tr>
@@ -88,7 +89,7 @@ const NOTE_ECO: Record<string, string> = { A: "text-respecte", B: "text-respecte
               <p class="text-sm text-respecte">✓ Aucun.</p>
             ) : (
               <ul class="space-y-1 text-sm">
-                {parcours.tiers.map((t: any) => (
+                {parcours.tiers.map((t) => (
                   <li>
                     <span class="font-semibold">{t.categorie}</span> <span class="font-mono text-xs">{t.hote}</span>
                     <span class="text-texte-doux"> · {nombre(t.pages.length)} page{t.pages.length > 1 ? "s" : ""}</span>
@@ -103,7 +104,7 @@ const NOTE_ECO: Record<string, string> = { A: "text-respecte", B: "text-respecte
               <p class="text-sm text-respecte">✓ Aucun.</p>
             ) : (
               <ul class="space-y-1 text-sm">
-                {parcours.cookies.map((c: any) => (
+                {parcours.cookies.map((c) => (
                   <li>
                     <span class="font-mono text-xs">{c.nom}</span> <span class="text-texte-doux">· {c.domaine}{c.tiers && " (tiers)"}</span>
                   </li>

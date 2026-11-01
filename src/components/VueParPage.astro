@@ -4,13 +4,14 @@
  * Chaque cellule montre un symbole et sa valeur ; le détail apparaît au survol ou au focus,
  * et un clic mène au critère concerné. En-têtes de ligne et de colonne fixes au défilement.
  */
+import type { PageAnalysee, Langues } from "../types";
 import { COLONNES_PAGE } from "../config/controlesPage.js";
 import { VERDICTS } from "../config/verdicts.js";
 
 interface Props {
-  pages: any[] | undefined;
+  pages: PageAnalysee[] | undefined;
   // Site bilingue : seule la langue analysée figure dans la matrice
-  langues?: any;
+  langues?: Langues;
 }
 
 const { pages, langues } = Astro.props;
@@ -37,7 +38,7 @@ const echecsParColonne = Object.fromEntries(
       langues && (
         <p class="mt-1 text-sm">
           <span class="font-semibold">Site bilingue :</span> seule la version <code class="font-mono">{langues.analysee}/</code> est analysée (même structure HTML).{" "}
-          {langues.versions.map((v: any) => `${v.langue}/ : ${v.pages.length} page${v.pages.length > 1 ? "s" : ""}`).join(", ")}
+          {langues.versions.map((v) => `${v.langue}/ : ${v.pages.length} page${v.pages.length > 1 ? "s" : ""}`).join(", ")}
           {langues.complet ? (
             <span class="text-respecte"> ✓ versions complètes</span>
           ) : (

@@ -3,16 +3,18 @@
  * Accessibilité : les quatre scores Lighthouse (seul celui d'accessibilité compte),
  * les paires en échec de contraste, les contenus attendus par le sujet
  */
+import type { Blocs } from "../types";
 import { estClaire, largeurRelative } from "../lib/blocs.js";
 import { nombre, rapport } from "../lib/format.js";
 
 interface Props {
-  bloc: any | undefined;
+  bloc: Blocs["accessibilite"] | undefined;
   objectifLighthouse: number | null;
 }
 
 const { bloc, objectifLighthouse } = Astro.props;
-const SCORES = [
+const lighthouse = bloc?.lighthouse;
+const SCORES: { cle: "accessibilite" | "performance" | "bonnesPratiques" | "seo"; libelle: string; compte: boolean }[] = [
   { cle: "accessibilite", libelle: "Accessibilité", compte: true },
   { cle: "performance", libelle: "Performance", compte: false },
   { cle: "bonnesPratiques", libelle: "Bonnes pratiques", compte: false },
@@ -25,12 +27,12 @@ const SCORES = [
   <div class="rounded-md border border-bordure p-3">
     <h3 class="mb-2 text-sm font-semibold">Scores Lighthouse <span class="font-normal text-texte-doux">· moyenne des pages</span></h3>
     {
-      !bloc?.lighthouse ? (
+      !lighthouse ? (
         <p class="text-sm text-texte-doux">Non mesurable.</p>
       ) : (
         <ul class="space-y-2">
           {SCORES.map((s) => {
-            const score = bloc.lighthouse[s.cle];
+            const score = lighthouse[s.cle];
             return (
               <li class="grid grid-cols-[9rem_3rem_minmax(0,1fr)] items-center gap-2 text-sm">
                 <span>
@@ -73,7 +75,7 @@ const SCORES = [
         </p>
       ) : (
         <ul class="space-y-2">
-          {bloc.contrastes.map((c: any) => (
+          {bloc.contrastes.map((c) => (
             <li class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
               <span class="flex items-center gap-1" aria-hidden="true">
                 <span class:list={["size-5 rounded", estClaire(c.texte) && "ring-1 ring-texte-doux/40"]} style={`background: ${c.texte}`} />
@@ -103,7 +105,7 @@ const SCORES = [
         <p class="text-sm text-texte-doux">Non mesurable.</p>
       ) : (
         <ul class="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
-          {bloc.contenusAttendus.map((t: any) =>
+          {bloc.contenusAttendus.map((t) =>
             t.pages.length === 0 ? (
               <li class="flex min-h-9 items-center gap-2 rounded border border-non-respecte bg-non-respecte-fond px-2 text-sm text-non-respecte">
                 <span aria-hidden="true">✕</span>

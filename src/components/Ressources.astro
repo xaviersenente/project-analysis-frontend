@@ -3,15 +3,16 @@
  * Ressources : images (tableau triable), polices, site en ligne et arborescence du dépôt.
  * Les seuils viennent des critères E10, E11 et E12 du résultat, jamais du code.
  */
+import type { Critere, EnLigne, Ressources as RessourcesSite } from "../types";
 import Arborescence from "./Arborescence.astro";
 import SiteEnLigne from "./SiteEnLigne.astro";
 import { construireArbre } from "../lib/tableaux.js";
 import { nombre } from "../lib/format.js";
 
 interface Props {
-  ressources: any | undefined;
-  criteres: any[];
-  enLigne?: any;
+  ressources: RessourcesSite | undefined;
+  criteres: Critere[];
+  enLigne?: EnLigne;
   sha?: string;
 }
 
@@ -23,8 +24,8 @@ const policesMax = critere("G5")?.seuil?.nombre ?? null;
 const FORMATS_PHOTO_ANCIENS = ["jpg", "jpeg", "png"];
 
 const arbre = ressources ? construireArbre(ressources.arborescence) : [];
-const fautifs = ressources ? ressources.arborescence.filter((f: any) => f.problemes.length > 0).length : 0;
-const poidsImages = ressources ? ressources.images.reduce((s: number, i: any) => s + i.poidsKo, 0) : 0;
+const fautifs = ressources ? ressources.arborescence.filter((f) => f.problemes.length > 0).length : 0;
+const poidsImages = ressources ? ressources.images.reduce((s, i) => s + i.poidsKo, 0) : 0;
 
 const colonnes = [
   { cle: "fichier", libelle: "Fichier" },
@@ -70,10 +71,10 @@ const colonnes = [
                 </tr>
               </thead>
               <tbody class="divide-y divide-bordure">
-                {ressources.images.map((image: any) => {
+                {ressources.images.map((image) => {
                   const tropLourde = imageMaxKo !== null && image.poidsKo > imageMaxKo;
                   const formatAncien = FORMATS_PHOTO_ANCIENS.includes(image.format);
-                  const nom = image.fichier.split("/").pop();
+                  const nom = image.fichier.split("/").pop() ?? image.fichier;
                   return (
                     <tr>
                       <td class="px-2 py-1.5">
@@ -180,7 +181,7 @@ const colonnes = [
                 </tr>
               </thead>
               <tbody class="divide-y divide-bordure">
-                {ressources.polices.map((p: any) => (
+                {ressources.polices.map((p) => (
                   <tr>
                     <td class="px-2 py-1.5 font-mono text-xs">{p.fichier}</td>
                     <td class="px-2 py-1.5">{p.famille}</td>

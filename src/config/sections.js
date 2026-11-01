@@ -17,5 +17,9 @@ const SECTIONS = {
   ],
 };
 
-/** Un résultat sans profil (antérieur aux grilles par SAÉ) est de la SAÉ 105 */
+/**
+ * Un résultat sans profil (antérieur aux grilles par SAÉ) est de la SAÉ 105
+ * @param {string | undefined} profil
+ * @returns {Array<{ id: string, libelle: string }>}
+ */
 export const sectionsAnalyse = (profil) => SECTIONS[profil] ?? SECTIONS.sae105;

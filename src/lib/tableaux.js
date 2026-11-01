@@ -22,7 +22,8 @@ export const comparer = (a, b, sens) => {
 /**
  * Construit l'arbre des fichiers à partir de chemins à plat
  * @param {Array<{ chemin: string, problemes: string[] }>} entrees
- * @returns {Array<{ nom: string, chemin: string, dossier: boolean, problemes: string[], fautifs: number, enfants: Array }>}
+ * @typedef {{ nom: string, chemin: string, dossier: boolean, problemes: string[], fautifs: number, enfants: NoeudArbre[] }} NoeudArbre
+ * @returns {NoeudArbre[]}
  */
 export const construireArbre = (entrees) => {
   const racine = { enfants: new Map() };

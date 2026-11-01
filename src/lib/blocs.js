@@ -56,7 +56,7 @@ const graisseNumerique = (graisse) => (graisse === "bold" ? 700 : Number.parseIn
 /**
  * Les polices du site, par famille, chaque graisse avec sa copie publiée
  * @param {Array<{ famille: string, graisse: string, fichier: string, copie?: string|null }>} polices
- * @returns {Array<{ famille: string, nom: string, graisses: Array<object> }>}
+ * @returns {Array<{ famille: string, nom: string, graisses: Array<{ graisse: string, valeur: number, fichier: string, copie: string | null }> }>}
  */
 export const famillesPolices = (polices) => {
   const familles = new Map();

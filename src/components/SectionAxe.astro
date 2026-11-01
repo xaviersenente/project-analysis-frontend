@@ -2,6 +2,7 @@
 /**
  * Un axe : en-tête, filtres et liste des critères (des lignes, pas des cartes).
  */
+import type { Critere, Image } from "../types";
 import JaugeAxe from "./JaugeAxe.astro";
 import LigneCritere from "./LigneCritere.astro";
 import { couleurAxe } from "../config/axes.js";
@@ -11,10 +12,10 @@ interface Props {
   axe: { id: string; nom: string; description: string };
   // Place de l'axe dans la grille (sa couleur)
   rang: number;
-  criteres: any[];
+  criteres: Critere[];
   pointsAxe: { obtenus: number; max: number };
   moyenne: number | null;
-  images?: any[];
+  images?: Image[];
   slug?: string;
 }
 
@@ -74,7 +75,7 @@ const acquisParOrigine = origines.map((origine) => {
           <select name="origine" class="h-9 rounded-md border border-bordure bg-surface px-2">
             <option value="toutes">tous</option>
             <option value="sujet">du sujet</option>
-            <option value="acquis">{origines.map((o) => libelleOrigine(o).replace(/^A/, "a")).join(", ")} seulement</option>
+            <option value="acquis">{origines.map((o) => (libelleOrigine(o) ?? "").replace(/^A/, "a")).join(", ")} seulement</option>
           </select>
         </label>
       )

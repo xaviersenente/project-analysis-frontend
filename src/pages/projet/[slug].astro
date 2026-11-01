@@ -35,7 +35,7 @@ const { projet, precedent, suivant } = Astro.props;
 const { resultats, options, moyennes } = donneesSite();
 const resultat = resultats.get(projet.slug) ?? null;
 // Seuils lus dans les critères du résultat
-const seuilDe = (id: string) => resultat?.criteres.find((c: any) => c.id === id)?.seuil?.nombre ?? null;
+const seuilDe = (id: string) => resultat?.criteres.find((c) => c.id === id)?.seuil?.nombre ?? null;
 
 const sections = resultat ? sectionsAnalyse(resultat.grille.profil) : [];
 const avecSection = (id: string) => sections.some((s) => s.id === id);
@@ -45,7 +45,7 @@ const modeLocal = import.meta.env.DEV;
 const aNoter = resultat && modeLocal ? criteresANoter(resultat.criteres) : null;
 
 const recommandations = resultat
-  ? resultat.criteres.filter((c: any) => ["R", "I"].includes(c.statut) && ["non-respecte", "partiel"].includes(c.verdict))
+  ? resultat.criteres.filter((c) => ["R", "I"].includes(c.statut) && ["non-respecte", "partiel"].includes(c.verdict))
   : [];
 ---
 
@@ -79,11 +79,11 @@ const recommandations = resultat
 
             {modeLocal && <ListeANoter criteres={resultat.criteres} axes={resultat.grille.axes} images={resultat.ressources?.images} slug={resultat.projet.slug} />}
 
-            {resultat.grille.axes.map((axe: any, rang: number) => (
+            {resultat.grille.axes.map((axe, rang) => (
               <SectionAxe
                 axe={axe}
                 rang={rang}
-                criteres={resultat.criteres.filter((c: any) => c.axe === axe.id)}
+                criteres={resultat.criteres.filter((c) => c.axe === axe.id)}
                 pointsAxe={resultat.note.parAxe[axe.id]}
                 moyenne={moyennes?.parAxe[axe.id] ?? null}
                 images={resultat.ressources?.images}
@@ -110,7 +110,7 @@ const recommandations = resultat
                 <p class="px-4 py-3 text-sm text-texte-doux">Toutes les recommandations sont suivies.</p>
               ) : (
                 <ul class="divide-y divide-bordure">
-                  {recommandations.map((c: any) => (
+                  {recommandations.map((c) => (
                     <li class="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-baseline gap-3 px-4 py-2.5">
                       <a href={`#critere-${c.id}`} class="font-mono text-sm font-semibold text-accent underline underline-offset-2">{c.id}</a>
                       <span>

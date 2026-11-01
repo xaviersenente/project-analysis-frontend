@@ -3,10 +3,11 @@
  * Contrôle léger du site en ligne (lot 4) : pages et ressources en erreur, et pourquoi
  * quand le dépôt l'explique. Rien de noté : l'analyse porte sur le dépôt.
  */
+import type { EnLigne } from "../types";
 import { date, nombre } from "../lib/format.js";
 
 interface Props {
-  enLigne: any;
+  enLigne: EnLigne;
   sha: string;
 }
 
@@ -62,12 +63,12 @@ const CAUSES: Record<string, string> = {
             </tr>
           </thead>
           <tbody class="divide-y divide-bordure">
-            {enLigne.erreurs.map((e: any) => (
+            {enLigne.erreurs.map((e) => (
               <tr>
                 <td class="px-2 py-1.5 font-mono text-xs"><a href={e.url} class="underline underline-offset-2">{e.chemin}</a>{e.type === "page" && <span class="ml-1 font-sans text-texte-doux">(page)</span>}</td>
                 <td class="px-2 py-1.5 text-right font-mono text-xs">{e.statut || "—"}</td>
                 <td class="px-2 py-1.5">{e.cause ? CAUSES[e.cause] : <span class="text-texte-doux">présent dans la version évaluée : site pas à jour ?</span>}</td>
-                <td class="px-2 py-1.5 font-mono text-xs">{e.citePar.map((c: any) => `${c.page}${c.ligne ? `:${c.ligne}` : ""}`).join(", ") || "—"}</td>
+                <td class="px-2 py-1.5 font-mono text-xs">{e.citePar.map((c) => `${c.page}${c.ligne ? `:${c.ligne}` : ""}`).join(", ") || "—"}</td>
               </tr>
             ))}
           </tbody>

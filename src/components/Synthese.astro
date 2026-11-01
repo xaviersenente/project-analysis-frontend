@@ -1,11 +1,12 @@
 ---
+import type { Resultat } from "../types";
 import CommentaireGeneral from "./CommentaireGeneral.vue";
 import JaugeAxe from "./JaugeAxe.astro";
 import { compterVerdicts, priorites } from "../lib/synthese.js";
 import { nombre, points } from "../lib/format.js";
 
 interface Props {
-  resultat: any;
+  resultat: Resultat;
   moyennes: { totale: number; parAxe: Record<string, number> } | null;
 }
 
@@ -94,7 +95,7 @@ const ICONE_ALERTE: Record<string, string> = {
       </p>
       <div class="space-y-1">
         {
-          resultat.grille.axes.map((axe: any, rang: number) => (
+          resultat.grille.axes.map((axe, rang) => (
             <JaugeAxe
               axe={axe}
               rang={rang}
@@ -147,7 +148,7 @@ const ICONE_ALERTE: Record<string, string> = {
           {alertes.length} alerte{alertes.length > 1 ? "s" : ""} avant de corriger
         </h3>
         <ul class="space-y-1.5">
-          {alertes.map((alerte: any) => (
+          {alertes.map((alerte) => (
             <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
               <span class="rounded bg-surface px-1.5 font-mono text-xs font-semibold text-partiel">{ICONE_ALERTE[alerte.type]}</span>
               <span class="font-semibold">{alerte.message}</span>
@@ -165,7 +166,7 @@ const ICONE_ALERTE: Record<string, string> = {
       <div class="rounded-lg border border-bordure bg-neutre-fond p-4 text-sm" role="status">
         <p class="font-semibold">Non mesurable</p>
         <ul class="mt-1 list-disc pl-5">
-          {resultat.nonMesurable.map((item: any) => (
+          {resultat.nonMesurable.map((item) => (
             <li>
               {item.etape} : {item.raison}. Les critères concernés ne comptent pas dans la note.
             </li>
@@ -186,7 +187,7 @@ const ICONE_ALERTE: Record<string, string> = {
         <p class="px-4 py-3 text-sm text-respecte">Aucune contrainte non respectée.</p>
       ) : (
         <ol class="divide-y divide-bordure">
-          {lesPriorites.map((c: any, index: number) => (
+          {lesPriorites.map((c, index) => (
             <li>
               <a href={`#critere-${c.id}`} class="grid grid-cols-[1.5rem_3rem_minmax(0,1fr)_auto] items-baseline gap-3 px-4 py-2.5 hover:bg-neutre-fond">
                 <span class="text-sm text-texte-doux">{index + 1}</span>

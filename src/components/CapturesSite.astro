@@ -3,12 +3,13 @@
  * Portfolio : les captures du site en ligne, pour juger la direction artistique.
  * L'accueil aux trois largeurs, puis chaque page à 360 px. Une capture s'ouvre en grand.
  */
+import type { Parcours } from "../types";
 interface Props {
-  parcours: any | undefined;
+  parcours: Parcours | undefined;
 }
 
 const { parcours } = Astro.props;
-const pages = (parcours?.pages ?? []).filter((p: any) => p.captures.length > 0);
+const pages = (parcours?.pages ?? []).filter((p) => p.captures.length > 0);
 const [accueil, ...autres] = pages;
 ---
 
@@ -27,7 +28,7 @@ const [accueil, ...autres] = pages;
             Accueil <span class="font-mono font-normal">{accueil.chemin}</span>
           </figcaption>
           <ul class="flex items-start gap-3 overflow-x-auto pb-2" tabindex="0" role="region" aria-label="Accueil à trois largeurs, défilable">
-            {accueil.captures.map((c: any) => (
+            {accueil.captures.map((c) => (
               <li class="shrink-0">
                 {/* Même échelle pour les trois largeurs (1/4) ; le haut de la page, sans déformation : l'image entière s'ouvre au clic */}
                 <a href={c.image} class="block h-96 overflow-hidden rounded border border-bordure" style={`width: ${Math.round(c.largeur / 4)}px`} target="_blank" rel="noopener">
@@ -42,7 +43,7 @@ const [accueil, ...autres] = pages;
           <figure>
             <figcaption class="mb-1 text-xs font-semibold text-texte-doux">Les autres pages à 360 px</figcaption>
             <ul class="flex items-start gap-3 overflow-x-auto pb-2" tabindex="0" role="region" aria-label="Pages à 360 px, défilable">
-              {autres.map((p: any) => (
+              {autres.map((p) => (
                 <li class="w-24 shrink-0">
                   <a href={p.captures[0].image} class="block rounded border border-bordure" target="_blank" rel="noopener">
                     <img src={p.captures[0].image} alt={`${p.titre ?? p.chemin} à 360 px`} loading="lazy" class="max-h-56 w-full object-cover object-left-top" />

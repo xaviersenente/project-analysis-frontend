@@ -3,12 +3,13 @@
  * Méthodologie : le JavaScript (motifs à côté de leur alternative CSS ou HTML),
  * les classes inutilisées, le bonus BEM
  */
+import type { Blocs } from "../types";
 import OccurrenceLigne from "./OccurrenceLigne.astro";
 import { largeurRelative } from "../lib/blocs.js";
 import { nombre, points } from "../lib/format.js";
 
 interface Props {
-  bloc: any | undefined;
+  bloc: Blocs["methodologie"] | undefined;
   seuilBem: number | null;
 }
 
@@ -35,7 +36,7 @@ const inutilisees = bloc?.classesInutilisees;
           </p>
           {js.motifs.length > 0 && (
             <ul class="space-y-3">
-              {js.motifs.map((m: any) => (
+              {js.motifs.map((m) => (
                 <li class="grid gap-2 lg:grid-cols-2">
                   <div>
                     <p class="mb-1 text-sm font-semibold text-non-respecte">
@@ -86,7 +87,7 @@ const inutilisees = bloc?.classesInutilisees;
   </div>
 
   <!-- BEM : un bonus -->
-  <div class:list={["rounded-md border p-3", bem?.points > 0 ? "border-bonus/40 bg-bonus-fond" : "border-bordure"]}>
+  <div class:list={["rounded-md border p-3", (bem?.points ?? 0) > 0 ? "border-bonus/40 bg-bonus-fond" : "border-bordure"]}>
     <h3 class="mb-2 text-sm font-semibold">
       BEM <span class="font-normal text-texte-doux">· bonus</span>
     </h3>
