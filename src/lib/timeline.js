@@ -78,5 +78,3 @@ export const indexJour = (date, jours) => {
 /** Minutes écoulées depuis minuit, heure de Paris */
 export const minutesDuJour = (date) => (temps(date) - minuitParis(date).getTime()) / 60e3;
 
-/** Début de l'axe : minuit du premier jour */
-export const debutFrise = (date) => minuitParis(date).toISOString();

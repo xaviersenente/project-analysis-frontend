@@ -56,6 +56,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { VERDICTS as MOTS, motVerdict } from "../config/verdicts.js";
 
 const props = defineProps({
   slug: { type: String, required: true },
@@ -64,13 +65,7 @@ const props = defineProps({
   ligne: { type: String, default: "" },
 });
 
-const LIBELLES = {
-  respecte: "Respecté",
-  partiel: "Partiel",
-  "non-respecte": "Non respecté",
-  "non-mesurable": "Non mesurable",
-  "a-juger": "À juger",
-};
+const LIBELLES = Object.fromEntries(Object.keys(MOTS).map((v) => [v, motVerdict(v, { majuscule: true })]));
 
 const c = props.critere;
 const verdictOutil = c.enseignant?.verdictOutil ?? c.verdict;

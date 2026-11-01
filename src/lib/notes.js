@@ -10,7 +10,7 @@
  */
 
 /** Verdict d'un niveau : le plus haut est respecté, le plus bas non respecté, les autres partiels */
-export const verdictDuNiveau = (echelle, niveau) => {
+const verdictDuNiveau = (echelle, niveau) => {
   const rang = echelle.indexOf(niveau);
   return rang === echelle.length - 1 ? "respecte" : rang === 0 ? "non-respecte" : "partiel";
 };

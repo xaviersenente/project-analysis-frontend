@@ -5,6 +5,8 @@
  * gris non mesurable. Une contrainte est pleine ; une recommandation ou une information
  * garde la même couleur en contour, plus discrète. Un bonus non obtenu reste neutre.
  */
+import { VERDICTS, motVerdict } from "../config/verdicts.js";
+
 interface Props {
   verdict: string;
   statut: string;
@@ -23,14 +25,16 @@ const TEINTES: Record<string, [string, string]> = {
 };
 const teinte = (verdict: string) => TEINTES[verdict][recommande ? 1 : 0];
 
+// Mot et icône communs (config/verdicts.js) ; un bonus se dit « obtenu » ou « non obtenu »
+const base = (v: string) => ({ mot: motVerdict(v, { majuscule: true }), icone: VERDICTS[v as keyof typeof VERDICTS].icone });
 const STYLES: Record<string, { mot: string; icone: string; classe: string }> = {
-  respecte: { mot: bonus ? "Obtenu" : "Respecté", icone: "✓", classe: bonus ? "text-bonus bg-bonus-fond border border-transparent" : teinte("respecte") },
+  respecte: bonus ? { mot: "Obtenu", icone: "✓", classe: "text-bonus bg-bonus-fond border border-transparent" } : { ...base("respecte"), classe: teinte("respecte") },
   "non-respecte": bonus
     ? { mot: "Non obtenu", icone: "○", classe: "text-neutre bg-neutre-fond border border-transparent" }
-    : { mot: "Non respecté", icone: "✕", classe: teinte("non-respecte") },
-  partiel: { mot: "Partiel", icone: "◐", classe: teinte("partiel") },
-  "non-mesurable": { mot: "Non mesurable", icone: "?", classe: "text-neutre bg-neutre-fond border border-transparent" },
-  "a-juger": { mot: "À juger", icone: "✎", classe: "text-accent bg-accent-fond border border-accent/40" },
+    : { ...base("non-respecte"), classe: teinte("non-respecte") },
+  partiel: { ...base("partiel"), classe: teinte("partiel") },
+  "non-mesurable": { ...base("non-mesurable"), classe: "text-neutre bg-neutre-fond border border-transparent" },
+  "a-juger": { ...base("a-juger"), classe: "text-accent bg-accent-fond border border-accent/40" },
 };
 
 const style = STYLES[verdict];

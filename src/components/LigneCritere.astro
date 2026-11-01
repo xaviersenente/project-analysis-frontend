@@ -10,6 +10,7 @@ import ListeAlt from "./ListeAlt.astro";
 import NoteEnseignant from "./NoteEnseignant.vue";
 import { valeurCritere, seuilCritere, nombre, points } from "../lib/format.js";
 import { libelleOrigine } from "../lib/criteres.js";
+import { motVerdict } from "../config/verdicts.js";
 
 interface Props {
   critere: any;
@@ -27,13 +28,6 @@ const idLigne = dansListe ? `a-noter-${c.id}` : `critere-${c.id}`;
 const modeLocal = import.meta.env.DEV && Boolean(slug);
 const ens = c.enseignant;
 const verdictCorrige = ens && ens.verdictOutil !== "a-juger" && ens.verdictOutil !== c.verdict;
-const LIBELLE_VERDICT: Record<string, string> = {
-  respecte: "respecté",
-  partiel: "partiel",
-  "non-respecte": "non respecté",
-  "non-mesurable": "non mesurable",
-  "a-juger": "à juger",
-};
 
 const STATUT: Record<string, { libelle: string; classe: string }> = {
   C: { libelle: "Contrainte", classe: "text-texte" },
@@ -87,7 +81,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
       <span class={`hidden text-xs xl:block ${STATUT[c.statut].classe}`}>{STATUT[c.statut].libelle}</span>
       <span class="inline-flex items-center gap-1">
         <Verdict verdict={c.verdict} statut={c.statut} />
-        {verdictCorrige && <span class="text-xs text-accent" title={`Corrigé par l'enseignant ; l'outil indiquait « ${LIBELLE_VERDICT[ens.verdictOutil]} »`}>✎<span class="sr-only"> corrigé par l'enseignant</span></span>}
+        {verdictCorrige && <span class="text-xs text-accent" title={`Corrigé par l'enseignant ; l'outil indiquait « ${motVerdict(ens.verdictOutil)} »`}>✎<span class="sr-only"> corrigé par l'enseignant</span></span>}
       </span>
       <span class="col-span-2 col-start-3 text-sm xl:col-span-1 xl:col-start-auto">
         {
@@ -217,7 +211,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
                 {c.proposition && <span class="text-texte-doux">{ens.niveau === c.proposition.niveau ? " · la proposition de l'IA, validée" : ` · l'IA proposait « ${c.proposition.niveau} »`}</span>}
               </p>
             )}
-            {verdictCorrige && !ens.niveau && <p class="text-texte-doux">Verdict corrigé : l'outil indiquait « {LIBELLE_VERDICT[ens.verdictOutil]} ».</p>}
+            {verdictCorrige && !ens.niveau && <p class="text-texte-doux">Verdict corrigé : l'outil indiquait « {motVerdict(ens.verdictOutil)} ».</p>}
             {ens.commentaire && <p class="mt-1 whitespace-pre-line">{ens.commentaire}</p>}
           </div>
         ) : (

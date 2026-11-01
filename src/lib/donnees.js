@@ -48,7 +48,7 @@ export const cheminNotes = (dossier, slug) => path.join(dossier, "notes", `${slu
  * Les notes de l'enseignant pour un résultat ; vides s'il n'y en a pas encore
  * @throws {Error} - Notes invalides : le build s'arrête avec le fichier et le problème
  */
-export const lireNotes = (dossier, slug, resultat) => {
+const lireNotes = (dossier, slug, resultat) => {
   const fichier = cheminNotes(dossier, slug);
   if (!fs.existsSync(fichier)) return NOTES_VIDES;
   const notes = valider(notesSchema, lireJson(fichier), fichier);

@@ -5,6 +5,7 @@
  * et un clic mène au critère concerné. En-têtes de ligne et de colonne fixes au défilement.
  */
 import { COLONNES_PAGE } from "../config/controlesPage.js";
+import { VERDICTS } from "../config/verdicts.js";
 
 interface Props {
   pages: any[] | undefined;
@@ -14,12 +15,14 @@ interface Props {
 
 const { pages, langues } = Astro.props;
 
-const SYMBOLE: Record<string, { icone: string; mot: string; classe: string }> = {
-  respecte: { icone: "✓", mot: "respecté", classe: "text-respecte" },
-  "non-respecte": { icone: "✕", mot: "non respecté", classe: "text-non-respecte bg-non-respecte-fond" },
-  partiel: { icone: "◐", mot: "partiel", classe: "text-partiel bg-partiel-fond" },
-  "non-mesurable": { icone: "?", mot: "non mesurable", classe: "text-neutre" },
+// Mot et icône communs (config/verdicts.js) ; la couleur d'une cellule du tableau
+const CLASSE: Record<string, string> = {
+  respecte: "text-respecte",
+  "non-respecte": "text-non-respecte bg-non-respecte-fond",
+  partiel: "text-partiel bg-partiel-fond",
+  "non-mesurable": "text-neutre",
 };
+const SYMBOLE = Object.fromEntries(Object.entries(CLASSE).map(([v, classe]) => [v, { ...VERDICTS[v as keyof typeof VERDICTS], classe }]));
 
 const echecsParColonne = Object.fromEntries(
   COLONNES_PAGE.map(({ cle }) => [cle, (pages ?? []).filter((p) => p.controles[cle].verdict === "non-respecte").length])
