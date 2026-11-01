@@ -1,7 +1,9 @@
 ---
 /**
  * Un verdict : toujours une icône et un mot, jamais la couleur seule.
- * Une recommandation non respectée reste calme (jamais rouge) ; un bonus non obtenu reste neutre.
+ * Un code couleur par verdict : vert respecté, rouge non respecté, ambre partiel, bleu à juger,
+ * gris non mesurable. Une contrainte est pleine ; une recommandation ou une information
+ * garde la même couleur en contour, plus discrète. Un bonus non obtenu reste neutre.
  */
 interface Props {
   verdict: string;
@@ -12,17 +14,23 @@ const { verdict, statut } = Astro.props;
 
 const recommande = statut === "R" || statut === "I";
 const bonus = statut === "B";
+// Contrainte : fond coloré ; recommandation, information : contour de la même couleur.
+// Classes écrites en entier, pour que Tailwind les trouve
+const TEINTES: Record<string, [string, string]> = {
+  respecte: ["text-respecte bg-respecte-fond border border-transparent", "text-respecte bg-surface border border-respecte/50"],
+  "non-respecte": ["text-non-respecte bg-non-respecte-fond border border-transparent", "text-non-respecte bg-surface border border-non-respecte/50"],
+  partiel: ["text-partiel bg-partiel-fond border border-transparent", "text-partiel bg-surface border border-partiel/50"],
+};
+const teinte = (verdict: string) => TEINTES[verdict][recommande ? 1 : 0];
 
 const STYLES: Record<string, { mot: string; icone: string; classe: string }> = {
-  respecte: { mot: bonus ? "Obtenu" : "Respecté", icone: "✓", classe: bonus ? "text-bonus bg-bonus-fond" : "text-respecte bg-respecte-fond" },
+  respecte: { mot: bonus ? "Obtenu" : "Respecté", icone: "✓", classe: bonus ? "text-bonus bg-bonus-fond border border-transparent" : teinte("respecte") },
   "non-respecte": bonus
-    ? { mot: "Non obtenu", icone: "○", classe: "text-neutre bg-neutre-fond" }
-    : recommande
-      ? { mot: "Non respecté", icone: "✕", classe: "text-neutre bg-neutre-fond" }
-      : { mot: "Non respecté", icone: "✕", classe: "text-non-respecte bg-non-respecte-fond" },
-  partiel: { mot: "Partiel", icone: "◐", classe: recommande ? "text-neutre bg-neutre-fond" : "text-partiel bg-partiel-fond" },
-  "non-mesurable": { mot: "Non mesurable", icone: "?", classe: "text-neutre bg-neutre-fond" },
-  "a-juger": { mot: "À juger", icone: "✎", classe: "text-neutre bg-neutre-fond" },
+    ? { mot: "Non obtenu", icone: "○", classe: "text-neutre bg-neutre-fond border border-transparent" }
+    : { mot: "Non respecté", icone: "✕", classe: teinte("non-respecte") },
+  partiel: { mot: "Partiel", icone: "◐", classe: teinte("partiel") },
+  "non-mesurable": { mot: "Non mesurable", icone: "?", classe: "text-neutre bg-neutre-fond border border-transparent" },
+  "a-juger": { mot: "À juger", icone: "✎", classe: "text-accent bg-accent-fond border border-accent/40" },
 };
 
 const style = STYLES[verdict];
