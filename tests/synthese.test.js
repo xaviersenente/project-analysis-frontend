@@ -34,7 +34,7 @@ const criteres = [
   critere("E15", "ergonomie", "I", "respecte"),
 ];
 
-test("compteurs : contraintes non respectées, recommandations à suivre, critères à juger", () => {
+test("compteurs : contraintes non respectées, recommandations non respectées, critères à juger", () => {
   assert.deepEqual(compterVerdicts(criteres), {
     contraintesNonRespectees: 4, // A3, A5 (partiel), G1, M4
     recommandations: 1, // A6

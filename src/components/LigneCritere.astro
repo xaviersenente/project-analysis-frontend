@@ -136,7 +136,7 @@ const texteRecherche = `${c.id} ${c.libelle}`;
             </p>
             <p class="mt-1 whitespace-pre-line">{c.proposition.justification}</p>
             <p class="mt-1 text-xs text-texte-doux">
-              À valider ou corriger : le verdict reste celui de l'enseignant. {nombre(c.proposition.preuves.length)} preuve(s) retrouvée(s) mot pour mot
+              À valider ou corriger : le niveau retenu est celui de l'enseignant. {nombre(c.proposition.preuves.length)} preuve(s) retrouvée(s) mot pour mot
               {c.proposition.preuvesEcartees > 0 && <>, {nombre(c.proposition.preuvesEcartees)} écartée(s) car introuvable(s) à la ligne citée</>} ·{" "}
               <span class="font-mono">{c.proposition.modele}, prompt {c.proposition.prompt}</span>
             </p>
@@ -161,7 +161,13 @@ const texteRecherche = `${c.id} ${c.libelle}`;
               Évaluation de l'enseignant
               {ens.points !== null && c.points && <span class="font-normal"> · {nombre(ens.points)} / {points(c.points.max)}</span>}
             </p>
-            {verdictCorrige && <p class="text-texte-doux">Verdict corrigé : l'outil indiquait « {LIBELLE_VERDICT[ens.verdictOutil]} ».</p>}
+            {ens.niveau && (
+              <p>
+                Niveau retenu : <span class="font-semibold">{ens.niveau}</span>
+                {c.proposition && <span class="text-texte-doux">{ens.niveau === c.proposition.niveau ? " · la proposition de l'IA, validée" : ` · l'IA proposait « ${c.proposition.niveau} »`}</span>}
+              </p>
+            )}
+            {verdictCorrige && !ens.niveau && <p class="text-texte-doux">Verdict corrigé : l'outil indiquait « {LIBELLE_VERDICT[ens.verdictOutil]} ».</p>}
             {ens.commentaire && <p class="mt-1 whitespace-pre-line">{ens.commentaire}</p>}
           </div>
         ) : (

@@ -16,17 +16,25 @@
       <span class="text-texte-doux">sur {{ max }}</span>
     </div>
 
+    <div v-else-if="echelle" class="flex flex-wrap items-center gap-2">
+      <label :for="id('niveau')">Niveau</label>
+      <select :id="id('niveau')" v-model="niveau" class="rounded border border-bordure bg-surface px-2 py-1">
+        <option value="">— à juger —</option>
+        <option v-for="n in echelle" :key="n" :value="n">{{ n === proposee ? `${n} (proposé par l'IA)` : n }}</option>
+      </select>
+    </div>
+
     <div v-else class="flex flex-wrap items-center gap-2">
       <label :for="id('verdict')">Verdict</label>
       <select :id="id('verdict')" v-model="verdict" class="rounded border border-bordure bg-surface px-2 py-1">
-        <option value="">{{ verdictOutil === "a-juger" ? "— à juger —" : `Garder celui de l'outil (${LIBELLES[verdictOutil]})` }}</option>
-        <option v-for="v in VERDICTS" :key="v" :value="v">{{ LIBELLES[v] }}</option>
+        <option v-if="!VERDICTS.includes(verdictOutil)" value="">{{ verdictOutil === "a-juger" ? "— à juger —" : `${LIBELLES[verdictOutil]} (outil)` }}</option>
+        <option v-for="v in VERDICTS" :key="v" :value="v">{{ v === verdictOutil ? `${LIBELLES[v]} (outil)` : LIBELLES[v] }}</option>
       </select>
     </div>
 
     <div>
       <label :for="id('commentaire')" class="block">
-        {{ justificationRequise ? "Justification (obligatoire pour corriger l'outil)" : "Commentaire" }}
+        {{ justificationRequise ? `Justification (obligatoire pour corriger ${echelle ? "l'IA" : "l'outil"})` : "Commentaire" }}
       </label>
       <textarea
         :id="id('commentaire')"
@@ -67,17 +75,25 @@ const verdictOutil = c.enseignant?.verdictOutil ?? c.verdict;
 // Une contrainte à juger se note en points ; tout le reste par un verdict
 const enPoints = verdictOutil === "a-juger" && c.statut === "C" && Boolean(c.points);
 const max = c.points?.max ?? 0;
-const VERDICTS = c.statut === "C" ? ["respecte", "partiel", "non-respecte"] : ["respecte", "non-respecte"];
+// Critère avec une échelle (proposé par l'IA) : un niveau, la proposition présélectionnée
+const echelle = c.echelle ?? null;
+const proposee = c.proposition?.niveau ?? null;
+const VERDICTS = ["respecte", "partiel", "non-respecte"];
 const dejaNote = Boolean(c.enseignant);
 
 const points = ref(c.enseignant?.points ?? null);
-const verdict = ref(c.enseignant && !enPoints && c.verdict !== verdictOutil ? c.verdict : "");
+// Le verdict de l'outil est présélectionné : on ne touche la liste que pour le corriger
+const verdict = ref(VERDICTS.includes(c.verdict) ? c.verdict : "");
+const niveau = ref(c.enseignant ? (c.enseignant.niveau ?? "") : (proposee ?? ""));
 const commentaire = ref(c.enseignant?.commentaire ?? "");
 const envoi = ref(false);
 const message = ref("");
 const erreur = ref(false);
 
-const justificationRequise = computed(() => !enPoints && verdictOutil !== "a-juger" && verdict.value !== "");
+const verdictCorrige = computed(() => verdict.value !== "" && verdict.value !== verdictOutil);
+const justificationRequise = computed(() =>
+  echelle ? Boolean(proposee) && niveau.value !== "" && niveau.value !== proposee : !enPoints && verdictOutil !== "a-juger" && verdictCorrige.value
+);
 const id = (suffixe) => `note-${c.id}-${suffixe}`;
 
 const enregistrer = async (effacer = false) => {
@@ -86,9 +102,11 @@ const enregistrer = async (effacer = false) => {
   erreur.value = false;
   const note = effacer
     ? null
-    : enPoints
+    : echelle
+      ? { niveau: niveau.value || null, commentaire: commentaire.value }
+      : enPoints
       ? { points: points.value === "" ? null : points.value, commentaire: commentaire.value }
-      : { verdict: verdict.value || null, commentaire: commentaire.value };
+      : { verdict: verdictCorrige.value ? verdict.value : null, commentaire: commentaire.value };
   try {
     const reponse = await fetch(`/__webscope/notes/${props.slug}`, {
       method: "POST",

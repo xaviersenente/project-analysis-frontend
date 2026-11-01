@@ -104,3 +104,59 @@ test("enregistrement : une modification par critère, effacement, commentaire g�
   notes = modifierNotes(notes, { commentaire: "  " }, LE);
   assert.equal(notes.commentaire, null);
 });
+
+// Un critère dont l'IA propose un niveau (portfolio : Q13, ED2, PC6)
+const avecIa = {
+  ...resultat,
+  criteres: [
+    ...resultat.criteres,
+    {
+      ...critere(resultat, "A6"),
+      id: "Q13",
+      statut: "I",
+      methode: "ia",
+      verdict: "a-juger",
+      points: null,
+      echelle: ["générique", "contredite", "partielle", "pertinente"],
+      proposition: { niveau: "partielle", justification: "…", preuves: [], preuvesEcartees: 0, modele: "claude-opus-5-5", prompt: "abc123def456" },
+    },
+  ],
+};
+
+test("un critère avec une échelle : le niveau retenu donne le verdict, sans toucher la note", () => {
+  const valide = appliquerNotes(avecIa, { commentaire: null, criteres: { Q13: { niveau: "partielle", commentaire: null, le: LE } } });
+  const q13 = critere(valide, "Q13");
+  assert.equal(q13.verdict, "partiel");
+  assert.equal(q13.enseignant.niveau, "partielle");
+  assert.equal(q13.enseignant.verdictOutil, "a-juger");
+  assert.equal(q13.detailValeur, "niveau retenu : partielle");
+  assert.equal(valide.note.base, avecIa.note.base);
+  assert.equal(valide.note.aJuger, avecIa.note.aJuger);
+  const haut = appliquerNotes(avecIa, { commentaire: null, criteres: { Q13: { niveau: "pertinente", commentaire: "Tout est vérifiable.", le: LE } } });
+  assert.equal(critere(haut, "Q13").verdict, "respecte");
+  const bas = appliquerNotes(avecIa, { commentaire: null, criteres: { Q13: { niveau: "générique", commentaire: "Copié du cours.", le: LE } } });
+  assert.equal(critere(bas, "Q13").verdict, "non-respecte");
+  // Commentaire seul : le critère reste à juger
+  const commente = appliquerNotes(avecIa, { commentaire: null, criteres: { Q13: { niveau: null, commentaire: "À revoir en soutenance.", le: LE } } });
+  assert.equal(critere(commente, "Q13").verdict, "a-juger");
+});
+
+test("vérification d'un niveau : dans l'échelle, justifié s'il s'écarte de l'IA, jamais un verdict ni des points", () => {
+  const verifier = (n) => verifierNotes({ commentaire: null, criteres: { Q13: { commentaire: null, le: LE, ...n } } }, avecIa);
+  assert.deepEqual(verifier({ niveau: "partielle" }), []);
+  assert.deepEqual(verifier({ niveau: "pertinente" }), ["Q13 : un niveau différent de la proposition de l'IA demande une justification"]);
+  assert.deepEqual(verifier({ niveau: "pertinente", commentaire: "Les mesures confirment QUALITE.md." }), []);
+  assert.deepEqual(verifier({ niveau: "excellente", commentaire: "x" }), ["Q13 : « excellente » n'est pas un niveau de l'échelle (générique < contredite < partielle < pertinente)"]);
+  assert.deepEqual(verifier({ verdict: "respecte", commentaire: "x" }), ["Q13 : ce critère se juge par un niveau de l'échelle (générique < contredite < partielle < pertinente)"]);
+  // Sans proposition (IA désactivée ou en échec) : un niveau choisi librement, sans justification
+  const sansIa = { ...avecIa, criteres: avecIa.criteres.map((c) => (c.id === "Q13" ? { ...c, proposition: undefined } : c)) };
+  assert.deepEqual(verifierNotes({ commentaire: null, criteres: { Q13: { niveau: "pertinente", commentaire: null, le: LE } } }, sansIa), []);
+  // Un niveau sur un critère sans échelle
+  assert.deepEqual(verifierNotes({ commentaire: null, criteres: { A6: { niveau: "partielle", commentaire: null, le: LE } } }, resultat), ["A6 : ce critère n'a pas d'échelle de niveaux"]);
+});
+
+test("les notes acceptent les identifiants de toutes les grilles (DA1, Q13, PC6…)", async () => {
+  const { notesSchema } = await import("../src/schema/notes.js");
+  assert.ok(notesSchema.safeParse({ commentaire: null, criteres: { DA1: { verdict: "respecte", commentaire: null, le: LE }, Q13: { niveau: "partielle", commentaire: null, le: LE } } }).success);
+  assert.ok(!notesSchema.safeParse({ commentaire: null, criteres: { "q13": { niveau: "partielle", commentaire: null, le: LE } } }).success);
+});

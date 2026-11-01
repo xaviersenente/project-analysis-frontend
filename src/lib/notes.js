@@ -3,8 +3,16 @@
  *
  * - Une contrainte « à juger » reçoit des points ; son verdict en découle.
  * - Un autre critère peut recevoir un verdict qui remplace celui de l'outil, avec une justification.
+ * - Un critère avec une échelle (proposé par l'IA) reçoit un niveau de cette échelle ; s'il diffère
+ *   de la proposition de l'IA, avec une justification. Son verdict en découle, sans points.
  * La note est recalculée comme le fait l'analyse (services/analyse/notation.js du backend).
  */
+
+/** Verdict d'un niveau : le plus haut est respecté, le plus bas non respecté, les autres partiels */
+export const verdictDuNiveau = (echelle, niveau) => {
+  const rang = echelle.indexOf(niveau);
+  return rang === echelle.length - 1 ? "respecte" : rang === 0 ? "non-respecte" : "partiel";
+};
 
 /** Points d'une contrainte d'après son verdict, comme dans l'analyse */
 const POINTS_VERDICT = { respecte: (max) => max, partiel: (max) => Math.round(max / 2), "non-respecte": () => 0 };
@@ -19,6 +27,14 @@ export const verifierNotes = (notes, resultat) =>
   Object.entries(notes.criteres).flatMap(([id, n]) => {
     const c = resultat.criteres.find((x) => x.id === id);
     if (!c) return [`${id} : critère inconnu`];
+    if (c.echelle) {
+      if (n.points != null || n.verdict) return [`${id} : ce critère se juge par un niveau de l'échelle (${c.echelle.join(" < ")})`];
+      if (n.niveau == null) return [];
+      if (!c.echelle.includes(n.niveau)) return [`${id} : « ${n.niveau} » n'est pas un niveau de l'échelle (${c.echelle.join(" < ")})`];
+      if (c.proposition && n.niveau !== c.proposition.niveau && !n.commentaire?.trim()) return [`${id} : un niveau différent de la proposition de l'IA demande une justification`];
+      return [];
+    }
+    if (n.niveau != null) return [`${id} : ce critère n'a pas d'échelle de niveaux`];
     if (aJugerEnPoints(c)) {
       if (n.verdict) return [`${id} : une contrainte à juger se note en points`];
       if (n.points != null && (n.points < 0 || n.points > c.points.max)) return [`${id} : de 0 à ${c.points.max} points`];
@@ -65,6 +81,10 @@ export const appliquerNotes = (resultat, notes) => {
     const n = notes.criteres[c.id];
     if (!n) return c;
     const enseignant = { verdictOutil: c.verdict, points: null, commentaire: n.commentaire ?? null, le: n.le };
+    if (c.echelle) {
+      if (n.niveau == null) return { ...c, enseignant };
+      return { ...c, verdict: verdictDuNiveau(c.echelle, n.niveau), detailValeur: `niveau retenu : ${n.niveau}`, enseignant: { ...enseignant, niveau: n.niveau } };
+    }
     if (aJugerEnPoints(c)) {
       if (n.points == null) return { ...c, enseignant };
       const verdict = n.points === c.points.max ? "respecte" : n.points === 0 ? "non-respecte" : "partiel";

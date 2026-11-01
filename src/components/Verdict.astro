@@ -1,7 +1,7 @@
 ---
 /**
  * Un verdict : toujours une icône et un mot, jamais la couleur seule.
- * Une recommandation non suivie reste calme (jamais rouge) ; un bonus non obtenu reste neutre.
+ * Une recommandation non respectée reste calme (jamais rouge) ; un bonus non obtenu reste neutre.
  */
 interface Props {
   verdict: string;
@@ -18,7 +18,7 @@ const STYLES: Record<string, { mot: string; icone: string; classe: string }> = {
   "non-respecte": bonus
     ? { mot: "Non obtenu", icone: "○", classe: "text-neutre bg-neutre-fond" }
     : recommande
-      ? { mot: "À suivre", icone: "→", classe: "text-neutre bg-neutre-fond" }
+      ? { mot: "Non respecté", icone: "✕", classe: "text-neutre bg-neutre-fond" }
       : { mot: "Non respecté", icone: "✕", classe: "text-non-respecte bg-non-respecte-fond" },
   partiel: { mot: "Partiel", icone: "◐", classe: recommande ? "text-neutre bg-neutre-fond" : "text-partiel bg-partiel-fond" },
   "non-mesurable": { mot: "Non mesurable", icone: "?", classe: "text-neutre bg-neutre-fond" },
