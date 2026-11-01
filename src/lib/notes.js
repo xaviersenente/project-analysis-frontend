@@ -1,7 +1,8 @@
 /**
  * Mode local : les notes de l'enseignant appliquées au résultat de l'analyse, au build.
  *
- * - Une contrainte « à juger » reçoit des points ; son verdict en découle.
+ * - Une contrainte « à juger » reçoit des points ; son verdict en découle. Si l'outil en propose
+ *   (pointsProposes : Q2 d'après Q3 à Q11), en donner d'autres demande une justification.
  * - Un autre critère peut recevoir un verdict qui remplace celui de l'outil, avec une justification.
  * - Un critère avec une échelle (proposé par l'IA) reçoit un niveau de cette échelle ; s'il diffère
  *   de la proposition de l'IA, avec une justification. Son verdict en découle, sans points.
@@ -38,6 +39,9 @@ export const verifierNotes = (notes, resultat) =>
     if (aJugerEnPoints(c)) {
       if (n.verdict) return [`${id} : une contrainte à juger se note en points`];
       if (n.points != null && (n.points < 0 || n.points > c.points.max)) return [`${id} : de 0 à ${c.points.max} points`];
+      if (n.points != null && c.pointsProposes && n.points !== c.pointsProposes.valeur && !n.commentaire?.trim()) {
+        return [`${id} : des points différents de la proposition (${String(c.pointsProposes.valeur).replace(".", ",")}) demandent une justification`];
+      }
       return [];
     }
     if (n.points != null) return [`${id} : ce critère se juge par un verdict, pas en points`];

@@ -11,9 +11,9 @@
         type="number"
         min="0"
         :max="max"
-        step="1"
+        step="0.5"
         class="w-20 rounded border border-bordure bg-surface px-2 py-1" />
-      <span class="text-texte-doux">sur {{ max }}</span>
+      <span class="text-texte-doux">sur {{ max }}<template v-if="pointsProposes !== null"> · proposé : {{ String(pointsProposes).replace(".", ",") }}</template></span>
     </div>
 
     <div v-else-if="echelle" class="flex flex-wrap items-center gap-2">
@@ -34,7 +34,7 @@
 
     <div>
       <label :for="id('commentaire')" class="block">
-        {{ justificationRequise ? `Justification (obligatoire pour corriger ${echelle ? "l'IA" : "l'outil"})` : "Commentaire" }}
+        {{ justificationRequise ? `Justification (obligatoire pour corriger ${echelle ? "l'IA" : enPoints ? "la proposition" : "l'outil"})` : "Commentaire" }}
       </label>
       <textarea
         :id="id('commentaire')"
@@ -81,7 +81,9 @@ const proposee = c.proposition?.niveau ?? null;
 const VERDICTS = ["respecte", "partiel", "non-respecte"];
 const dejaNote = Boolean(c.enseignant);
 
-const points = ref(c.enseignant?.points ?? null);
+// Points proposés par l'outil (Q2) : pré-remplis tant que le jury n'a rien noté
+const pointsProposes = c.pointsProposes?.valeur ?? null;
+const points = ref(c.enseignant ? c.enseignant.points : pointsProposes);
 // Le verdict de l'outil est présélectionné : on ne touche la liste que pour le corriger
 const verdict = ref(VERDICTS.includes(c.verdict) ? c.verdict : "");
 const niveau = ref(c.enseignant ? (c.enseignant.niveau ?? "") : (proposee ?? ""));
@@ -91,9 +93,11 @@ const message = ref("");
 const erreur = ref(false);
 
 const verdictCorrige = computed(() => verdict.value !== "" && verdict.value !== verdictOutil);
-const justificationRequise = computed(() =>
-  echelle ? Boolean(proposee) && niveau.value !== "" && niveau.value !== proposee : !enPoints && verdictOutil !== "a-juger" && verdictCorrige.value
-);
+const justificationRequise = computed(() => {
+  if (echelle) return Boolean(proposee) && niveau.value !== "" && niveau.value !== proposee;
+  if (enPoints) return pointsProposes !== null && points.value !== null && points.value !== "" && points.value !== pointsProposes;
+  return verdictOutil !== "a-juger" && verdictCorrige.value;
+});
 const id = (suffixe) => `note-${c.id}-${suffixe}`;
 
 const enregistrer = async (effacer = false) => {

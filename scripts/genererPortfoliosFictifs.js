@@ -191,6 +191,7 @@ const criteresDe = (profil) =>
       piste: modele.piste,
       sourceCours: modele.sourceCours,
       ...(modele.origine ? { origine: modele.origine } : {}),
+      ...(modele.propositionDepuis ? { propositionDepuis: modele.propositionDepuis } : {}),
       occurrences: [],
       totalOccurrences: 0,
     };
@@ -211,6 +212,18 @@ const criteresDe = (profil) =>
       totalOccurrences: occurrences.length,
     };
   });
+
+/** Points proposés au jury (Q2), comme l'analyse : respectée 1, partielle ½, non respectée 0, au demi-point */
+const APPORT = { respecte: 1, partiel: 0.5, "non-respecte": 0 };
+const proposerPoints = (criteres) => {
+  for (const c of criteres.filter((c) => c.propositionDepuis)) {
+    const mesures = c.propositionDepuis.map((id) => criteres.find((m) => m.id === id)).filter((m) => m && m.verdict in APPORT);
+    const valeur = Math.round((mesures.reduce((s, m) => s + APPORT[m.verdict], 0) / mesures.length) * c.points.max * 2) / 2;
+    c.pointsProposes = { valeur, max: c.points.max, mesures: mesures.map((m) => ({ id: m.id, verdict: m.verdict })) };
+    c.detailValeur = `proposé : ${String(valeur).replace(".", ",")} / ${c.points.max}`;
+  }
+  return criteres;
+};
 
 /** Note : tout est à juger ; les points viennent des notes de l'enseignant (mode local) */
 const noteDe = () => {
@@ -395,7 +408,7 @@ const resultatDe = (slug) => {
     projet: { slug, nom: profil.nom, groupe: PROMO.find((p) => p.slug === slug).groupe },
     liens: { site: profil.site + "/", depot: `https://github.com/${profil.depot}`, figma: null },
     note: noteDe(),
-    criteres: criteresDe(profil),
+    criteres: proposerPoints(criteresDe(profil)),
     alertes: profil.alertes ?? [],
     nonMesurable: [],
     historique: historiqueDe(slug, profil),
@@ -444,6 +457,7 @@ fs.writeFileSync(
       criteres: {
         DA1: { points: 3, commentaire: "Palette et typographie tenues sur tout le site.", le: LE },
         ED1: { points: 2, commentaire: null, le: LE },
+        Q2: { points: 1.5, commentaire: null, le: LE },
         ED2: { niveau: "partielles", commentaire: null, le: LE },
         Q13: { niveau: "partielle", commentaire: "La grille annonce la largeur à 360 px vérifiée, ce que la mesure contredit.", le: LE },
       },

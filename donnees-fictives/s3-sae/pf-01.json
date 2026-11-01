@@ -458,10 +458,64 @@
         "obtenus": null,
         "max": 2
       },
-      "piste": "Responsive et les quatre domaines, contrôlés par sondage : les mesures ci-dessous indiquent où regarder.",
+      "piste": "Responsive et les quatre domaines, contrôlés par sondage : les mesures ci-dessous indiquent où regarder. L'outil propose des points d'après elles ; le jury les valide ou les corrige.",
       "sourceCours": "Sujet §6",
+      "propositionDepuis": [
+        "Q3",
+        "Q4",
+        "Q5",
+        "Q6",
+        "Q7",
+        "Q8",
+        "Q9",
+        "Q10",
+        "Q11"
+      ],
       "occurrences": [],
-      "totalOccurrences": 0
+      "totalOccurrences": 0,
+      "pointsProposes": {
+        "valeur": 1.5,
+        "max": 2,
+        "mesures": [
+          {
+            "id": "Q3",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q4",
+            "verdict": "non-respecte"
+          },
+          {
+            "id": "Q5",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q6",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q7",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q8",
+            "verdict": "non-respecte"
+          },
+          {
+            "id": "Q9",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q10",
+            "verdict": "respecte"
+          },
+          {
+            "id": "Q11",
+            "verdict": "respecte"
+          }
+        ]
+      },
+      "detailValeur": "proposé : 1,5 / 2"
     },
     {
       "id": "Q3",

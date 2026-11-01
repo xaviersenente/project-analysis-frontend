@@ -143,6 +143,31 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
       }
 
       {
+        c.pointsProposes && (
+          <div class="rounded-md border border-accent/40 bg-accent-fond px-3 py-2 text-sm">
+            <p class="font-semibold">
+              Points proposés : {nombre(c.pointsProposes.valeur)} / {nombre(c.pointsProposes.max)}
+              <span class="font-normal text-texte-doux">
+                {" "}· d'après {c.pointsProposes.mesures.filter((m: any) => m.verdict === "respecte").length} mesure(s) respectée(s) sur {c.pointsProposes.mesures.length}
+              </span>
+            </p>
+            <ul class="mt-1 flex flex-wrap gap-1.5" aria-label="Les mesures prises en compte">
+              {c.pointsProposes.mesures.map((m: any) => (
+                <li>
+                  <a href={`#critere-${m.id}`} class="inline-flex items-center gap-1 rounded border border-bordure bg-surface px-1.5 font-mono text-xs underline-offset-2 hover:underline">
+                    {m.id} <Verdict verdict={m.verdict} statut="I" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-1 text-xs text-texte-doux">
+              Respectée 1, partielle ½, non respectée 0 ; une mesure non mesurable est écartée. À valider ou corriger : les points sont ceux du jury.
+            </p>
+          </div>
+        )
+      }
+
+      {
         c.proposition && (
           <div class="rounded-md border border-accent/40 bg-accent-fond px-3 py-2 text-sm">
             <p class="font-semibold">
@@ -177,6 +202,11 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
             <p class="font-semibold">
               Évaluation de l'enseignant
               {ens.points !== null && c.points && <span class="font-normal"> · {nombre(ens.points)} / {points(c.points.max)}</span>}
+              {ens.points !== null && c.pointsProposes && (
+                <span class="font-normal text-texte-doux">
+                  {ens.points === c.pointsProposes.valeur ? " · la proposition, validée" : ` · l'outil proposait ${nombre(c.pointsProposes.valeur)}`}
+                </span>
+              )}
             </p>
             {ens.niveau && (
               <p>

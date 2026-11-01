@@ -160,3 +160,28 @@ test("les notes acceptent les identifiants de toutes les grilles (DA1, Q13, PC6�
   assert.ok(notesSchema.safeParse({ commentaire: null, criteres: { DA1: { verdict: "respecte", commentaire: null, le: LE }, Q13: { niveau: "partielle", commentaire: null, le: LE } } }).success);
   assert.ok(!notesSchema.safeParse({ commentaire: null, criteres: { "q13": { niveau: "partielle", commentaire: null, le: LE } } }).success);
 });
+
+test("points proposés (Q2) : les valider sans commentaire, s'en écarter avec une justification, au demi-point", async () => {
+  const { notesSchema } = await import("../src/schema/notes.js");
+  const avecProposition = {
+    ...resultat,
+    criteres: resultat.criteres.map((c) => (c.id === "G10" ? { ...c, pointsProposes: { valeur: 1.5, max: 3, mesures: [] } } : c)),
+  };
+  const verifier = (n) => verifierNotes({ commentaire: null, criteres: { G10: { commentaire: null, le: LE, ...n } } }, avecProposition);
+  assert.deepEqual(verifier({ points: 1.5 }), []);
+  assert.deepEqual(verifier({ points: 2 }), ["G10 : des points différents de la proposition (1,5) demandent une justification"]);
+  assert.deepEqual(verifier({ points: 2, commentaire: "Le site est mieux que ne le disent les mesures." }), []);
+  const r = appliquerNotes(avecProposition, { commentaire: null, criteres: { G10: { points: 1.5, commentaire: null, le: LE } } });
+  assert.equal(critere(r, "G10").verdict, "partiel");
+  assert.deepEqual(critere(r, "G10").points, { obtenus: 1.5, max: 3 });
+  assert.ok(notesSchema.safeParse({ commentaire: null, criteres: { Q2: { points: 1.5, commentaire: null, le: LE } } }).success);
+  assert.ok(!notesSchema.safeParse({ commentaire: null, criteres: { Q2: { points: 1.25, commentaire: null, le: LE } } }).success);
+});
+
+test("demi-points sur toute contrainte à juger, avec ou sans proposition (G10 de la SAÉ 105)", () => {
+  assert.deepEqual(verifierNotes({ commentaire: null, criteres: { G10: { points: 2.5, commentaire: null, le: LE } } }, resultat), []);
+  const r = appliquerNotes(resultat, { commentaire: null, criteres: { G10: { points: 2.5, commentaire: null, le: LE } } });
+  assert.deepEqual(critere(r, "G10").points, { obtenus: 2.5, max: 3 });
+  assert.equal(critere(r, "G10").verdict, "partiel");
+  assert.equal(r.note.base, resultat.note.base + 2.5);
+});
