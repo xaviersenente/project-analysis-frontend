@@ -11,7 +11,7 @@ import { notesSchema, NOTES_VIDES } from "../schema/notes.js";
 import { appliquerNotes, verifierNotes } from "./notes.js";
 
 export const dossierDonnees = () =>
-  path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives");
+  path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives/s1-sae");
 
 const lireJson = (fichier) => JSON.parse(fs.readFileSync(fichier, "utf-8"));
 

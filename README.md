@@ -1,6 +1,6 @@
 # WebScope : interface
 
-Interface de lecture des analyses de la SAÉ 105. C'est un **site statique** : il lit, au build, un fichier de promo et un JSON par étudiant (résultat d'analyse au format v3, qui porte les axes de sa grille), puis génère une page par projet.
+Interface de lecture des analyses WebScope, pour toutes les SAÉ (SAÉ 105, portfolio S3…). C'est un **site statique** : il lit, au build, un fichier de promo et un JSON par étudiant (résultat d'analyse au format v3, qui porte les axes de sa grille), puis génère une page par projet.
 
 Les analyses se lancent en local avec le backend ; ce site ne fait que les afficher.
 
@@ -20,14 +20,15 @@ npm run build -- s1-sae    # site statique de la promo dans dist/
 
 | Source | Quand |
 |---|---|
-| `donnees-fictives/` | par défaut : 6 étudiants inventés, dont un en échec partiel et deux non analysés |
+| `donnees-fictives/s1-sae/` | par défaut : SAÉ 105, 6 étudiants inventés, dont un en échec partiel et deux non analysés |
+| `npm run dev -- s3-sae --fictif` (`donnees-fictives/s3-sae/`) | portfolio S3 : 3 étudiants inventés (un solide, un fragile, un non analysé), avec site parcouru, captures, fiche de soutenance, propositions de l'IA et une évaluation commencée |
 | `npm run build -- <promo>` (`s1-sae`, `s3-sae`…) | les vraies analyses de cette promo, hors de Git (`scripts/lancer.mjs` fixe `WEBSCOPE_DONNEES`) |
 
 Le dossier contient `promo.json` et un fichier `<slug>.json` par projet analysé. Un projet de la promo sans fichier s'affiche « non analysé ». Un fichier qui ne respecte pas le schéma arrête le build, avec le fichier et le champ en cause.
 
 Les vignettes d'images vivent dans `vignettes/<slug>/` du même dossier. Elles sont servies en développement, puis copiées au build dans `dist/projet/<slug>/vignettes/`, sous la page du projet : la règle d'accès d'un étudiant les protège aussi.
 
-Les données fictives se régénèrent avec `node scripts/genererDonneesFictives.js`, à partir de `donnees-fictives/catalogue-criteres.json` (la grille de `CRITERES-SAE105-2026.md`).
+Les données fictives se régénèrent avec `npm run donnees-fictives`, à partir de la grille copiée dans `catalogue-criteres.json` de chaque promo : `scripts/genererDonneesFictives.js` (SAÉ 105) et `scripts/genererPortfoliosFictifs.js` (portfolio S3). Les deux sont déterministes.
 
 ## Structure
 

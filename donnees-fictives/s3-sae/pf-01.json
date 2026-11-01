@@ -1,0 +1,1567 @@
+{
+  "version": 3,
+  "grille": {
+    "id": "s3-portfolio-2026",
+    "nom": "Portfolio S3 · projet individuel (2026-2027)",
+    "profil": "portfolio",
+    "axes": [
+      {
+        "id": "direction-artistique",
+        "nom": "Direction artistique",
+        "points": 4,
+        "description": "Originalité, cohérence, qualité d'exécution, adéquation au positionnement."
+      },
+      {
+        "id": "editorialisation",
+        "nom": "Éditorialisation",
+        "points": 3,
+        "description": "La sélection des trois projets, leur présentation, l'écriture et la voix personnelle."
+      },
+      {
+        "id": "technique",
+        "nom": "Réalisation technique",
+        "points": 5,
+        "description": "Le niveau démontré en soutenance, sur l'échelle du sujet."
+      },
+      {
+        "id": "qualite-web",
+        "nom": "Qualité web",
+        "points": 3,
+        "description": "Accessibilité, sobriété, référencement, conformité juridique : la grille QUALITE.md et le site lui-même."
+      },
+      {
+        "id": "presence",
+        "nom": "Présence professionnelle",
+        "points": 2,
+        "description": "Les réseaux, la qualité et la cohérence des contenus avec le positionnement."
+      },
+      {
+        "id": "processus",
+        "nom": "Processus",
+        "points": 3,
+        "description": "Journal de bord, historique Git, déclaration IA, tenue du calendrier."
+      }
+    ]
+  },
+  "source": {
+    "depot": "lucie-garnier/portfolio",
+    "ref": "fc98a49",
+    "sha": "fc98a49c1db8ddf3520cfe5560ec3633416f679a",
+    "raison": "dernier commit avant la date de rendu",
+    "analyseLe": "2027-01-20T09:30:00+01:00"
+  },
+  "projet": {
+    "slug": "pf-01",
+    "nom": "Garnier Lucie",
+    "groupe": "S3 · TP A"
+  },
+  "liens": {
+    "site": "https://lucie-garnier.example/",
+    "depot": "https://github.com/lucie-garnier/portfolio",
+    "figma": null
+  },
+  "note": {
+    "base": 0,
+    "max": 20,
+    "total": 20,
+    "bonus": 0,
+    "totale": 0,
+    "lettre": "—",
+    "lettres": {
+      "A+": 95,
+      "A": 90,
+      "B": 80,
+      "C": 70,
+      "D": 60,
+      "E": 50,
+      "F": 0
+    },
+    "aJuger": 20,
+    "parAxe": {
+      "direction-artistique": {
+        "obtenus": 0,
+        "max": 4
+      },
+      "editorialisation": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "technique": {
+        "obtenus": 0,
+        "max": 5
+      },
+      "qualite-web": {
+        "obtenus": 0,
+        "max": 3
+      },
+      "presence": {
+        "obtenus": 0,
+        "max": 2
+      },
+      "processus": {
+        "obtenus": 0,
+        "max": 3
+      }
+    }
+  },
+  "criteres": [
+    {
+      "id": "DA1",
+      "axe": "direction-artistique",
+      "libelle": "Direction artistique",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 4
+      },
+      "piste": "Originalité au regard du positionnement (pas des tendances), cohérence entre les pages, qualité d'exécution aux trois largeurs (captures), bibliothèques substantiellement adaptées.",
+      "sourceCours": "Sujet §8",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "ED1",
+      "axe": "editorialisation",
+      "libelle": "Éditorialisation",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 3
+      },
+      "piste": "Trois projets en profondeur : contexte et commande, rôle exact, processus, choix techniques, résultat. Une page à propos à la première personne. L'orthographe.",
+      "sourceCours": "Sujet §2.2",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "ED2",
+      "axe": "editorialisation",
+      "libelle": "Études de cas : contexte, rôle, processus, choix, résultat",
+      "statut": "I",
+      "methode": "ia",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Pour chaque projet : la commande, votre rôle exact, vos recherches et arbitrages, vos choix techniques, le résultat.",
+      "sourceCours": "Sujet §2.2",
+      "occurrences": [
+        {
+          "fichier": "/projets/festival-lumieres",
+          "ligne": 3,
+          "colonne": null,
+          "extrait": "La commande : une identité pour un festival de quartier, en six semaines.",
+          "surligne": null
+        },
+        {
+          "fichier": "/projets/festival-lumieres",
+          "ligne": 7,
+          "colonne": null,
+          "extrait": "J'ai testé trois pistes typographiques avant de retenir une linéale étroite.",
+          "surligne": null
+        },
+        {
+          "fichier": "/projets/appli-meteo",
+          "ligne": 3,
+          "colonne": null,
+          "extrait": "Projet de groupe : j'étais en charge du design d'interface.",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 3,
+      "echelle": [
+        "absentes",
+        "survolées",
+        "partielles",
+        "complètes"
+      ],
+      "detailValeur": "niveau proposé : partielles",
+      "proposition": {
+        "niveau": "partielles",
+        "justification": "Trois projets sur quatre donnent le contexte, le rôle et le résultat. Le processus (recherches, arbitrages) n'est détaillé que pour l'identité du festival ; les deux autres études passent directement du brief au résultat.",
+        "preuves": [
+          {
+            "fichier": "/projets/festival-lumieres",
+            "ligne": 3,
+            "colonne": null,
+            "extrait": "La commande : une identité pour un festival de quartier, en six semaines.",
+            "surligne": null
+          },
+          {
+            "fichier": "/projets/festival-lumieres",
+            "ligne": 7,
+            "colonne": null,
+            "extrait": "J'ai testé trois pistes typographiques avant de retenir une linéale étroite.",
+            "surligne": null
+          },
+          {
+            "fichier": "/projets/appli-meteo",
+            "ligne": 3,
+            "colonne": null,
+            "extrait": "Projet de groupe : j'étais en charge du design d'interface.",
+            "surligne": null
+          }
+        ],
+        "preuvesEcartees": 0,
+        "modele": "claude-opus-5-5",
+        "prompt": "fictif000000"
+      }
+    },
+    {
+      "id": "TE1",
+      "axe": "technique",
+      "libelle": "Niveau technique démontré en soutenance",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 5
+      },
+      "piste": "Le niveau de l'échelle du sujet (1, 2, 4 ou 5) que l'étudiant a su défendre ; un code non maîtrisé est noté au niveau inférieur.",
+      "sourceCours": "Sujet §8",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "TE2",
+      "axe": "technique",
+      "libelle": "Stack et niveau candidat (à confirmer en soutenance)",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Indices lus dans le dépôt et sur le site : framework, CMS, types de contenus, champs, source de données, back-office. Le niveau se défend devant le jury.",
+      "sourceCours": "Sujet §8",
+      "occurrences": [
+        {
+          "fichier": "package.json",
+          "ligne": 12,
+          "colonne": null,
+          "extrait": "\"astro\": \"^5.4.0\"",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 1,
+      "detailValeur": "Astro, données en Markdown · niveau candidat : générateur de site statique"
+    },
+    {
+      "id": "TE3",
+      "axe": "technique",
+      "libelle": "Aucun indice de thème ou de template récupéré",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "indices"
+      },
+      "points": null,
+      "piste": "Crédits d'un vendeur de templates, en-tête d'un thème WordPress du commerce, site produit par un outil de création : à vérifier avec l'étudiant.",
+      "sourceCours": "Sujet §2.3",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "TE4",
+      "axe": "technique",
+      "libelle": "Ni fichier sensible ni secret dans le dépôt public",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "éléments"
+      },
+      "points": null,
+      "piste": "Un .gitignore, des variables d'environnement pour les clés ; une clé publiée doit être révoquée.",
+      "sourceCours": "AC24.06",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "TE5",
+      "axe": "technique",
+      "libelle": "Bibliothèques et frameworks déclarés",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "non déclarés"
+      },
+      "points": null,
+      "piste": "Chaque bibliothèque de package.json est nommée dans le README (ou IA.md, QUALITE.md, JOURNAL.md).",
+      "sourceCours": "Sujet §2.3",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q1",
+      "axe": "qualite-web",
+      "libelle": "Pertinence de la grille QUALITE.md",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 1
+      },
+      "piste": "Des critères tirés de ce site, pas une liste générique : pour chacun, ce qui a été vérifié, comment, et ce qui a été corrigé.",
+      "sourceCours": "Sujet §6",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q2",
+      "axe": "qualite-web",
+      "libelle": "Qualité effective du site (sondage du jury)",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 2
+      },
+      "piste": "Responsive et les quatre domaines, contrôlés par sondage : les mesures ci-dessous indiquent où regarder.",
+      "sourceCours": "Sujet §6",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q3",
+      "axe": "qualite-web",
+      "libelle": "Aucune erreur d'accessibilité critique ou grave (axe-core)",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "erreurs"
+      },
+      "points": null,
+      "piste": "Contrastes, noms accessibles des liens et boutons, alternatives des images, étiquettes des champs.",
+      "sourceCours": "Qualité web · accessibilité",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q4",
+      "axe": "qualite-web",
+      "libelle": "Rien ne dépasse la largeur de l'écran à 360 px",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "non-respecte",
+      "valeur": 1,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "pages"
+      },
+      "points": null,
+      "piste": "Une page plus large que l'écran défile de côté, ou le téléphone la réduit et tout devient minuscule. En cause : une largeur fixe, un menu qui ne passe pas à la ligne, une image sans max-width.",
+      "sourceCours": "AC24.01",
+      "occurrences": [
+        {
+          "fichier": "/projets/appli-meteo",
+          "ligne": null,
+          "colonne": null,
+          "extrait": "Largeur de la page à 360 px : 412 px (une image de 1 200 px sans max-width)",
+          "surligne": [
+            30,
+            36
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "Q5",
+      "axe": "qualite-web",
+      "libelle": "Référencement de chaque page : lang, title et description propres, un h1",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "pages"
+      },
+      "points": null,
+      "piste": "Chaque page dit ce qu'elle est : un title et une meta description qui lui sont propres, un seul h1.",
+      "sourceCours": "AC22.04",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q6",
+      "axe": "qualite-web",
+      "libelle": "sitemap.xml et robots.txt",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Un sitemap.xml qui liste les pages, un robots.txt qui l'annonce.",
+      "sourceCours": "AC22.04",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "sitemap.xml (6 adresses) et robots.txt"
+    },
+    {
+      "id": "Q7",
+      "axe": "qualite-web",
+      "libelle": "Sobriété : EcoIndex de chaque page",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 68.4,
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 55,
+        "unite": "points"
+      },
+      "points": null,
+      "piste": "Moins de requêtes, des images au bon format et à la bonne taille, pas de vidéo en lecture automatique.",
+      "sourceCours": "Qualité web · sobriété",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "68.4 pour la page la plus faible ; moyenne 74.1"
+    },
+    {
+      "id": "Q8",
+      "axe": "qualite-web",
+      "libelle": "Aucun service tiers chargé avant consentement",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "non-respecte",
+      "valeur": 1,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "services"
+      },
+      "points": null,
+      "piste": "Hébergez polices et scripts vous-même ; une vidéo ou une carte se charge après un clic.",
+      "sourceCours": "AC25.06",
+      "occurrences": [
+        {
+          "fichier": "/",
+          "ligne": null,
+          "colonne": null,
+          "extrait": "fonts.googleapis.com · polices · chargé avant tout consentement",
+          "surligne": [
+            0,
+            20
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    {
+      "id": "Q9",
+      "axe": "qualite-web",
+      "libelle": "Mentions légales : éditeur et hébergeur",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Une page de mentions légales accessible depuis toutes les pages, qui nomme l'éditeur du site et son hébergeur (nom, adresse, contact).",
+      "sourceCours": "AC25.06",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "/mentions-legales"
+    },
+    {
+      "id": "Q10",
+      "axe": "qualite-web",
+      "libelle": "Nom de domaine propre, en HTTPS",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Votre domaine (pas un sous-domaine d'hébergeur), et l'adresse en http:// qui redirige vers https://.",
+      "sourceCours": "AC24.06",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "lucie-garnier.example"
+    },
+    {
+      "id": "Q11",
+      "axe": "qualite-web",
+      "libelle": "Aucun lien interne cassé",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "liens"
+      },
+      "points": null,
+      "piste": "Chaque lien du site mène à une page qui répond.",
+      "sourceCours": "Qualité web",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "Q12",
+      "axe": "qualite-web",
+      "libelle": "QUALITE.md présent, sur les quatre domaines",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Accessibilité, sobriété et performance, référencement, conformité juridique : pour chaque critère, ce qui a été vérifié, comment, et corrigé.",
+      "sourceCours": "Sujet §6",
+      "occurrences": [
+        {
+          "fichier": "QUALITE.md",
+          "ligne": 1,
+          "colonne": null,
+          "extrait": "# Ma grille qualité",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 1,
+      "detailValeur": "4 domaines sur 4"
+    },
+    {
+      "id": "Q13",
+      "axe": "qualite-web",
+      "libelle": "QUALITE.md confronté aux mesures du site",
+      "statut": "I",
+      "methode": "ia",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Des critères tirés de votre site ; ce que vous dites avoir vérifié doit se retrouver dans le site.",
+      "sourceCours": "Sujet §6",
+      "occurrences": [
+        {
+          "fichier": "QUALITE.md",
+          "ligne": 9,
+          "colonne": null,
+          "extrait": "Toutes les images sont en WebP, 1 600 px de large au plus.",
+          "surligne": null
+        },
+        {
+          "fichier": "QUALITE.md",
+          "ligne": 14,
+          "colonne": null,
+          "extrait": "Aucune page ne dépasse la largeur d'un écran de téléphone.",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 2,
+      "echelle": [
+        "générique",
+        "contredite",
+        "partielle",
+        "pertinente"
+      ],
+      "detailValeur": "niveau proposé : pertinente",
+      "proposition": {
+        "niveau": "pertinente",
+        "justification": "Les critères de QUALITE.md sont tirés du site (images WebP, contraste du bouton orange, menu au clavier) et les mesures les confirment, sauf la largeur à 360 px, que la grille dit vérifiée alors qu'une page déborde.",
+        "preuves": [
+          {
+            "fichier": "QUALITE.md",
+            "ligne": 9,
+            "colonne": null,
+            "extrait": "Toutes les images sont en WebP, 1 600 px de large au plus.",
+            "surligne": null
+          },
+          {
+            "fichier": "QUALITE.md",
+            "ligne": 14,
+            "colonne": null,
+            "extrait": "Aucune page ne dépasse la largeur d'un écran de téléphone.",
+            "surligne": null
+          }
+        ],
+        "preuvesEcartees": 0,
+        "modele": "claude-opus-5-5",
+        "prompt": "fictif000000"
+      }
+    },
+    {
+      "id": "PR1",
+      "axe": "presence",
+      "libelle": "Présence professionnelle",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 2
+      },
+      "piste": "LinkedIn et un réseau adapté au parcours, à jour, cohérents avec le positionnement ; le choix justifié dans le journal.",
+      "sourceCours": "Sujet §2.4",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "PR2",
+      "axe": "presence",
+      "libelle": "Les réseaux sont reliés depuis le site",
+      "statut": "I",
+      "methode": "navigateur",
+      "verdict": "respecte",
+      "valeur": 3,
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 2,
+        "unite": "réseaux"
+      },
+      "points": null,
+      "piste": "Des liens vers LinkedIn et le réseau choisi, depuis l'en-tête, le pied de page ou la page contact.",
+      "sourceCours": "AC25.03",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "Behance, LinkedIn, Instagram"
+    },
+    {
+      "id": "PC1",
+      "axe": "processus",
+      "libelle": "Processus et conduite de projet",
+      "statut": "C",
+      "methode": "manuel",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": {
+        "obtenus": null,
+        "max": 3
+      },
+      "piste": "Journal de bord, historique Git étalé sur le projet, déclaration IA, tenue du calendrier.",
+      "sourceCours": "Sujet §5",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "PC2",
+      "axe": "processus",
+      "libelle": "Historique Git étalé sur le projet",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 14,
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 10,
+        "unite": "sessions"
+      },
+      "points": null,
+      "piste": "Committer à chaque étape, tout au long des huit semaines.",
+      "sourceCours": "Sujet §5",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "14 sessions sur 31 jours"
+    },
+    {
+      "id": "PC3",
+      "axe": "processus",
+      "libelle": "JOURNAL.md : une entrée par semaine",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 88,
+      "seuil": {
+        "operateur": "≥",
+        "nombre": 75,
+        "unite": "% des semaines"
+      },
+      "points": null,
+      "piste": "Une dizaine de lignes datées chaque semaine : ce qui a été fait, ce qui a coincé, ce qui a été décidé.",
+      "sourceCours": "Sujet §5",
+      "occurrences": [],
+      "totalOccurrences": 0,
+      "detailValeur": "7 semaines sur 8"
+    },
+    {
+      "id": "PC4",
+      "axe": "processus",
+      "libelle": "IA.md présent et détaillé",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Pour chaque outil : à quelle étape, pour quoi faire, ce qui a été modifié, corrigé ou rejeté.",
+      "sourceCours": "Sujet §3",
+      "occurrences": [
+        {
+          "fichier": "IA.md",
+          "ligne": 1,
+          "colonne": null,
+          "extrait": "# Usages de l'IA",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 1,
+      "detailValeur": "IA.md · 4 usages déclarés"
+    },
+    {
+      "id": "PC5",
+      "axe": "processus",
+      "libelle": "Les outils d'IA visibles dans l'historique sont déclarés",
+      "statut": "I",
+      "methode": "depot",
+      "verdict": "respecte",
+      "valeur": 0,
+      "seuil": {
+        "operateur": "=",
+        "nombre": 0,
+        "unite": "non déclarés"
+      },
+      "points": null,
+      "piste": "Un commit co-signé par un outil d'IA : l'outil figure dans IA.md.",
+      "sourceCours": "Sujet §3",
+      "occurrences": [],
+      "totalOccurrences": 0
+    },
+    {
+      "id": "PC6",
+      "axe": "processus",
+      "libelle": "IA.md cohérent avec l'historique et la stack",
+      "statut": "I",
+      "methode": "ia",
+      "verdict": "a-juger",
+      "valeur": null,
+      "seuil": null,
+      "points": null,
+      "piste": "Les étapes et usages déclarés se retrouvent dans vos commits ; ce que vous avez retouché est dit concrètement.",
+      "sourceCours": "Sujet §3",
+      "occurrences": [
+        {
+          "fichier": "IA.md",
+          "ligne": 6,
+          "colonne": null,
+          "extrait": "J'ai demandé à Claude une première version du filtre par catégorie.",
+          "surligne": null
+        }
+      ],
+      "totalOccurrences": 1,
+      "echelle": [
+        "vague",
+        "incohérente",
+        "partielle",
+        "cohérente"
+      ],
+      "detailValeur": "niveau proposé : partielle",
+      "proposition": {
+        "niveau": "partielle",
+        "justification": "IA.md déclare une aide au code pour le filtre des projets, et l'historique montre bien ce filtre ajouté en une fois. La reprise du code générée n'est pas décrite concrètement.",
+        "preuves": [
+          {
+            "fichier": "IA.md",
+            "ligne": 6,
+            "colonne": null,
+            "extrait": "J'ai demandé à Claude une première version du filtre par catégorie.",
+            "surligne": null
+          }
+        ],
+        "preuvesEcartees": 0,
+        "modele": "claude-opus-5-5",
+        "prompt": "fictif000000"
+      }
+    }
+  ],
+  "alertes": [],
+  "nonMesurable": [],
+  "historique": {
+    "dateRendu": "2027-01-18T23:59:00+01:00",
+    "seuils": {
+      "sessionsMin": 10,
+      "joursMin": 10,
+      "partDernieres48hMax": 0.3
+    },
+    "indicateurs": {
+      "commits": 41,
+      "sessions": 14,
+      "joursActifs": 13,
+      "dureeProjetJours": 55,
+      "dureeEstimeeMinutes": 1095,
+      "partDernieres48h": 0.12,
+      "plusGrosCommit": 216,
+      "commitsAutreAuteur": 0
+    },
+    "sessions": [
+      {
+        "debut": "2026-11-23T22:00:00+01:00",
+        "fin": "2026-11-23T22:25:00+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2026-11-27T19:42:47+01:00",
+        "fin": "2026-11-27T20:32:47+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-01T17:25:34+01:00",
+        "fin": "2026-12-01T18:40:34+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-05T15:08:21+01:00",
+        "fin": "2026-12-05T15:33:21+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2026-12-09T12:51:08+01:00",
+        "fin": "2026-12-09T13:41:08+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-13T10:33:55+01:00",
+        "fin": "2026-12-13T11:48:55+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-17T08:16:42+01:00",
+        "fin": "2026-12-17T08:41:42+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2026-12-21T05:59:30+01:00",
+        "fin": "2026-12-21T06:49:30+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2026-12-25T03:42:17+01:00",
+        "fin": "2026-12-25T04:57:17+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2026-12-29T01:25:04+01:00",
+        "fin": "2026-12-29T01:50:04+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2027-01-01T23:07:51+01:00",
+        "fin": "2027-01-01T23:57:51+01:00",
+        "commits": 3
+      },
+      {
+        "debut": "2027-01-05T20:50:38+01:00",
+        "fin": "2027-01-05T22:05:38+01:00",
+        "commits": 4
+      },
+      {
+        "debut": "2027-01-17T08:59:00+01:00",
+        "fin": "2027-01-17T09:24:00+01:00",
+        "commits": 2
+      },
+      {
+        "debut": "2027-01-17T17:59:00+01:00",
+        "fin": "2027-01-17T18:49:00+01:00",
+        "commits": 3
+      }
+    ],
+    "commits": [
+      {
+        "sha": "279049e6310ad1e3d1a2f4a50465f6c6bc06f688",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-11-23T22:00:00+01:00",
+        "dateCommit": "2026-11-23T22:00:00+01:00",
+        "message": "Structure des pages",
+        "ajouts": 20,
+        "suppressions": 0,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "f1b907e7f72d31762b849d922b67b9b61d1a98eb",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-11-23T22:25:00+01:00",
+        "dateCommit": "2026-11-23T22:25:00+01:00",
+        "message": "Grille des projets",
+        "ajouts": 31,
+        "suppressions": 7,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "ce22609c792d2ed35c45582af9b13b35b047ca8e",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-11-27T19:42:47+01:00",
+        "dateCommit": "2026-11-27T19:42:47+01:00",
+        "message": "Grille des projets",
+        "ajouts": 57,
+        "suppressions": 13,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "e584c6b595a4a7b484b6ac20c26b314b5771f2e3",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-11-27T20:07:47+01:00",
+        "dateCommit": "2026-11-27T20:07:47+01:00",
+        "message": "Étude de cas du festival",
+        "ajouts": 68,
+        "suppressions": 20,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "881a45748c2a6c2bd401dec974a670d05d7d6ef1",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-11-27T20:32:47+01:00",
+        "dateCommit": "2026-11-27T20:32:47+01:00",
+        "message": "Mentions légales",
+        "ajouts": 79,
+        "suppressions": 27,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "cbfabfd6b37aa3e3f7ac6bac9d7fd811d55ec97a",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-01T17:25:34+01:00",
+        "dateCommit": "2026-12-01T17:25:34+01:00",
+        "message": "Étude de cas du festival",
+        "ajouts": 94,
+        "suppressions": 26,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "3d676db7fab81e81572beeae8cc57bce0b0da9e2",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-01T17:50:34+01:00",
+        "dateCommit": "2026-12-01T17:50:34+01:00",
+        "message": "Mentions légales",
+        "ajouts": 105,
+        "suppressions": 33,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "0dd0e6b74617c3e56a441714d1e0f6b73419f191",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-01T18:15:34+01:00",
+        "dateCommit": "2026-12-01T18:15:34+01:00",
+        "message": "Menu mobile",
+        "ajouts": 116,
+        "suppressions": 0,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "f802771dfc00d0ea225a45798948f79adf41dc3f",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-01T18:40:34+01:00",
+        "dateCommit": "2026-12-01T18:40:34+01:00",
+        "message": "Images en WebP",
+        "ajouts": 127,
+        "suppressions": 7,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "b4ed313e89fe8063eb7b7790364f0afa6385829e",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-05T15:08:21+01:00",
+        "dateCommit": "2026-12-05T15:08:21+01:00",
+        "message": "Mentions légales",
+        "ajouts": 131,
+        "suppressions": 39,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "ec643dd20db5db8a6055eabad442a2362256913d",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-05T15:33:21+01:00",
+        "dateCommit": "2026-12-05T15:33:21+01:00",
+        "message": "Menu mobile",
+        "ajouts": 142,
+        "suppressions": 6,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "33a5e6d59c2a0f1a82f23c618179250bb5b778da",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-09T12:51:08+01:00",
+        "dateCommit": "2026-12-09T12:51:08+01:00",
+        "message": "Menu mobile",
+        "ajouts": 168,
+        "suppressions": 12,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "eb722b8d44a5aba9d04820021883a8421351c6b5",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-09T13:16:08+01:00",
+        "dateCommit": "2026-12-09T13:16:08+01:00",
+        "message": "Images en WebP",
+        "ajouts": 179,
+        "suppressions": 19,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "1af94cf4c0ae313bbbe4318cb696e89de36bc8d0",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-09T13:41:08+01:00",
+        "dateCommit": "2026-12-09T13:41:08+01:00",
+        "message": "JOURNAL : semaine",
+        "ajouts": 190,
+        "suppressions": 26,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "66d83e56e55c0e16955aed5e4a07cacc414015f1",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-13T10:33:55+01:00",
+        "dateCommit": "2026-12-13T10:33:55+01:00",
+        "message": "Images en WebP",
+        "ajouts": 25,
+        "suppressions": 25,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "1ad805a056675fece1352e16a73af56582bd573e",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-13T10:58:55+01:00",
+        "dateCommit": "2026-12-13T10:58:55+01:00",
+        "message": "JOURNAL : semaine",
+        "ajouts": 36,
+        "suppressions": 32,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "05cf62a2b84e1f12e314fe9c674ca4725548dea5",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-13T11:23:55+01:00",
+        "dateCommit": "2026-12-13T11:23:55+01:00",
+        "message": "Corrections de contraste",
+        "ajouts": 47,
+        "suppressions": 39,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "c32a162f6da4b8ad71bb0785eeb207a73ae4c07d",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-13T11:48:55+01:00",
+        "dateCommit": "2026-12-13T11:48:55+01:00",
+        "message": "Page à propos",
+        "ajouts": 58,
+        "suppressions": 6,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "a1f2257cac5b51c20f6cc9383ae8ddaa9d729e38",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-17T08:16:42+01:00",
+        "dateCommit": "2026-12-17T08:16:42+01:00",
+        "message": "JOURNAL : semaine",
+        "ajouts": 62,
+        "suppressions": 38,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "4097a1cf26f156926657a5022af5cb2f1a77576f",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-17T08:41:42+01:00",
+        "dateCommit": "2026-12-17T08:41:42+01:00",
+        "message": "Corrections de contraste",
+        "ajouts": 73,
+        "suppressions": 5,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "9afed53f1a08f60b04925353a4a2e19d4ed79fbb",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-21T05:59:30+01:00",
+        "dateCommit": "2026-12-21T05:59:30+01:00",
+        "message": "Corrections de contraste",
+        "ajouts": 99,
+        "suppressions": 11,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "8b3c41b57adda2020eafcecc851f923ad74ca112",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-21T06:24:30+01:00",
+        "dateCommit": "2026-12-21T06:24:30+01:00",
+        "message": "Page à propos",
+        "ajouts": 110,
+        "suppressions": 18,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "b8778395d83c800477f8e63a5bd6e0b838a60705",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-21T06:49:30+01:00",
+        "dateCommit": "2026-12-21T06:49:30+01:00",
+        "message": "Filtre des projets",
+        "ajouts": 121,
+        "suppressions": 25,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "32f97956598b857206337cf0f632575b607c800a",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-25T03:42:17+01:00",
+        "dateCommit": "2026-12-25T03:42:17+01:00",
+        "message": "Page à propos",
+        "ajouts": 136,
+        "suppressions": 24,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "f1dd6667d816ceb1e5065307beddd779587b4cb2",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-25T04:07:17+01:00",
+        "dateCommit": "2026-12-25T04:07:17+01:00",
+        "message": "Filtre des projets",
+        "ajouts": 147,
+        "suppressions": 31,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "d55755891e0d3015d54aef7aa4e1fbbd0e3c27bc",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-25T04:32:17+01:00",
+        "dateCommit": "2026-12-25T04:32:17+01:00",
+        "message": "Structure des pages",
+        "ajouts": 158,
+        "suppressions": 38,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "f765a6f95360bb101d577cee43c3b7dfe5f25df0",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-25T04:57:17+01:00",
+        "dateCommit": "2026-12-25T04:57:17+01:00",
+        "message": "Grille des projets",
+        "ajouts": 169,
+        "suppressions": 5,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "eca639aaef2c9563ed0caa4bb9faf2cea118b0d3",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-29T01:25:04+01:00",
+        "dateCommit": "2026-12-29T01:25:04+01:00",
+        "message": "Filtre des projets",
+        "ajouts": 173,
+        "suppressions": 37,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "dff1725e66024e76724a233290a088189128e464",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2026-12-29T01:50:04+01:00",
+        "dateCommit": "2026-12-29T01:50:04+01:00",
+        "message": "Structure des pages",
+        "ajouts": 184,
+        "suppressions": 4,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "6786a715c302458453831aae5321a9300cd29f50",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-01T23:07:51+01:00",
+        "dateCommit": "2027-01-01T23:07:51+01:00",
+        "message": "Structure des pages",
+        "ajouts": 30,
+        "suppressions": 10,
+        "fichiers": 1,
+        "drapeaux": []
+      },
+      {
+        "sha": "0365f7f97e207cea4e0fc8378b8deb0f3b0ab42a",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-01T23:32:51+01:00",
+        "dateCommit": "2027-01-01T23:32:51+01:00",
+        "message": "Grille des projets",
+        "ajouts": 41,
+        "suppressions": 17,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "b5e736508404862d1dc3b018f1dbf204a0000858",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-01T23:57:51+01:00",
+        "dateCommit": "2027-01-01T23:57:51+01:00",
+        "message": "Étude de cas du festival",
+        "ajouts": 52,
+        "suppressions": 24,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "1cffe056e0780044b803ea8b2ae5c21d9fdf9caa",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-05T20:50:38+01:00",
+        "dateCommit": "2027-01-05T20:50:38+01:00",
+        "message": "Grille des projets",
+        "ajouts": 67,
+        "suppressions": 23,
+        "fichiers": 2,
+        "drapeaux": []
+      },
+      {
+        "sha": "532d0ef03a1a6469f5350c30f0a4ad1d0525ba90",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-05T21:15:38+01:00",
+        "dateCommit": "2027-01-05T21:15:38+01:00",
+        "message": "Étude de cas du festival",
+        "ajouts": 78,
+        "suppressions": 30,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "d87d458fdc5392b8bd5521de00e627d3900cf595",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-05T21:40:38+01:00",
+        "dateCommit": "2027-01-05T21:40:38+01:00",
+        "message": "Mentions légales",
+        "ajouts": 89,
+        "suppressions": 37,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "7297c5465bd7fb76cd195ea9630d23e13eefa403",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-05T22:05:38+01:00",
+        "dateCommit": "2027-01-05T22:05:38+01:00",
+        "message": "Menu mobile",
+        "ajouts": 100,
+        "suppressions": 4,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "b631e2050d3b9ff7d5135cfe1af10c97f5f4161e",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-17T08:59:00+01:00",
+        "dateCommit": "2027-01-17T08:59:00+01:00",
+        "message": "Étude de cas du festival",
+        "ajouts": 104,
+        "suppressions": 36,
+        "fichiers": 3,
+        "drapeaux": []
+      },
+      {
+        "sha": "200b83c07be9ca600650d52b2f31d1e60768ef6e",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-17T09:24:00+01:00",
+        "dateCommit": "2027-01-17T09:24:00+01:00",
+        "message": "Mentions légales",
+        "ajouts": 115,
+        "suppressions": 3,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "70d263f95fa3e3ee5c6089381262ac70e18be8e6",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-17T17:59:00+01:00",
+        "dateCommit": "2027-01-17T17:59:00+01:00",
+        "message": "Mentions légales",
+        "ajouts": 141,
+        "suppressions": 9,
+        "fichiers": 4,
+        "drapeaux": []
+      },
+      {
+        "sha": "ec800a04182fcb15db63bd4997320cd905264db9",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-17T18:24:00+01:00",
+        "dateCommit": "2027-01-17T18:24:00+01:00",
+        "message": "Menu mobile",
+        "ajouts": 152,
+        "suppressions": 16,
+        "fichiers": 5,
+        "drapeaux": []
+      },
+      {
+        "sha": "d3afed175b4b771c43feafda8377184536d6e4ca",
+        "auteur": "Garnier Lucie",
+        "dateAuteur": "2027-01-17T18:49:00+01:00",
+        "dateCommit": "2027-01-17T18:49:00+01:00",
+        "message": "Images en WebP",
+        "ajouts": 163,
+        "suppressions": 23,
+        "fichiers": 1,
+        "drapeaux": []
+      }
+    ],
+    "tags": []
+  },
+  "parcours": {
+    "url": "https://lucie-garnier.example/",
+    "parcouruLe": "2027-01-20T09:30:00+01:00",
+    "https": {
+      "actif": true,
+      "redirection": true
+    },
+    "robots": true,
+    "sitemap": {
+      "present": true,
+      "urls": 6
+    },
+    "nonParcourues": 0,
+    "pages": [
+      {
+        "chemin": "/",
+        "url": "https://lucie-garnier.example/",
+        "statut": 200,
+        "titre": "Accueil · Lucie Garnier",
+        "poidsKo": 640,
+        "requetes": 18,
+        "dom": 420,
+        "ecoindex": {
+          "score": 68.4,
+          "note": "B"
+        },
+        "debordement": false,
+        "violations": 0,
+        "tiers": 1,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/42099b4af021-360.svg"
+          },
+          {
+            "largeur": 768,
+            "image": "captures/42099b4af021-768.svg"
+          },
+          {
+            "largeur": 1280,
+            "image": "captures/42099b4af021-1280.svg"
+          }
+        ]
+      },
+      {
+        "chemin": "/projets",
+        "url": "https://lucie-garnier.example/projets",
+        "statut": 200,
+        "titre": "Projets · Lucie Garnier",
+        "poidsKo": 710,
+        "requetes": 20,
+        "dom": 450,
+        "ecoindex": {
+          "score": 70.30000000000001,
+          "note": "B"
+        },
+        "debordement": false,
+        "violations": 0,
+        "tiers": 1,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/fd53fe4a1bc1-360.svg"
+          }
+        ]
+      },
+      {
+        "chemin": "/projets/festival-lumieres",
+        "url": "https://lucie-garnier.example/projets/festival-lumieres",
+        "statut": 200,
+        "titre": "Festival des lumières · Lucie Garnier",
+        "poidsKo": 780,
+        "requetes": 22,
+        "dom": 480,
+        "ecoindex": {
+          "score": 72.2,
+          "note": "B"
+        },
+        "debordement": false,
+        "violations": 0,
+        "tiers": 1,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/4b60e0fc17a4-360.svg"
+          }
+        ]
+      },
+      {
+        "chemin": "/projets/appli-meteo",
+        "url": "https://lucie-garnier.example/projets/appli-meteo",
+        "statut": 200,
+        "titre": "Appli météo · Lucie Garnier",
+        "poidsKo": 850,
+        "requetes": 24,
+        "dom": 510,
+        "ecoindex": {
+          "score": 74.10000000000001,
+          "note": "B"
+        },
+        "debordement": true,
+        "violations": 0,
+        "tiers": 0,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/8ffee0ec5916-360.svg"
+          }
+        ]
+      },
+      {
+        "chemin": "/a-propos",
+        "url": "https://lucie-garnier.example/a-propos",
+        "statut": 200,
+        "titre": "À propos · Lucie Garnier",
+        "poidsKo": 920,
+        "requetes": 26,
+        "dom": 540,
+        "ecoindex": {
+          "score": 76,
+          "note": "B"
+        },
+        "debordement": false,
+        "violations": 0,
+        "tiers": 0,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/0908df741fb5-360.svg"
+          }
+        ]
+      },
+      {
+        "chemin": "/contact",
+        "url": "https://lucie-garnier.example/contact",
+        "statut": 200,
+        "titre": "Contact · Lucie Garnier",
+        "poidsKo": 990,
+        "requetes": 28,
+        "dom": 570,
+        "ecoindex": {
+          "score": 77.9,
+          "note": "B"
+        },
+        "debordement": false,
+        "violations": 0,
+        "tiers": 0,
+        "captures": [
+          {
+            "largeur": 360,
+            "image": "captures/eda4eb3e3530-360.svg"
+          }
+        ]
+      }
+    ],
+    "tiers": [
+      {
+        "hote": "fonts.googleapis.com",
+        "categorie": "polices",
+        "pages": [
+          "/",
+          "/projets",
+          "/a-propos"
+        ]
+      }
+    ],
+    "cookies": []
+  },
+  "soutenance": {
+    "graine": "pf-01·1cd22c2·1",
+    "candidats": 9,
+    "tirages": [
+      {
+        "fichier": "src/scripts/filtres.js",
+        "debut": 1,
+        "fin": 13,
+        "langage": "javascript",
+        "code": "const boutons = document.querySelectorAll(\".filtre\");\nconst cartes = document.querySelectorAll(\".projet\");\n\nboutons.forEach((bouton) => {\n  bouton.addEventListener(\"click\", () => {\n    const categorie = bouton.dataset.categorie;\n    boutons.forEach((b) => b.setAttribute(\"aria-pressed\", b === bouton));\n    cartes.forEach((carte) => {\n      const visible = categorie === \"tout\" || carte.dataset.categorie === categorie;\n      carte.hidden = !visible;\n    });\n  });\n});",
+        "questions": [
+          {
+            "question": "Pourquoi mettre à jour aria-pressed sur tous les boutons, et pas seulement sur celui cliqué ?",
+            "attendu": "Un seul filtre est actif : les autres doivent annoncer qu'ils ne le sont plus.",
+            "lignes": {
+              "debut": 7,
+              "fin": 7
+            }
+          },
+          {
+            "question": "Que se passe-t-il pour une carte sans data-categorie ?",
+            "attendu": "Elle n'est visible que pour le filtre « tout ».",
+            "lignes": {
+              "debut": 9,
+              "fin": 10
+            }
+          },
+          {
+            "question": "Pourquoi hidden plutôt qu'une classe CSS ?",
+            "attendu": "La carte est retirée de l'affichage et de l'arbre d'accessibilité, sans feuille de style.",
+            "lignes": {
+              "debut": 10,
+              "fin": 10
+            }
+          }
+        ]
+      }
+    ],
+    "ia": {
+      "statut": "proposees",
+      "modele": "claude-opus-5-5",
+      "prompt": "fictif000000",
+      "ecartees": 0
+    }
+  }
+}

@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { appliquerNotes, verifierNotes } from "../src/lib/notes.js";
 
-const resultat = JSON.parse(fs.readFileSync(new URL("../donnees-fictives/etu-01.json", import.meta.url), "utf-8"));
+const resultat = JSON.parse(fs.readFileSync(new URL("../donnees-fictives/s1-sae/etu-01.json", import.meta.url), "utf-8"));
 const critere = (r, id) => r.criteres.find((c) => c.id === id);
 const LE = "2027-01-20T10:00:00+01:00";
 

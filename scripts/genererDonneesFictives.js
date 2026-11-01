@@ -1,5 +1,5 @@
 /**
- * Génère les données fictives de donnees-fictives/ à partir du catalogue des critères.
+ * Génère les données fictives de la SAÉ 105 (donnees-fictives/s1-sae/) à partir du catalogue des critères.
  * Noms inventés, écrits « Nom Prénom » (règle du cahier des charges). Le résultat est déterministe.
  *
  * Usage : node scripts/genererDonneesFictives.js
@@ -8,7 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 
-const dossier = path.resolve("donnees-fictives");
+const dossier = path.resolve("donnees-fictives/s1-sae");
 const catalogue = JSON.parse(
   fs.readFileSync(path.join(dossier, "catalogue-criteres.json"), "utf-8")
 );

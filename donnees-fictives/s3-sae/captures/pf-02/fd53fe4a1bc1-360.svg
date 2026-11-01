@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="2580" viewBox="0 0 360 2580">
+<rect width="100%" height="100%" fill="#0f172a"/>
+<rect x="20" y="28" width="120" height="20" rx="4" fill="#e2e8f0"/>
+<rect x="312" y="28" width="28" height="20" rx="4" fill="#e2e8f0" opacity="0.5"/>
+<text x="20" y="220" font-family="system-ui, sans-serif" font-size="36" font-weight="700" fill="#e2e8f0">Projets</text>
+<rect x="20" y="250" width="320" height="14" rx="4" fill="#e2e8f0" opacity="0.4"/>
+<rect x="20" y="276" width="280" height="14" rx="4" fill="#e2e8f0" opacity="0.4"/>
+<rect x="20" y="320" width="160" height="44" rx="22" fill="#22d3ee"/>
+<rect x="20" y="520" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.35"/><rect x="20" y="776" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/><rect x="20" y="830" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.55"/><rect x="20" y="1086" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/><rect x="20" y="1140" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.75"/><rect x="20" y="1396" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/><rect x="20" y="1450" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.35"/><rect x="20" y="1706" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/><rect x="20" y="1760" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.55"/><rect x="20" y="2016" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/><rect x="20" y="2070" width="320" height="240" rx="8" fill="#22d3ee" opacity="0.75"/><rect x="20" y="2326" width="192" height="14" rx="4" fill="#e2e8f0" opacity="0.7"/>
+</svg>

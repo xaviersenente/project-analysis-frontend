@@ -12,7 +12,7 @@ import { notesSchema, NOTES_VIDES } from "../src/schema/notes.js";
 import { verifierNotes } from "../src/lib/notes.js";
 
 const SLUG = /^[a-z0-9-]+$/;
-const dossierDonnees = () => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives");
+const dossierDonnees = () => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives/s1-sae");
 
 const lireCorps = (req) =>
   new Promise((resolve, reject) => {

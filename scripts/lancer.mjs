@@ -2,8 +2,9 @@
  * Lance Astro sur les analyses d'une promo (un dossier de project-analysis-backend/data/).
  *
  * Usage :
- *   node scripts/lancer.mjs dev                 données fictives
+ *   node scripts/lancer.mjs dev                 données fictives de la SAÉ 105 (donnees-fictives/s1-sae)
  *   node scripts/lancer.mjs dev s3-sae          les analyses de la promo s3-sae
+ *   node scripts/lancer.mjs dev s3-sae --fictif les données fictives de cette promo (donnees-fictives/s3-sae)
  *   node scripts/lancer.mjs build s1-sae
  *   node scripts/lancer.mjs dev s1-sae --port 4322   (les autres options vont à Astro)
  *
@@ -16,29 +17,34 @@ import { fileURLToPath } from "node:url";
 
 const racineFrontend = fileURLToPath(new URL("..", import.meta.url));
 const racineDonnees = path.resolve(racineFrontend, "../project-analysis-backend/data");
+const racineFictives = path.join(racineFrontend, "donnees-fictives");
 // Même règle que le backend (services/promo/promoService.js)
 const PROMO_REGEX = /^s[1-6]-(sae|projet)(-[a-z0-9]+)*$/;
 
 const [commande, ...reste] = process.argv.slice(2);
 const promo = reste[0] && !reste[0].startsWith("-") ? reste.shift() : null;
+// --fictif : les données inventées de la promo, versionnées avec l'interface
+const fictif = reste.includes("--fictif");
+if (fictif) reste.splice(reste.indexOf("--fictif"), 1);
 
-const disponibles = fs.existsSync(racineDonnees)
-  ? fs.readdirSync(racineDonnees).filter((d) => PROMO_REGEX.test(d) && fs.existsSync(path.join(racineDonnees, d, "promo.json"))).sort()
-  : [];
+const promosDe = (racine) =>
+  fs.existsSync(racine) ? fs.readdirSync(racine).filter((d) => PROMO_REGEX.test(d) && fs.existsSync(path.join(racine, d, "promo.json"))).sort() : [];
+const disponibles = promosDe(fictif ? racineFictives : racineDonnees);
 
 if (!["dev", "build", "preview"].includes(commande)) {
-  console.error("Usage : node scripts/lancer.mjs dev|build|preview [promo] [options d'Astro]");
+  console.error("Usage : node scripts/lancer.mjs dev|build|preview [promo] [--fictif] [options d'Astro]");
   process.exit(1);
 }
 if (promo) {
   if (!PROMO_REGEX.test(promo) || !disponibles.includes(promo)) {
-    console.error(`Promo introuvable : « ${promo} ». Disponibles : ${disponibles.join(", ") || "aucune"}`);
+    console.error(`Promo ${fictif ? "fictive " : ""}introuvable : « ${promo} ». Disponibles : ${disponibles.join(", ") || "aucune"}`);
     process.exit(1);
   }
-  process.env.WEBSCOPE_DONNEES = path.join(racineDonnees, promo);
-  console.log(`Promo : ${promo}`);
+  process.env.WEBSCOPE_DONNEES = path.join(fictif ? racineFictives : racineDonnees, promo);
+  console.log(`Promo : ${promo}${fictif ? " (données fictives)" : ""}`);
 } else if (!process.env.WEBSCOPE_DONNEES) {
-  console.log(`Données fictives (promos disponibles : ${disponibles.join(", ") || "aucune"})`);
+  process.env.WEBSCOPE_DONNEES = path.join(racineFictives, "s1-sae");
+  console.log(`Données fictives de s1-sae (promos réelles : ${promosDe(racineDonnees).join(", ") || "aucune"} ; fictives : ${promosDe(racineFictives).join(", ")})`);
 }
 
 const astro = path.join(racineFrontend, "node_modules/astro/bin/astro.mjs");

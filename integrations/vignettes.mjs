@@ -18,7 +18,7 @@ const TYPES = { webp: "image/webp", svg: "image/svg+xml", woff2: "font/woff2", w
 const DOSSIERS = ["vignettes", "captures", "polices"];
 const LIBELLES = { vignettes: "vignette(s)", captures: "capture(s)", polices: "police(s)" };
 
-const dossierDonnees = (dossier) => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives", dossier);
+const dossierDonnees = (dossier) => path.resolve(process.env.WEBSCOPE_DONNEES || "donnees-fictives/s1-sae", dossier);
 
 export default function vignettes() {
   return {

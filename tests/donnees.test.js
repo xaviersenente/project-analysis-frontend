@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chargerPromo, chargerResultats } from "../src/lib/donnees.js";
 
-const DOSSIER = new URL("../donnees-fictives/", import.meta.url).pathname;
+const DOSSIER = new URL("../donnees-fictives/s1-sae/", import.meta.url).pathname;
 
 test("le fichier de promo fictif est valide", () => {
   const promo = chargerPromo(DOSSIER);
@@ -39,4 +39,18 @@ test("un résultat invalide fait échouer le build avec un message clair", () =>
     () => chargerResultats(DOSSIER, { projets: [{ slug: "../promo" }] }),
     /Identifiant de projet invalide/
   );
+});
+
+test("les portfolios fictifs (s3-sae) sont valides : site parcouru, soutenance, propositions de l'IA", () => {
+  const dossier = new URL("../donnees-fictives/s3-sae/", import.meta.url).pathname;
+  const promo = chargerPromo(dossier);
+  const resultats = chargerResultats(dossier, promo);
+  assert.ok(resultats.size < promo.projets.length);
+  for (const r of resultats.values()) {
+    assert.equal(r.grille.profil, "portfolio");
+    assert.ok(r.parcours.pages.length > 0 && r.soutenance.tirages.length > 0 && r.historique.commits.length > 0);
+  }
+  const ed2 = resultats.get("pf-01").criteres.find((c) => c.id === "ED2");
+  assert.equal(ed2.proposition.niveau, "partielles");
+  assert.equal(ed2.enseignant.niveau, "partielles");
 });

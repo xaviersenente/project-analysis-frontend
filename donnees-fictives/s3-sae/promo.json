@@ -1,0 +1,28 @@
+{
+  "promo": "Portfolio S3 · 2026-2027 (données fictives)",
+  "grille": "s3-portfolio-2026",
+  "dateRendu": "2027-01-18T23:59:00+01:00",
+  "dateDebut": "2026-11-23T08:00:00+01:00",
+  "ia": {
+    "mode": "claude-code",
+    "criteres": true,
+    "questionsSoutenance": true
+  },
+  "projets": [
+    {
+      "slug": "pf-01",
+      "nom": "Garnier Lucie",
+      "groupe": "S3 · TP A"
+    },
+    {
+      "slug": "pf-02",
+      "nom": "Moreau Théo",
+      "groupe": "S3 · TP B"
+    },
+    {
+      "slug": "pf-03",
+      "nom": "Lambert Chloé",
+      "groupe": "S3 · TP A"
+    }
+  ]
+}

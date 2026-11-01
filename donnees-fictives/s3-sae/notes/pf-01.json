@@ -1,0 +1,25 @@
+{
+  "commentaire": "Un portfolio cohérent, une direction artistique affirmée. Détaillez davantage le processus dans les études de cas.",
+  "criteres": {
+    "DA1": {
+      "points": 3,
+      "commentaire": "Palette et typographie tenues sur tout le site.",
+      "le": "2027-01-21T10:00:00+01:00"
+    },
+    "ED1": {
+      "points": 2,
+      "commentaire": null,
+      "le": "2027-01-21T10:00:00+01:00"
+    },
+    "ED2": {
+      "niveau": "partielles",
+      "commentaire": null,
+      "le": "2027-01-21T10:00:00+01:00"
+    },
+    "Q13": {
+      "niveau": "partielle",
+      "commentaire": "La grille annonce la largeur à 360 px vérifiée, ce que la mesure contredit.",
+      "le": "2027-01-21T10:00:00+01:00"
+    }
+  }
+}
