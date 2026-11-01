@@ -10,9 +10,10 @@ Node 24 (voir `.nvmrc`).
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321, avec les données fictives
-npm test           # schéma, synthèse, formats
-npm run build      # site statique dans dist/
+npm run dev                # http://localhost:4321, avec les données fictives
+npm run dev -- s3-sae      # les analyses d'une promo (project-analysis-backend/data/s3-sae)
+npm test                   # schéma, synthèse, formats
+npm run build -- s1-sae    # site statique de la promo dans dist/
 ```
 
 ## Les données
@@ -20,7 +21,7 @@ npm run build      # site statique dans dist/
 | Source | Quand |
 |---|---|
 | `donnees-fictives/` | par défaut : 6 étudiants inventés, dont un en échec partiel et deux non analysés |
-| `WEBSCOPE_DONNEES=../project-analysis-backend/data npm run build` | les vraies analyses, hors de Git |
+| `npm run build -- <promo>` (`s1-sae`, `s3-sae`…) | les vraies analyses de cette promo, hors de Git (`scripts/lancer.mjs` fixe `WEBSCOPE_DONNEES`) |
 
 Le dossier contient `promo.json` et un fichier `<slug>.json` par projet analysé. Un projet de la promo sans fichier s'affiche « non analysé ». Un fichier qui ne respecte pas le schéma arrête le build, avec le fichier et le champ en cause.
 
