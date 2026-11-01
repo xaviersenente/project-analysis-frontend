@@ -126,6 +126,25 @@ const texteRecherche = `${c.id} ${c.libelle}`;
       }
 
       {
+        c.proposition && (
+          <div class="rounded-md border border-accent/40 bg-accent-fond px-3 py-2 text-sm">
+            <p class="font-semibold">
+              Proposition de l'IA : {c.proposition.niveau}
+              <span class="font-normal text-texte-doux">
+                {" "}· sur l'échelle {c.echelle?.join(" < ")}
+              </span>
+            </p>
+            <p class="mt-1 whitespace-pre-line">{c.proposition.justification}</p>
+            <p class="mt-1 text-xs text-texte-doux">
+              À valider ou corriger : le verdict reste celui de l'enseignant. {nombre(c.proposition.preuves.length)} preuve(s) retrouvée(s) mot pour mot
+              {c.proposition.preuvesEcartees > 0 && <>, {nombre(c.proposition.preuvesEcartees)} écartée(s) car introuvable(s) à la ligne citée</>} ·{" "}
+              <span class="font-mono">{c.proposition.modele}, prompt {c.proposition.prompt}</span>
+            </p>
+          </div>
+        )
+      }
+
+      {
         c.statut === "B" && (
           <p class:list={["rounded-md px-3 py-2 text-sm", bonusObtenu ? "bg-bonus-fond text-bonus" : "bg-surface text-texte-doux border border-bordure"]}>
             {bonusObtenu
