@@ -14,8 +14,9 @@ import Verdict from "../../components/Verdict.astro";
 import SiteParcouru from "../../components/SiteParcouru.astro";
 import CapturesSite from "../../components/CapturesSite.astro";
 import FicheSoutenance from "../../components/FicheSoutenance.astro";
+import ListeANoter from "../../components/ListeANoter.astro";
 import { sectionsAnalyse } from "../../config/sections.js";
-import { badgesParAxe } from "../../lib/synthese.js";
+import { badgesParAxe, criteresANoter } from "../../lib/synthese.js";
 import { donneesSite } from "../../lib/site.js";
 
 export function getStaticPaths() {
@@ -39,6 +40,10 @@ const seuilDe = (id: string) => resultat?.criteres.find((c: any) => c.id === id)
 const sections = resultat ? sectionsAnalyse(resultat.grille.profil) : [];
 const avecSection = (id: string) => sections.some((s) => s.id === id);
 
+// Mode local seulement : la liste de travail de l'enseignant
+const modeLocal = import.meta.env.DEV;
+const aNoter = resultat && modeLocal ? criteresANoter(resultat.criteres) : null;
+
 const recommandations = resultat
   ? resultat.criteres.filter((c: any) => ["R", "I"].includes(c.statut) && ["non-respecte", "partiel"].includes(c.verdict))
   : [];
@@ -61,6 +66,7 @@ const recommandations = resultat
       axes={resultat?.grille.axes}
       sections={sections}
       recommandations={recommandations.length}
+      aNoter={aNoter ? { restants: aNoter.restants.length, total: aNoter.restants.length + aNoter.notes.length } : null}
     />
 
     <main id="contenu" class="mx-auto w-full max-w-[100rem] min-w-0 space-y-8 p-4 lg:p-8">
@@ -70,6 +76,8 @@ const recommandations = resultat
         resultat ? (
           <>
             <Synthese resultat={resultat} moyennes={moyennes} />
+
+            {modeLocal && <ListeANoter criteres={resultat.criteres} axes={resultat.grille.axes} images={resultat.ressources?.images} slug={resultat.projet.slug} />}
 
             {resultat.grille.axes.map((axe: any, rang: number) => (
               <SectionAxe
@@ -129,12 +137,14 @@ const recommandations = resultat
   {
     import.meta.env.DEV && (
       <script is:inline>
-        // Mode local : après un enregistrement, la page revient sur le critère noté
+        // Mode local : après un enregistrement, la page revient sur la ligne notée (dans son axe ou dans « À noter »)
         try {
           const id = sessionStorage.getItem("webscope-retour");
           sessionStorage.removeItem("webscope-retour");
-          const ligne = id && document.getElementById(`critere-${id}`);
+          // Une fois notée, une ligne de « À noter » passe dans « Déjà notés » : même identifiant
+          const ligne = id && document.getElementById(id);
           if (ligne) {
+            for (let groupe = ligne.closest("details.groupe-criteres"); groupe; groupe = groupe.parentElement?.closest("details.groupe-criteres")) groupe.open = true;
             ligne.querySelector("details").open = true;
             ligne.scrollIntoView({ block: "center" });
           }

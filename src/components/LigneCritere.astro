@@ -17,9 +17,12 @@ interface Props {
   images?: any[];
   // Projet : pour enregistrer les notes en mode local
   slug?: string;
+  // Liste « À noter » : la même ligne, sous un autre identifiant, avec un lien vers son axe
+  dansListe?: { axe: { id: string; nom: string } };
 }
 
-const { critere: c, images, slug } = Astro.props;
+const { critere: c, images, slug, dansListe } = Astro.props;
+const idLigne = dansListe ? `a-noter-${c.id}` : `critere-${c.id}`;
 // Mode local : formulaires de notation en développement seulement ; le site construit est en lecture seule
 const modeLocal = import.meta.env.DEV && Boolean(slug);
 const ens = c.enseignant;
@@ -59,7 +62,7 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
 ---
 
 <li
-  id={`critere-${c.id}`}
+  id={idLigne}
   data-critere
   data-verdict={c.verdict}
   data-statut={c.statut}
@@ -227,7 +230,16 @@ const texteRecherche = `${c.id} ${c.libelle}${origine ? ` ${origine}` : ""}`;
         )
       }
 
-      {modeLocal && c.statut !== "B" && <NoteEnseignant client:visible slug={slug} critere={c} />}
+      {
+        dansListe && (
+          <p class="text-sm">
+            <a href={`#critere-${c.id}`} class="text-accent underline underline-offset-2">Voir {c.id} dans l'axe {dansListe.axe.nom}</a>
+            <span class="text-texte-doux"> : ses mesures voisines et les blocs de l'axe (captures, palette…)</span>
+          </p>
+        )
+      }
+
+      {modeLocal && c.statut !== "B" && <NoteEnseignant client:visible slug={slug} critere={c} ligne={idLigne} />}
 
       {c.id === "A6" && images && images.length > 0 && <ListeAlt images={images} />}
 

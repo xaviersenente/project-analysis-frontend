@@ -22,6 +22,15 @@ const { axe, rang, criteres, pointsAxe, moyenne, images, slug } = Astro.props;
 const id = (suffixe: string) => `${axe.id}-${suffixe}`;
 // Critères repris d'une SAÉ précédente : le filtre n'apparaît que s'il y en a
 const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
+
+// Ce qui demande l'attention d'abord ; les critères respectés, puis les acquis, repliés en fin d'axe
+const duSujet = criteres.filter((c) => !c.origine);
+const aVoir = duSujet.filter((c) => c.verdict !== "respecte");
+const respectes = duSujet.filter((c) => c.verdict === "respecte");
+const acquisParOrigine = origines.map((origine) => {
+  const liste = criteres.filter((c) => c.origine === origine);
+  return { libelle: libelleOrigine(origine), liste, aReprendre: liste.filter((c) => ["non-respecte", "partiel"].includes(c.verdict)).length };
+});
 ---
 
 <section
@@ -91,8 +100,34 @@ const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
   </form>
 
   <ul class="divide-y divide-bordure">
-    {criteres.map((c) => <LigneCritere critere={c} images={images} slug={slug} />)}
+    {aVoir.map((c) => <LigneCritere critere={c} images={images} slug={slug} />)}
   </ul>
+  {
+    respectes.length > 0 && (
+      <details class="groupe-criteres border-t border-bordure">
+        <summary class="cursor-pointer px-4 py-2.5 text-sm font-semibold text-texte-doux hover:bg-neutre-fond">
+          <span class="text-respecte">✓</span> {respectes.length} critère{respectes.length > 1 ? "s" : ""} respecté{respectes.length > 1 ? "s" : ""}
+        </summary>
+        <ul class="divide-y divide-bordure border-t border-bordure">
+          {respectes.map((c) => <LigneCritere critere={c} images={images} slug={slug} />)}
+        </ul>
+      </details>
+    )
+  }
+  {
+    acquisParOrigine.map((groupe) => (
+      <details class="groupe-criteres border-t border-bordure">
+        <summary class="cursor-pointer px-4 py-2.5 text-sm font-semibold text-texte-doux hover:bg-neutre-fond">
+          {groupe.libelle} · {groupe.liste.length} critère{groupe.liste.length > 1 ? "s" : ""}
+          {groupe.aReprendre > 0 && <span class="font-normal">, dont {groupe.aReprendre} à reprendre</span>}
+          <span class="font-normal"> (pour information, sans points)</span>
+        </summary>
+        <ul class="divide-y divide-bordure border-t border-bordure">
+          {groupe.liste.map((c) => <LigneCritere critere={c} images={images} slug={slug} />)}
+        </ul>
+      </details>
+    ))
+  }
   <p class="aucun px-4 py-3 text-sm text-texte-doux" hidden>Aucun critère ne correspond à ces filtres.</p>
 </section>
 
@@ -142,6 +177,7 @@ const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
   for (const section of document.querySelectorAll<HTMLElement>("[data-section-axe]")) {
     const formulaire = section.querySelector<HTMLFormElement>(".filtres")!;
     const lignes = [...section.querySelectorAll<HTMLElement>("[data-critere]")];
+    const groupes = [...section.querySelectorAll<HTMLDetailsElement>("details.groupe-criteres")];
     const compte = section.querySelector<HTMLElement>(".compte")!;
     const aucun = section.querySelector<HTMLElement>(".aucun")!;
 
@@ -164,6 +200,20 @@ const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
       }
       compte.textContent = `${visibles} critère${visibles > 1 ? "s" : ""} sur ${lignes.length}`;
       aucun.hidden = visibles > 0;
+      // Les groupes repliés (respectés, acquis) : ouverts par un filtre actif s'ils ont des lignes visibles,
+      // masqués s'ils n'en ont pas ; sans filtre, ils reprennent leur état
+      const filtreActif = filtres.vue !== "tous" || filtres.masquerRecommandations || filtres.recherche.trim() !== "" || filtres.origine !== "toutes";
+      for (const groupe of groupes) {
+        const contient = [...groupe.querySelectorAll<HTMLElement>("[data-critere]")].some((l) => !l.hidden);
+        groupe.hidden = !contient;
+        if (filtreActif && contient && !groupe.open) {
+          groupe.open = true;
+          groupe.dataset.ouvertParFiltre = "";
+        } else if (!filtreActif && groupe.dataset.ouvertParFiltre !== undefined) {
+          groupe.open = false;
+          delete groupe.dataset.ouvertParFiltre;
+        }
+      }
     };
 
     formulaire.addEventListener("input", appliquer);
@@ -182,6 +232,8 @@ const origines = [...new Set(criteres.map((c) => c.origine).filter(Boolean))];
       formulaire.reset();
       formulaire.dispatchEvent(new Event("input"));
     }
+    // Une ligne repliée dans un groupe (respectés, acquis, déjà notés) : le groupe s'ouvre
+    for (let groupe = cible.closest<HTMLDetailsElement>("details.groupe-criteres"); groupe; groupe = groupe.parentElement?.closest<HTMLDetailsElement>("details.groupe-criteres") ?? null) groupe.open = true;
     cible.querySelector("details")?.setAttribute("open", "");
     cible.scrollIntoView({ block: "start" });
   };

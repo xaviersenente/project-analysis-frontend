@@ -60,6 +60,8 @@ import { computed, ref } from "vue";
 const props = defineProps({
   slug: { type: String, required: true },
   critere: { type: Object, required: true },
+  // Identifiant de la ligne qui porte le formulaire : un critère peut figurer deux fois (axe, liste « À noter »)
+  ligne: { type: String, default: "" },
 });
 
 const LIBELLES = {
@@ -98,7 +100,8 @@ const justificationRequise = computed(() => {
   if (enPoints) return pointsProposes !== null && points.value !== null && points.value !== "" && points.value !== pointsProposes;
   return verdictOutil !== "a-juger" && verdictCorrige.value;
 });
-const id = (suffixe) => `note-${c.id}-${suffixe}`;
+const ligne = props.ligne || `critere-${c.id}`;
+const id = (suffixe) => `note-${ligne}-${suffixe}`;
 
 const enregistrer = async (effacer = false) => {
   envoi.value = true;
@@ -121,7 +124,7 @@ const enregistrer = async (effacer = false) => {
     if (!reponse.ok) throw new Error(donnees.erreurs.join(" · "));
     message.value = "Enregistré. Mise à jour de la note…";
     // La note est recalculée au rendu de la page : on la recharge, au même endroit
-    sessionStorage.setItem("webscope-retour", c.id);
+    sessionStorage.setItem("webscope-retour", ligne);
     window.location.reload();
   } catch (e) {
     erreur.value = true;

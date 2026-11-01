@@ -126,3 +126,17 @@ test("moyennes de la promo : par axe et note totale, sur les projets analysés",
   const vide = { note: { totale: 0, max: 0, parAxe: resultat(0, 0).note.parAxe } };
   assert.equal(moyennesPromo([resultat(70, 10), vide]).totale, 70);
 });
+
+test("à noter : les critères laissés à juger par l'outil, restants puis déjà notés", async () => {
+  const { criteresANoter } = await import("../src/lib/synthese.js");
+  const liste = [
+    { id: "DA1", verdict: "a-juger" },
+    { id: "ED2", verdict: "partiel", enseignant: { verdictOutil: "a-juger" } },
+    { id: "Q3", verdict: "non-respecte" },
+    { id: "Q4", verdict: "respecte", enseignant: { verdictOutil: "non-respecte" } },
+  ];
+  const { restants, notes } = criteresANoter(liste);
+  assert.deepEqual(restants.map((c) => c.id), ["DA1"]);
+  // Une correction de verdict de l'outil (Q4) n'est pas un critère à noter
+  assert.deepEqual(notes.map((c) => c.id), ["ED2"]);
+});

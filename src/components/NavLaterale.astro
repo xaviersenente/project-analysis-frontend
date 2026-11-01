@@ -9,12 +9,20 @@ interface Props {
   // Sections d'analyse du profil (config/sections.js)
   sections?: { id: string; libelle: string }[];
   recommandations?: number;
+  // Mode local : critères restant à noter, sur le total ; null hors mode local
+  aNoter?: { restants: number; total: number } | null;
 }
 
-const { badges, axes = [], sections = [], recommandations = 0 } = Astro.props;
+const { badges, axes = [], sections = [], recommandations = 0, aNoter = null } = Astro.props;
 
 const tousLesGroupes = [
-  { titre: "Projet", entrees: [{ id: "synthese", libelle: "Synthèse" }] },
+  {
+    titre: "Projet",
+    entrees: [
+      { id: "synthese", libelle: "Synthèse" },
+      ...(aNoter && aNoter.total > 0 ? [{ id: "a-noter", libelle: "À noter", badge: aNoter.restants, calme: true, sr: "critères restant à noter" }] : []),
+    ],
+  },
   {
     titre: "Axes",
     entrees: axes.map((axe, rang) => ({
@@ -75,11 +83,11 @@ const groupes = badges ? tousLesGroupes : tousLesGroupes.slice(0, 1);
                   <span
                     class:list={[
                       "rounded px-1.5 text-xs font-semibold",
-                      "calme" in entree && entree.calme ? "bg-neutre-fond text-neutre" : "bg-non-respecte-fond text-non-respecte",
+                      "sr" in entree ? "bg-accent-fond text-accent" : "calme" in entree && entree.calme ? "bg-neutre-fond text-neutre" : "bg-non-respecte-fond text-non-respecte",
                     ]}>
                     {entree.badge}
                     <span class="sr-only">
-                      {"calme" in entree && entree.calme ? " recommandations non respectées" : " contraintes non respectées"}
+                      {"sr" in entree ? ` ${entree.sr}` : "calme" in entree && entree.calme ? " recommandations non respectées" : " contraintes non respectées"}
                     </span>
                   </span>
                 )}
